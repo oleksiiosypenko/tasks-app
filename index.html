@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мои задачи</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#ffffff;--bg2:#f5f5f5;--bg3:#efefef;
+  --text:#1a1a1a;--text2:#666;--text3:#999;
+  --border:#e0e0e0;--border2:#ccc;
+  --accent:#5a67d8;--accent-bg:#eef0ff;
+  --success:#2d9e6b;--success-bg:#e6f7f0;
+  --danger:#e24b4a;--danger-bg:#fef0f0;
+  --warning:#ba7517;--warning-bg:#fef3e0;
+  --radius:10px;--radius-sm:6px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--tg-theme-bg-color,var(--bg));color:var(--tg-theme-text-color,var(--text));font-size:15px;padding-bottom:80px}
+.header{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:20px;font-weight:600}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 16px 12px}
+.stat{background:var(--tg-theme-secondary-bg-color,var(--bg2));border-radius:var(--radius-sm);padding:10px 8px;text-align:center}
+.stat-n{font-size:20px;font-weight:600;line-height:1}
+.stat-l{font-size:11px;color:var(--text2);margin-top:3px}
+.stat-n.danger{color:var(--danger)}
+.stat-n.warning{color:var(--warning)}
+.filters{display:flex;gap:8px;padding:0 16px 12px;overflow-x:auto;scrollbar-width:none}
+.filters::-webkit-scrollbar{display:none}
+.seg{display:flex;background:var(--tg-theme-secondary-bg-color,var(--bg2));border-radius:var(--radius-sm);padding:2px;flex-shrink:0}
+.seg button{background:none;border:none;padding:5px 12px;font-size:13px;border-radius:var(--radius-sm);cursor:pointer;color:var(--text2);white-space:nowrap;transition:all .15s}
+.seg button.on{background:var(--tg-theme-bg-color,var(--bg));color:var(--text);font-weight:500;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.add-btn{margin:0 16px 12px;width:calc(100% - 32px);padding:12px;border:2px dashed var(--border2);border-radius:var(--radius);background:none;cursor:pointer;color:var(--accent);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.add-btn:hover{background:var(--accent-bg)}
+.task-list{padding:0 16px;display:flex;flex-direction:column;gap:8px}
+.section-label{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px}
+.task{background:var(--tg-theme-bg-color,var(--bg));border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;gap:10px;align-items:flex-start}
+.task.done{opacity:.5}
+.task.done .task-title{text-decoration:line-through;color:var(--text3)}
+.task.overdue{border-left:3px solid var(--danger)}
+.task.urgent-border{border-left:3px solid var(--warning)}
+.check{width:22px;height:22px;border:2px solid var(--border2);border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px}
+.check.on{background:var(--success);border-color:var(--success)}
+.task-body{flex:1;min-width:0}
+.task-title{font-size:15px;font-weight:500;margin-bottom:6px;word-break:break-word}
+.task-meta{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+.b-personal{background:#eeedfe;color:#3c3489}
+.b-business{background:#e1f5ee;color:#085041}
+.b-urgent{background:#fcebeb;color:#a32d2d}
+.b-high{background:#faeeda;color:#633806}
+.b-normal{background:#f1efe8;color:#5f5e5a}
+.b-low{background:#eaf3de;color:#3b6d11}
+.b-overdue{background:#fcebeb;color:#a32d2d}
+.b-today{background:#faeeda;color:#633806}
+.b-soon{background:#e1f5ee;color:#0f6e56}
+.task-time{font-size:12px;color:var(--text3);display:flex;align-items:center;gap:2px}
+.task-del{background:none;border:none;cursor:pointer;color:var(--text3);padding:2px;border-radius:4px;font-size:18px;line-height:1;flex-shrink:0;transition:color .15s}
+.task-del:hover{color:var(--danger)}
+.empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.empty i{font-size:40px;display:block;margin-bottom:8px}
+
+/* Modal */
+.modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;z-index:100}
+.modal{background:var(--tg-theme-bg-color,var(--bg));border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:600px}
+.modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
+.modal h2{font-size:17px;font-weight:600;margin-bottom:16px}
+.form-group{margin-bottom:12px}
+.form-group label{font-size:13px;color:var(--text2);display:block;margin-bottom:4px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--tg-theme-secondary-bg-color,var(--bg2));color:var(--text);outline:none;transition:border .15s}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.btn-primary{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
+.btn-primary:active{opacity:.85}
+
+/* Digest */
+.digest-wrap{padding:0 16px}
+.digest-box{background:var(--tg-theme-secondary-bg-color,var(--bg2));border-radius:var(--radius);padding:14px;font-size:13px;line-height:1.8;white-space:pre-wrap;font-family:monospace;margin-top:8px}
+.digest-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.digest-header span{font-size:13px;font-weight:500;color:var(--text2)}
+.copy-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:4px}
+
+/* Bottom nav */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--tg-theme-bg-color,var(--bg));border-top:1px solid var(--border);display:flex;z-index:50}
+.nav-btn{flex:1;padding:10px 0 12px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text3);font-size:11px;transition:color .15s}
+.nav-btn.on{color:var(--accent)}
+.nav-btn i{font-size:22px}
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="header">
+    <h1 id="page-title">Задачи</h1>
+  </div>
+
+  <!-- Tasks page -->
+  <div id="page-tasks">
+    <div class="stats" id="stats"></div>
+    <div class="filters">
+      <div class="seg" id="seg-cat">
+        <button class="on" onclick="setFilter('cat','all')">Все</button>
+        <button onclick="setFilter('cat','personal')">Личное</button>
+        <button onclick="setFilter('cat','business')">Бизнес</button>
+      </div>
+      <div class="seg" id="seg-status">
+        <button class="on" onclick="setFilter('status','active')">Активные</button>
+        <button onclick="setFilter('status','done')">Выполнены</button>
+      </div>
+    </div>
+    <button class="add-btn" onclick="openModal()">
+      <i class="ti ti-plus"></i> Добавить задачу
+    </button>
+    <div class="task-list" id="task-list"></div>
+  </div>
+
+  <!-- Digest page -->
+  <div id="page-digest" style="display:none">
+    <div class="digest-wrap">
+      <div class="digest-header">
+        <span>Утренний дайджест</span>
+        <button class="copy-btn" onclick="copyDigest()"><i class="ti ti-copy" style="font-size:14px"></i> Копировать</button>
+      </div>
+      <div class="digest-box" id="digest-text"></div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modal" style="display:none" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <h2>Новая задача</h2>
+      <div class="form-group">
+        <label>Название</label>
+        <input type="text" id="f-title" placeholder="Что нужно сделать?" />
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Категория</label>
+          <select id="f-cat">
+            <option value="personal">Личное</option>
+            <option value="business">Бизнес</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Срочность</label>
+          <select id="f-urgency">
+            <option value="urgent">Срочная</option>
+            <option value="high">Высокая</option>
+            <option value="normal" selected>Обычная</option>
+            <option value="low">Низкая</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Дедлайн</label>
+          <input type="date" id="f-deadline" />
+        </div>
+        <div class="form-group">
+          <label>Время (мин)</label>
+          <input type="number" id="f-mins" placeholder="30" min="5" max="480" />
+        </div>
+      </div>
+      <button class="btn-primary" onclick="addTask()">Добавить</button>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">
+    <i class="ti ti-checklist"></i>Задачи
+  </button>
+  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')">
+    <i class="ti ti-send"></i>Дайджест
+  </button>
+</nav>
+
+<script>
+const tg = window.Telegram?.WebApp;
+if(tg) tg.expand();
+
+const SAMPLE = [
+  {id:1,title:'Позвонить в банк',cat:'business',urgency:'urgent',mins:15,deadline:'2026-06-10',done:false,created:Date.now()-86400000*2},
+  {id:2,title:'Записаться к врачу',cat:'personal',urgency:'high',mins:10,deadline:'2026-06-14',done:false,created:Date.now()-86400000},
+  {id:3,title:'Подготовить отчёт Q2',cat:'business',urgency:'high',mins:120,deadline:'2026-06-20',done:false,created:Date.now()-3600000*5},
+  {id:4,title:'Купить подарок маме',cat:'personal',urgency:'normal',mins:30,deadline:'2026-06-25',done:false,created:Date.now()-3600000*2},
+];
+
+let tasks = JSON.parse(localStorage.getItem('tg_tasks')||'null') || SAMPLE;
+let nextId = Math.max(...tasks.map(t=>t.id),0)+1;
+let filter = {cat:'all',status:'active'};
+
+function save(){ try{localStorage.setItem('tg_tasks',JSON.stringify(tasks))}catch(e){} }
+
+function urgOrd(u){return{urgent:0,high:1,normal:2,low:3}[u]??2}
+
+function dlBadge(dl){
+  if(!dl) return null;
+  const today=new Date();today.setHours(0,0,0,0);
+  const d=new Date(dl);d.setHours(0,0,0,0);
+  const diff=Math.round((d-today)/86400000);
+  if(diff<0) return {cls:'b-overdue',label:'Просрочена',overdue:true};
+  if(diff===0) return {cls:'b-today',label:'Сегодня'};
+  if(diff<=3) return {cls:'b-soon',label:'Через '+diff+'д'};
+  return null;
+}
+
+function fmtMins(m){if(!m)return '';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'')}
+function fmtDate(dl){if(!dl)return '';return new Date(dl).toLocaleDateString('ru',{day:'numeric',month:'short'})}
+
+function filtered(){
+  let t=[...tasks];
+  if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
+  if(filter.status==='active') t=t.filter(x=>!x.done);
+  else if(filter.status==='done') t=t.filter(x=>x.done);
+  t.sort((a,b)=>{
+    const ao=dlBadge(a.deadline)?.overdue?-1:0;
+    const bo=dlBadge(b.deadline)?.overdue?-1:0;
+    if(ao!==bo) return ao-bo;
+    const au=urgOrd(a.urgency), bu=urgOrd(b.urgency);
+    if(au!==bu) return au-bu;
+    if(a.deadline&&b.deadline) return a.deadline.localeCompare(b.deadline);
+    if(a.deadline) return -1; if(b.deadline) return 1;
+    return b.created-a.created;
+  });
+  return t;
+}
+
+function renderStats(){
+  const active=tasks.filter(t=>!t.done);
+  const today=new Date();today.setHours(0,0,0,0);
+  const overdue=active.filter(t=>t.deadline&&new Date(t.deadline)<today).length;
+  const urgent=active.filter(t=>t.urgency==='urgent').length;
+  const biz=active.filter(t=>t.cat==='business').length;
+  document.getElementById('stats').innerHTML=`
+    <div class="stat"><div class="stat-n">${active.length}</div><div class="stat-l">Активных</div></div>
+    <div class="stat"><div class="stat-n danger">${overdue}</div><div class="stat-l">Просрочено</div></div>
+    <div class="stat"><div class="stat-n warning">${urgent}</div><div class="stat-l">Срочных</div></div>
+    <div class="stat"><div class="stat-n">${biz}</div><div class="stat-l">Бизнес</div></div>`;
+}
+
+function renderTasks(){
+  const list=filtered();
+  const el=document.getElementById('task-list');
+  if(!list.length){el.innerHTML='<div class="empty"><i class="ti ti-mood-smile"></i>Задач нет</div>';return;}
+  const urgLabels={urgent:'Срочная',high:'Высокая',normal:'Обычная',low:'Низкая'};
+  el.innerHTML=list.map(t=>{
+    const db=dlBadge(t.deadline);
+    const overdue=db?.overdue&&!t.done;
+    const urgentBorder=t.urgency==='urgent'&&!overdue&&!t.done;
+    return `<div class="task${t.done?' done':''}${overdue?' overdue':''}${urgentBorder?' urgent-border':''}">
+      <div class="check${t.done?' on':''}" onclick="toggle(${t.id})">
+        ${t.done?'<i class="ti ti-check" style="font-size:13px;color:#fff"></i>':''}
+      </div>
+      <div class="task-body">
+        <div class="task-title">${t.title}</div>
+        <div class="task-meta">
+          <span class="badge b-${t.cat}">${t.cat==='personal'?'Личное':'Бизнес'}</span>
+          <span class="badge b-${t.urgency}">${urgLabels[t.urgency]}</span>
+          ${db?`<span class="badge ${db.cls}">${db.label}</span>`:''}
+          ${t.deadline&&!db?`<span class="task-time"><i class="ti ti-calendar" style="font-size:13px"></i>${fmtDate(t.deadline)}</span>`:''}
+          ${t.mins?`<span class="task-time"><i class="ti ti-clock" style="font-size:13px"></i>${fmtMins(t.mins)}</span>`:''}
+        </div>
+      </div>
+      <button class="task-del" onclick="del(${t.id})"><i class="ti ti-trash"></i></button>
+    </div>`;
+  }).join('');
+}
+
+function render(){renderStats();renderTasks();}
+
+function setFilter(k,v){
+  filter[k]=v;
+  const segs={cat:'seg-cat',status:'seg-status'};
+  const vals={cat:['all','personal','business'],status:['active','done']};
+  document.querySelectorAll('#'+segs[k]+' button').forEach((b,i)=>{
+    b.classList.toggle('on',vals[k][i]===v);
+  });
+  render();
+}
+
+function toggle(id){
+  const t=tasks.find(x=>x.id===id);
+  if(t){t.done=!t.done;save();render();}
+}
+
+function del(id){
+  if(!confirm('Удалить задачу?')) return;
+  tasks=tasks.filter(x=>x.id!==id);
+  save();render();
+}
+
+function openModal(){
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('f-title').focus();
+}
+
+function closeModal(){document.getElementById('modal').style.display='none';}
+function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
+
+function addTask(){
+  const title=document.getElementById('f-title').value.trim();
+  if(!title) return;
+  tasks.push({
+    id:nextId++,
+    title,
+    cat:document.getElementById('f-cat').value,
+    urgency:document.getElementById('f-urgency').value,
+    mins:parseInt(document.getElementById('f-mins').value)||0,
+    deadline:document.getElementById('f-deadline').value,
+    done:false,
+    created:Date.now()
+  });
+  document.getElementById('f-title').value='';
+  document.getElementById('f-mins').value='';
+  document.getElementById('f-deadline').value='';
+  closeModal();
+  save();render();
+}
+
+function showPage(p){
+  document.getElementById('page-tasks').style.display=p==='tasks'?'block':'none';
+  document.getElementById('page-digest').style.display=p==='digest'?'block':'none';
+  document.getElementById('page-title').textContent=p==='tasks'?'Задачи':'Дайджест';
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('nav-'+p).classList.add('on');
+  if(p==='digest') buildDigest();
+}
+
+function buildDigest(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const active=tasks.filter(t=>!t.done);
+  const done=tasks.filter(t=>t.done);
+  const overdue=active.filter(t=>t.deadline&&new Date(t.deadline)<today);
+  const todayT=active.filter(t=>{
+    if(!t.deadline)return false;
+    const d=new Date(t.deadline);d.setHours(0,0,0,0);
+    return d.getTime()===today.getTime();
+  });
+  const urgent=active.filter(t=>t.urgency==='urgent'&&!overdue.includes(t)&&!todayT.includes(t));
+  const pers=active.filter(t=>t.cat==='personal');
+  const biz=active.filter(t=>t.cat==='business');
+  const totalMins=active.reduce((s,t)=>s+(t.mins||0),0);
+  const dateStr=today.toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'});
+  let lines=[`📋 Утренний дайджест`,dateStr,'─────────────────────',''];
+  if(overdue.length){
+    lines.push(`⚠️ Просрочено (${overdue.length}):`);
+    overdue.forEach(t=>lines.push(`  • ${t.title}`));
+    lines.push('');
+  }
+  if(todayT.length){
+    lines.push(`📅 Сегодня (${todayT.length}):`);
+    todayT.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));
+    lines.push('');
+  }
+  if(urgent.length){
+    lines.push(`🔴 Срочные (${urgent.length}):`);
+    urgent.forEach(t=>lines.push(`  • ${t.title}`));
+    lines.push('');
+  }
+  const rest=active.filter(t=>!overdue.includes(t)&&!todayT.includes(t)&&!urgent.includes(t));
+  if(rest.length){
+    lines.push(`📌 Остальные (${rest.length}):`);
+    rest.slice(0,5).forEach(t=>lines.push(`  • ${t.title}`));
+    if(rest.length>5) lines.push(`  ...ещё ${rest.length-5}`);
+    lines.push('');
+  }
+  lines.push('─────────────────────');
+  lines.push(`Личное: ${pers.length}  Бизнес: ${biz.length}  Выполнено: ${done.length}`);
+  if(totalMins) lines.push(`Плановое время: ${fmtMins(totalMins)}`);
+  document.getElementById('digest-text').textContent=lines.join('\n');
+}
+
+function copyDigest(){
+  const text=document.getElementById('digest-text').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.querySelector('.copy-btn');
+    btn.innerHTML='<i class="ti ti-check" style="font-size:14px"></i> Скопировано';
+    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy" style="font-size:14px"></i> Копировать'},2000);
+  });
+}
+
+document.getElementById('f-title').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
+render();
+</script>
+</body>
+</html>
