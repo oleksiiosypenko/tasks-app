@@ -35,7 +35,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .add-btn{margin:0 16px 12px;width:calc(100% - 32px);padding:12px;border:2px dashed var(--border2);border-radius:var(--radius);background:none;cursor:pointer;color:var(--accent);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
 .add-btn:hover{background:var(--accent-bg)}
 .task-list{padding:0 16px;display:flex;flex-direction:column;gap:8px}
-.section-label{font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:8px 0 4px}
 .task{background:var(--tg-theme-bg-color,var(--bg));border:1px solid var(--border);border-radius:var(--radius);padding:12px;display:flex;gap:10px;align-items:flex-start}
 .task.done{opacity:.5}
 .task.done .task-title{text-decoration:line-through;color:var(--text3)}
@@ -61,28 +60,28 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .task-del:hover{color:var(--danger)}
 .empty{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
 .empty i{font-size:40px;display:block;margin-bottom:8px}
-
-/* Modal */
+.loading{text-align:center;padding:40px 20px;color:var(--text3);font-size:14px}
+.loading i{font-size:30px;display:block;margin-bottom:8px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 16px;border-radius:20px;font-size:13px;z-index:200;opacity:0;transition:opacity .3s;pointer-events:none}
+.toast.show{opacity:1}
 .modal-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:flex-end;justify-content:center;z-index:100}
 .modal{background:var(--tg-theme-bg-color,var(--bg));border-radius:20px 20px 0 0;padding:20px 16px 32px;width:100%;max-width:600px}
 .modal-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:0 auto 16px}
 .modal h2{font-size:17px;font-weight:600;margin-bottom:16px}
 .form-group{margin-bottom:12px}
 .form-group label{font-size:13px;color:var(--text2);display:block;margin-bottom:4px}
-.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--tg-theme-secondary-bg-color,var(--bg2));color:var(--text);outline:none;transition:border .15s}
+.form-group input,.form-group select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--tg-theme-secondary-bg-color,var(--bg2));color:var(--text);outline:none;transition:border .15s}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .btn-primary{width:100%;padding:13px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn-primary:active{opacity:.85}
-
-/* Digest */
+.btn-primary:disabled{opacity:.5;cursor:not-allowed}
 .digest-wrap{padding:0 16px}
 .digest-box{background:var(--tg-theme-secondary-bg-color,var(--bg2));border-radius:var(--radius);padding:14px;font-size:13px;line-height:1.8;white-space:pre-wrap;font-family:monospace;margin-top:8px}
 .digest-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .digest-header span{font-size:13px;font-weight:500;color:var(--text2)}
 .copy-btn{background:none;border:1px solid var(--border);border-radius:var(--radius-sm);padding:4px 10px;font-size:12px;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:4px}
-
-/* Bottom nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--tg-theme-bg-color,var(--bg));border-top:1px solid var(--border);display:flex;z-index:50}
 .nav-btn{flex:1;padding:10px 0 12px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--text3);font-size:11px;transition:color .15s}
 .nav-btn.on{color:var(--accent)}
@@ -94,9 +93,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div id="app">
   <div class="header">
     <h1 id="page-title">Задачи</h1>
+    <button id="refresh-btn" onclick="loadTasks()" style="background:none;border:none;cursor:pointer;color:var(--text3);font-size:20px;padding:4px"><i class="ti ti-refresh"></i></button>
   </div>
 
-  <!-- Tasks page -->
   <div id="page-tasks">
     <div class="stats" id="stats"></div>
     <div class="filters">
@@ -116,7 +115,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="task-list" id="task-list"></div>
   </div>
 
-  <!-- Digest page -->
   <div id="page-digest" style="display:none">
     <div class="digest-wrap">
       <div class="digest-header">
@@ -127,7 +125,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
-  <!-- Modal -->
   <div class="modal-overlay" id="modal" style="display:none" onclick="closeModalOutside(event)">
     <div class="modal">
       <div class="modal-handle"></div>
@@ -164,10 +161,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
           <input type="number" id="f-mins" placeholder="30" min="5" max="480" />
         </div>
       </div>
-      <button class="btn-primary" onclick="addTask()">Добавить</button>
+      <button class="btn-primary" id="save-btn" onclick="addTask()">Добавить</button>
     </div>
   </div>
 </div>
+
+<div class="toast" id="toast"></div>
 
 <nav class="bottom-nav">
   <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">
@@ -182,18 +181,46 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 const tg = window.Telegram?.WebApp;
 if(tg) tg.expand();
 
-const SAMPLE = [
-  {id:1,title:'Позвонить в банк',cat:'business',urgency:'urgent',mins:15,deadline:'2026-06-10',done:false,created:Date.now()-86400000*2},
-  {id:2,title:'Записаться к врачу',cat:'personal',urgency:'high',mins:10,deadline:'2026-06-14',done:false,created:Date.now()-86400000},
-  {id:3,title:'Подготовить отчёт Q2',cat:'business',urgency:'high',mins:120,deadline:'2026-06-20',done:false,created:Date.now()-3600000*5},
-  {id:4,title:'Купить подарок маме',cat:'personal',urgency:'normal',mins:30,deadline:'2026-06-25',done:false,created:Date.now()-3600000*2},
-];
+const API = 'https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
 
-let tasks = JSON.parse(localStorage.getItem('tg_tasks')||'null') || SAMPLE;
-let nextId = Math.max(...tasks.map(t=>t.id),0)+1;
-let filter = {cat:'all',status:'active'};
+let tasks = [];
+let nextId = Date.now();
+let filter = {cat:'all', status:'active'};
 
-function save(){ try{localStorage.setItem('tg_tasks',JSON.stringify(tasks))}catch(e){} }
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+async function api(method, data) {
+  try {
+    if (method === 'GET') {
+      const r = await fetch(API + '?action=getTasks');
+      return await r.json();
+    } else {
+      const r = await fetch(API, {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      return await r.json();
+    }
+  } catch(e) {
+    showToast('Ошибка соединения');
+    return null;
+  }
+}
+
+async function loadTasks() {
+  document.getElementById('task-list').innerHTML = '<div class="loading"><i class="ti ti-loader"></i>Загрузка...</div>';
+  const data = await api('GET');
+  if (data) {
+    tasks = data;
+    nextId = Math.max(...tasks.map(t => Number(t.id) || 0), Date.now()) + 1;
+  }
+  render();
+}
 
 function urgOrd(u){return{urgent:0,high:1,normal:2,low:3}[u]??2}
 
@@ -208,7 +235,7 @@ function dlBadge(dl){
   return null;
 }
 
-function fmtMins(m){if(!m)return '';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'')}
+function fmtMins(m){if(!m)return '';m=Number(m);if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'')}
 function fmtDate(dl){if(!dl)return '';return new Date(dl).toLocaleDateString('ru',{day:'numeric',month:'short'})}
 
 function filtered(){
@@ -220,11 +247,11 @@ function filtered(){
     const ao=dlBadge(a.deadline)?.overdue?-1:0;
     const bo=dlBadge(b.deadline)?.overdue?-1:0;
     if(ao!==bo) return ao-bo;
-    const au=urgOrd(a.urgency), bu=urgOrd(b.urgency);
+    const au=urgOrd(a.urgency),bu=urgOrd(b.urgency);
     if(au!==bu) return au-bu;
     if(a.deadline&&b.deadline) return a.deadline.localeCompare(b.deadline);
     if(a.deadline) return -1; if(b.deadline) return 1;
-    return b.created-a.created;
+    return 0;
   });
   return t;
 }
@@ -259,7 +286,7 @@ function renderTasks(){
         <div class="task-title">${t.title}</div>
         <div class="task-meta">
           <span class="badge b-${t.cat}">${t.cat==='personal'?'Личное':'Бизнес'}</span>
-          <span class="badge b-${t.urgency}">${urgLabels[t.urgency]}</span>
+          <span class="badge b-${t.urgency}">${urgLabels[t.urgency]||t.urgency}</span>
           ${db?`<span class="badge ${db.cls}">${db.label}</span>`:''}
           ${t.deadline&&!db?`<span class="task-time"><i class="ti ti-calendar" style="font-size:13px"></i>${fmtDate(t.deadline)}</span>`:''}
           ${t.mins?`<span class="task-time"><i class="ti ti-clock" style="font-size:13px"></i>${fmtMins(t.mins)}</span>`:''}
@@ -282,49 +309,62 @@ function setFilter(k,v){
   render();
 }
 
-function toggle(id){
-  const t=tasks.find(x=>x.id===id);
-  if(t){t.done=!t.done;save();render();}
+async function toggle(id){
+  const t=tasks.find(x=>String(x.id)===String(id));
+  if(!t) return;
+  t.done=!t.done;
+  render();
+  await api('POST',{action:'toggleTask',id:id,done:t.done});
+  showToast(t.done?'Выполнено!':'Возвращено в активные');
 }
 
-function del(id){
+async function del(id){
   if(!confirm('Удалить задачу?')) return;
-  tasks=tasks.filter(x=>x.id!==id);
-  save();render();
+  tasks=tasks.filter(x=>String(x.id)!==String(id));
+  render();
+  await api('POST',{action:'deleteTask',id:id});
+  showToast('Удалено');
 }
 
 function openModal(){
   document.getElementById('modal').style.display='flex';
-  document.getElementById('f-title').focus();
+  setTimeout(()=>document.getElementById('f-title').focus(),100);
 }
-
 function closeModal(){document.getElementById('modal').style.display='none';}
 function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
 
-function addTask(){
+async function addTask(){
   const title=document.getElementById('f-title').value.trim();
   if(!title) return;
-  tasks.push({
+  const btn=document.getElementById('save-btn');
+  btn.disabled=true;
+  btn.textContent='Сохраняю...';
+  const task={
     id:nextId++,
     title,
     cat:document.getElementById('f-cat').value,
     urgency:document.getElementById('f-urgency').value,
     mins:parseInt(document.getElementById('f-mins').value)||0,
     deadline:document.getElementById('f-deadline').value,
-    done:false,
-    created:Date.now()
-  });
+    done:false
+  };
+  tasks.push(task);
+  render();
+  closeModal();
   document.getElementById('f-title').value='';
   document.getElementById('f-mins').value='';
   document.getElementById('f-deadline').value='';
-  closeModal();
-  save();render();
+  btn.disabled=false;
+  btn.textContent='Добавить';
+  const res=await api('POST',{action:'addTask',task});
+  showToast(res?.ok?'Задача сохранена':'Ошибка сохранения');
 }
 
 function showPage(p){
   document.getElementById('page-tasks').style.display=p==='tasks'?'block':'none';
   document.getElementById('page-digest').style.display=p==='digest'?'block':'none';
   document.getElementById('page-title').textContent=p==='tasks'?'Задачи':'Дайджест';
+  document.getElementById('refresh-btn').style.display=p==='tasks'?'block':'none';
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('on'));
   document.getElementById('nav-'+p).classList.add('on');
   if(p==='digest') buildDigest();
@@ -343,31 +383,14 @@ function buildDigest(){
   const urgent=active.filter(t=>t.urgency==='urgent'&&!overdue.includes(t)&&!todayT.includes(t));
   const pers=active.filter(t=>t.cat==='personal');
   const biz=active.filter(t=>t.cat==='business');
-  const totalMins=active.reduce((s,t)=>s+(t.mins||0),0);
+  const totalMins=active.reduce((s,t)=>s+(Number(t.mins)||0),0);
   const dateStr=today.toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'});
-  let lines=[`📋 Утренний дайджест`,dateStr,'─────────────────────',''];
-  if(overdue.length){
-    lines.push(`⚠️ Просрочено (${overdue.length}):`);
-    overdue.forEach(t=>lines.push(`  • ${t.title}`));
-    lines.push('');
-  }
-  if(todayT.length){
-    lines.push(`📅 Сегодня (${todayT.length}):`);
-    todayT.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));
-    lines.push('');
-  }
-  if(urgent.length){
-    lines.push(`🔴 Срочные (${urgent.length}):`);
-    urgent.forEach(t=>lines.push(`  • ${t.title}`));
-    lines.push('');
-  }
+  let lines=['📋 Утренний дайджест',dateStr,'─────────────────────',''];
+  if(overdue.length){lines.push(`⚠️ Просрочено (${overdue.length}):`);overdue.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(todayT.length){lines.push(`📅 Сегодня (${todayT.length}):`);todayT.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
+  if(urgent.length){lines.push(`🔴 Срочные (${urgent.length}):`);urgent.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
   const rest=active.filter(t=>!overdue.includes(t)&&!todayT.includes(t)&&!urgent.includes(t));
-  if(rest.length){
-    lines.push(`📌 Остальные (${rest.length}):`);
-    rest.slice(0,5).forEach(t=>lines.push(`  • ${t.title}`));
-    if(rest.length>5) lines.push(`  ...ещё ${rest.length-5}`);
-    lines.push('');
-  }
+  if(rest.length){lines.push(`📌 Остальные (${rest.length}):`);rest.slice(0,5).forEach(t=>lines.push(`  • ${t.title}`));if(rest.length>5)lines.push(`  ...ещё ${rest.length-5}`);lines.push('');}
   lines.push('─────────────────────');
   lines.push(`Личное: ${pers.length}  Бизнес: ${biz.length}  Выполнено: ${done.length}`);
   if(totalMins) lines.push(`Плановое время: ${fmtMins(totalMins)}`);
@@ -376,15 +399,11 @@ function buildDigest(){
 
 function copyDigest(){
   const text=document.getElementById('digest-text').textContent;
-  navigator.clipboard.writeText(text).then(()=>{
-    const btn=document.querySelector('.copy-btn');
-    btn.innerHTML='<i class="ti ti-check" style="font-size:14px"></i> Скопировано';
-    setTimeout(()=>{btn.innerHTML='<i class="ti ti-copy" style="font-size:14px"></i> Копировать'},2000);
-  });
+  navigator.clipboard.writeText(text).then(()=>showToast('Скопировано!'));
 }
 
 document.getElementById('f-title').addEventListener('keydown',e=>{if(e.key==='Enter')addTask();});
-render();
+loadTasks();
 </script>
 </body>
 </html>
