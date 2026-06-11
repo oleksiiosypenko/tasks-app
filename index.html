@@ -7,7 +7,7 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:80px;background:#0d0d0e;color:#ffffff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:85px;background:#0d0d0e;color:#ffffff}
 :root{
   --bg:#0d0d0e;
   --bg2:#1e1e20;
@@ -26,7 +26,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 }
 .topbar{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
 .topbar h1{font-size:22px;font-weight:700;color:#fff}
-.icon-btn{background:none;border:none;cursor:pointer;color:#fff;font-size:18px;padding:6px;line-height:1;font-weight:bold}
+.icon-btn{background:none;border:none;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;padding:6px;transition:transform 0.2s}
+.icon-btn:active{transform:scale(0.9)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 16px 6px}
 .tile{background:var(--bg2);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
 .tile.active{border-color:var(--accent);background:#252528}
@@ -58,7 +59,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task.q4{border-left-color:var(--q4);opacity:.6}
 .task.done-task{opacity:.4}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
-.check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,0.05);color:transparent;font-size:14px;font-weight:bold}
+.check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,0.05);color:transparent}
 .check.on{background:var(--success);border-color:var(--success);color:#fff}
 .task-body{flex:1;min-width:0;cursor:pointer}
 .task-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;word-break:break-word;line-height:1.4}
@@ -72,37 +73,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .b-q4{background:var(--q4bg);color:var(--q4t)}
 .task-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .tmeta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;font-weight:500}
-.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;font-size:16px;line-height:1;flex-shrink:0;font-weight:bold}
+.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;display:flex;align-items:center;justify-content:center;transition:color .15s}
 .task-del:active{color:var(--danger)}
 .empty{text-align:center;padding:50px 20px;color:var(--text2);font-size:15px}
 
-/* Навечно исправленный Канбан */
+/* Навечно зафиксированный Канбан */
 .kanban-wrap{padding:0 16px; display:flex; flex-direction:column; gap:16px}
-.k-col{background:rgba(255,255,255,0.02); padding:12px; border-radius:var(--radius); border:1px solid var(--border)}
-.k-col-head{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding-bottom:10px;margin-bottom:10px;border-bottom:1px solid var(--border);color:var(--text2)}
+.k-col{background:rgba(255,255,255,0.02); padding:14px; border-radius:var(--radius); border:1px solid var(--border)}
+.k-col-head{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--border);color:var(--text2);display:flex;align-items:center;gap:6px}
 .k-col-head.inprogress{color:var(--q2t)}
-.ktask{background:var(--bg2);border-radius:var(--radius-sm);padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,0.05)}
-.ktask-title{font-size:15px;font-weight:600;margin-bottom:8px;color:#fff}
-.ktask-meta{display:flex;gap:6px;align-items:center;margin-bottom:10px}
+.ktask{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.05);box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+.ktask-title{font-size:15px;font-weight:600;margin-bottom:8px;color:#fff;line-height:1.4}
+.ktask-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .ktask-actions{display:flex;gap:8px}
-.kbtn{flex:1;padding:8px;border-radius:6px;font-size:13px;font-weight:700;border:none;cursor:pointer;text-align:center}
+.kbtn{flex:1;padding:10px 8px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;text-align:center;transition:opacity 0.15s;display:flex;align-items:center;justify-content:center;gap:4px}
+.kbtn:active{opacity:0.8}
 .kbtn-start{background:var(--accent);color:#fff}
 .kbtn-done{background:var(--success);color:#fff}
 .kbtn-pause{background:var(--warning);color:#000}
 .kbtn-cancel{background:var(--bg3);color:#fff}
-.timer-card{background:var(--q2bg);border-radius:var(--radius-sm);padding:12px;margin-bottom:10px;border:1px solid #3a3a6a}
-.timer-name{font-size:13px;color:var(--q2t);margin-bottom:4px;font-weight:600}
-.timer-val{font-size:28px;font-weight:700;font-family:monospace;color:#fff}
-.timer-prog{background:#2a2a4a;border-radius:4px;height:6px;margin-top:8px;overflow:hidden}
+.timer-card{background:var(--q2bg);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;border:1px solid #3a3a6a;box-shadow:inset 0 0 10px rgba(0,0,0,0.2)}
+.timer-name{font-size:13px;color:var(--q2t);margin-bottom:6px;font-weight:600}
+.timer-val{font-size:32px;font-weight:700;font-family:monospace;color:#fff;line-height:1}
+.timer-prog{background:#2a2a4a;border-radius:4px;height:6px;margin-top:10px;overflow:hidden}
 .timer-fill{background:var(--accent);height:100%;border-radius:4px;width:0%}
-.empty-kanban{text-align:center;padding:16px;color:var(--text2);font-size:13px}
+.empty-kanban{text-align:center;padding:20px;color:var(--text2);font-size:14px}
 
-/* Жестко зафиксированное нижнее меню навигации */
+/* Идеальный Дайджест */
+.digest-wrap{padding:0 16px}
+.digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+
+/* Абсолютно автономное нижнее меню с графическими SVG-иконками */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 10px rgba(0,0,0,0.3)}
-.nav-btn{flex:1;padding:12px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:13px;font-weight:700;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.03em}
-.nav-btn.on{color:var(--accent);background:rgba(107,105,255,0.05);border-top:2px solid var(--accent)}
+.nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:700;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em;gap:4px}
+.nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.nav-btn.on{color:var(--accent);background:rgba(107,105,255,0.04);border-top:2px solid var(--accent);padding-top:8px}
 
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none}
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
 .toast.show{opacity:1}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
 .modal{background:#171719;border-radius:24px 24px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border-top:1px solid #2c2c2e}
@@ -127,7 +134,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div id="page-tasks">
   <div class="topbar">
     <h1>Задачи</h1>
-    <button class="icon-btn" onclick="loadTasks()">🔄 Поновить</button>
+    <button class="icon-btn" onclick="loadTasks()" aria-label="Обновить">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+    </button>
   </div>
   <div class="tiles" id="tiles"></div>
   
@@ -161,7 +170,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div id="page-kanban" style="display:none">
   <div class="topbar">
     <h1>Канбан</h1>
-    <button class="icon-btn" onclick="loadTasks()">🔄 Поновить</button>
+    <button class="icon-btn" onclick="loadTasks()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+    </button>
   </div>
   <div class="filters" style="padding-bottom: 12px;">
     <div class="seg" id="seg-cat-kanban">
@@ -267,9 +278,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div class="toast" id="toast"></div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">Задачи</button>
-  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')">Канбан</button>
-  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')">Дайджест</button>
+  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Задачи
+  </button>
+  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')">
+    <svg viewBox="0 0 24 24"><path d="M3 3h7v18H3zM14 3h7v10h-7zM14 17h7v4h-7z"/></svg>
+    Канбан
+  </button>
+  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')">
+    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+    Дайджест
+  </button>
 </nav>
 
 <script>
@@ -610,38 +630,37 @@ function startTimerTick(){
   },1000);
 }
 
-function getElapsedMinutes(task) { return task?.started_at ? Math.floor((new Date() - new Date(task.started_at)) / 60000) : 0; }
-async function kanbanStart(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  t.status='inprogress'; t.started_at=new Date().toISOString(); renderKanban(); render();
-  await apiFetch('POST',{action:'startTask',id});
-}
-async function kanbanPause(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  const diffMins = getElapsedMinutes(t);
-  t.status='new'; t.worked_mins=(t.worked_mins||0)+diffMins; t.mins=Math.max(0,t.mins-diffMins); t.started_at='';
-  clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
-}
-async function kanbanCancel(id) {
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  t.status='new'; t.started_at=''; clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'updateTask', id, fields: {status: 'new', started_at: ''}});
-}
-async function kanbanDone(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  const diffMins = getElapsedMinutes(t);
-  t.done=true; t.status='done'; t.worked_mins=(t.worked_mins||0)+diffMins; t.started_at='';
-  clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'doneTask', id, workedMins: diffMins});
+function buildDigest(){
+  const td=todayStr();
+  const active=tasks.filter(t=>!t.done && t.status!=='missed' && (!t.deadline || t.deadline>=td));
+  const q1=active.filter(t=>Number(t.quadrant)===1);
+  const q2=active.filter(t=>Number(t.quadrant)===2);
+  const q3=active.filter(t=>Number(t.quadrant)===3);
+  
+  const list = getFiltered();
+  const total=list.reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const doneMins=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  
+  let lines=['📋 Утренний дайджест','─────────────────────',''];
+  if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q3.length){lines.push(`🟡 Срочное, не важное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q2.length){lines.push(`🔵 Важное, не срочное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  lines.push('─────────────────────');
+  lines.push(`Задач в текущем списке: ${list.length}`);
+  if(total) lines.push(`Осталось планового времени: ${fmtMins(total - doneMins)}`);
+  
+  const targetEl = document.getElementById('digest-text');
+  if(targetEl) targetEl.textContent=lines.join('\n');
 }
 
 function showPage(p){
   currentPage=p; ['tasks','kanban','digest'].forEach(x=>{
     document.getElementById('page-'+x).style.display=x===p?'block':'none';
-    document.getElementById('nav-'+x).classList.toggle('on',x===p);
+    const navBtn = document.getElementById('nav-'+x);
+    if(navBtn) navBtn.classList.toggle('on',x===p);
   });
   if(p==='kanban') renderKanban();
+  if(p==='digest') buildDigest();
 }
 loadTasks();
 </script>
