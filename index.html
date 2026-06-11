@@ -694,15 +694,28 @@ async function kanbanStart(id){
 async function kanbanPause(id){
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
   const diffMins = getElapsedMinutes(t);
-  t.status='new'; t.worked_mins=(t.worked_mins||0)+diffMins; t.mins=Math.max(0,t.mins-diffMins); t.started_at='';
+  
+  t.status='new'; 
+  t.worked_mins=(t.worked_mins||0)+diffMins; // Фиксируем набранное время в статистику
+  t.mins=Math.max(0,t.mins-diffMins);          // Уменьшаем оставшееся время задачи
+  t.started_at='';
+  
   clearInterval(timerInterval); renderKanban(); render();
   await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
+  showToast('Задача поставлена на паузу ⏸');
 }
+
 async function kanbanCancel(id) {
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  t.status='new'; t.started_at=''; clearInterval(timerInterval); renderKanban(); render();
+  
+  t.status='new'; 
+  t.started_at=''; // Просто стираем время запуска текущей сессии, ничего не сохраняя
+  
+  clearInterval(timerInterval); renderKanban(); render();
   await apiFetch('POST',{action:'updateTask', id, fields: {status: 'new', started_at: ''}});
+  showToast('Задача возвращена без сохранения времени ↩');
 }
+
 async function kanbanDone(id){
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
   const diffMins = getElapsedMinutes(t);
