@@ -8,135 +8,101 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:70px;background:var(--tg-theme-bg-color,#1c1c1e);color:var(--tg-theme-text-color,#fff)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:70px;background:#0d0d0e;color:#ffffff}
 :root{
-  --bg:var(--tg-theme-bg-color,#1c1c1e);
-  --bg2:var(--tg-theme-secondary-bg-color,#2c2c2e);
-  --bg3:#3a3a3c;
-  --text:var(--tg-theme-text-color,#fff);
-  --text2:var(--tg-theme-hint-color,#8e8e93);
-  --accent:var(--tg-theme-button-color,#5e5ce6);
-  --accent-text:var(--tg-theme-button-text-color,#fff);
+  --bg:#0d0d0e;
+  --bg2:#1e1e20;
+  --bg3:#333336;
+  --text:#ffffff;
+  --text2:#b0b0b5;
+  --accent:#6b69ff;
+  --accent-text:#ffffff;
   --border:#3a3a3c;
-  --q1:#ff453a;--q1bg:#4a1515;--q1t:#ff6b6b;
-  --q2:#5e5ce6;--q2bg:#1e1e4a;--q2t:#9b9bff;
-  --q3:#ff9f0a;--q3bg:#3d2a00;--q3t:#ffb340;
-  --q4:#636366;--q4bg:#2c2c2e;--q4t:#8e8e93;
+  --q1:#ff453a;--q1bg:#4a1515;--q1t:#ff827a;
+  --q2:#5e5ce6;--q2bg:#1e1e4a;--q2t:#a3a3ff;
+  --q3:#ff9f0a;--q3bg:#4d3000;--q3t:#ffc15e;
+  --q4:#8e8e93;--q4bg:#2c2c2e;--q4t:#d1d1d6;
   --success:#30d158;--danger:#ff453a;--warning:#ff9f0a;
-  --radius:10px;--radius-sm:8px;
+  --radius:12px;--radius-sm:8px;
 }
-.topbar{padding:10px 16px 4px;display:flex;align-items:center;justify-content:space-between}
-.topbar h1{font-size:20px;font-weight:600}
-.icon-btn{background:none;border:none;cursor:pointer;color:var(--text2);font-size:20px;padding:4px;line-height:1}
-.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 16px 4px}
-.tile{background:var(--bg2);border-radius:var(--radius);padding:10px 12px;cursor:pointer;transition:opacity .15s;border:1px solid transparent}
-.tile.active{border-color:var(--accent)}
-.tile:active{opacity:.7}
-.tile-n{font-size:22px;font-weight:600;line-height:1}
-.tile-l{font-size:11px;color:var(--text2);margin-top:2px}
+.topbar{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.topbar h1{font-size:22px;font-weight:700;color:#fff}
+.icon-btn{background:none;border:none;cursor:pointer;color:#fff;font-size:22px;padding:6px;line-height:1}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 16px 6px}
+.tile{background:var(--bg2);border-radius:var(--radius);padding:14px 14px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.tile.active{border-color:var(--accent);background:#252528}
+.tile:active{transform:scale(0.98)}
+.tile-n{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;color:#fff}
+.tile-l{font-size:12px;color:var(--text2);font-weight:500}
 .tile-n.orange{color:var(--warning)}
 .tile-n.red{color:var(--danger)}
-.prog-wrap{margin:4px 16px; background: var(--bg2); padding: 10px; border-radius: var(--radius);}
-.prog-bar{background:var(--bg3);border-radius:6px;height:6px;overflow:hidden}
+.prog-wrap{margin:8px 16px; background:var(--bg2); padding:12px; border-radius:var(--radius); box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.prog-bar{background:var(--bg3);border-radius:6px;height:8px;overflow:hidden}
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
-.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text);margin-top:4px}
-.total-today-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-top:8px;padding-top:6px;border-top:1px solid var(--border)}
-.total-today-label strong{color: var(--warning); font-size: 14px;}
-.filters{display:flex;gap:6px;padding:6px 16px;overflow-x:auto;scrollbar-width:none}
+.prog-label{display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-top:6px;font-weight:500}
+.total-today-label{display:flex;justify-content:space-between;font-size:13px;color:#fff;margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-weight:500}
+.total-today-label strong{color:#ffb340; font-size:15px; font-weight:700}
+.filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:2px;flex-shrink:0}
-.seg button{background:none;border:none;padding:5px 11px;font-size:12px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;transition:all .15s}
-.seg button.on{background:var(--bg3);color:var(--text);font-weight:500}
-.add-btn{margin:4px 16px 6px;padding:11px;border:1.5px dashed var(--border);border-radius:var(--radius);background:none;cursor:pointer;color:var(--accent);font-size:14px;font-weight:500;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px);transition:background .15s}
-.add-btn:active{background:var(--bg2)}
-.task-list{padding:0 16px;display:flex;flex-direction:column;gap:6px}
-.q-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin:6px 0 3px;display:flex;align-items:center;gap:5px}
-.q-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:10px 10px 10px 12px;display:flex;gap:8px;align-items:flex-start;border-left:3px solid var(--border)}
-.task.q1{border-left-color:var(--q1)}
-.task.q2{border-left-color:var(--q2)}
-.task.q3{border-left-color:var(--q3)}
+.seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.15)}
+.seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;transition:all .15s;font-weight:600}
+.seg button.on{background:var(--accent);color:#fff;font-weight:700}
+.add-btn{margin:8px 16px;padding:12px;border:1.5px dashed var(--accent);border-radius:var(--radius);background:rgba(107,105,255,0.05);cursor:pointer;color:#a3a1ff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px);transition:all 0.15s}
+.add-btn:active{background:rgba(107,105,255,0.15);transform:scale(0.99)}
+.task-list{padding:4px 16px;display:flex;flex-direction:column;gap:8px}
+.q-label{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 2px;display:flex;align-items:center;gap:6px}
+.q-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:12px;display:flex;gap:10px;align-items:flex-start;border-left:4px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.task.q1{border-left-color:var(--q1);background:linear-gradient(90deg, #241616 0%, var(--bg2) 15%)}
+.task.q2{border-left-color:var(--q2);background:linear-gradient(90deg, #16162a 0%, var(--bg2) 15%)}
+.task.q3{border-left-color:var(--q3);background:linear-gradient(90deg, #241f16 0%, var(--bg2) 15%)}
 .task.q4{border-left-color:var(--q4);opacity:.6}
-.task.done-task{opacity:.45}
+.task.done-task{opacity:.4}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
-.check{width:22px;height:22px;border:1.5px solid var(--border);border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px}
+.check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,0.05)}
 .check.on{background:var(--success);border-color:var(--success)}
 .task-body{flex:1;min-width:0;cursor:pointer}
-.task-title{font-size:14px;font-weight:500;margin-bottom:5px;word-break:break-word;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.task-title span{flex:1;min-width:0}
-.badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
-.badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
-.b-business{background:#0d3d2e;color:#34c759}
-.b-personal{background:#3d2f6b;color:#bf9fff}
+.task-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;word-break:break-word;line-height:1.4}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
+.badge{font-size:11px;padding:3px 9px;border-radius:20px;font-weight:600;white-space:nowrap}
+.b-business{background:#0a4d2c;color:#41f27c}
+.b-personal{background:#4d1a70;color:#d696ff}
 .b-q1{background:var(--q1bg);color:var(--q1t)}
 .b-q2{background:var(--q2bg);color:var(--q2t)}
 .b-q3{background:var(--q3bg);color:var(--q3t)}
 .b-q4{background:var(--q4bg);color:var(--q4t)}
-.b-inprogress{background:#1e1e4a;color:#9b9bff}
-.task-meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.tmeta{font-size:11px;color:var(--text2);display:flex;align-items:center;gap:2px}
-.tmeta i{font-size:12px}
-.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:2px;font-size:18px;line-height:1;flex-shrink:0;transition:color .15s}
+.task-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tmeta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;font-weight:500}
+.tmeta i{font-size:14px;color:#fff}
+.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;font-size:18px;line-height:1;flex-shrink:0;transition:color .15s}
 .task-del:active{color:var(--danger)}
-.empty{text-align:center;padding:40px 20px;color:var(--text2);font-size:14px}
-.empty i{font-size:36px;display:block;margin-bottom:8px}
-.loading-wrap{text-align:center;padding:40px;color:var(--text2);font-size:13px}
-.spin{animation:spin 1s linear infinite;display:inline-block}
-@keyframes spin{to{transform:rotate(360deg)}}
-.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:8px 18px;border-radius:20px;font-size:13px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
+.empty{text-align:center;padding:50px 20px;color:var(--text2);font-size:15px}
+.empty i{font-size:40px;display:block;margin-bottom:8px}
+.toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
 .toast.show{opacity:1}
 /* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;z-index:200}
-.modal{background:var(--bg);border-radius:20px 20px 0 0;padding:16px 16px 32px;width:100%;max-height:90vh;overflow-y:auto}
-.modal-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 14px}
-.modal h2{font-size:17px;font-weight:600;margin-bottom:14px}
-.form-group{margin-bottom:11px}
-.form-group label{font-size:12px;color:var(--text2);display:block;margin-bottom:4px}
-.form-group input,.form-group select{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg2);color:var(--text);outline:none}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
+.modal{background:#171719;border-radius:24px 24px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border-top:1px solid #2c2c2e}
+.modal-handle{width:40px;height:5px;background:var(--bg3);border-radius:3px;margin:0 auto 16px}
+.modal h2{font-size:19px;font-weight:700;margin-bottom:16px;color:#fff}
+.form-group{margin-bottom:14px}
+.form-group label{font-size:13px;color:#fff;display:block;margin-bottom:6px;font-weight:600}
+.form-group input,.form-group select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg2);color:#fff;outline:none;font-weight:500}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent)}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
-.q-option{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:8px 10px;cursor:pointer;transition:all .15s}
-.q-option.selected{border-color:var(--accent);background:var(--bg2)}
-.q-option-title{font-size:12px;font-weight:600;margin-bottom:2px}
-.q-option-sub{font-size:10px;color:var(--text2);line-height:1.3}
-.btn-primary{width:100%;padding:13px;background:var(--accent);color:var(--accent-text);border:none;border-radius:var(--radius);font-size:15px;font-weight:600;cursor:pointer;margin-top:6px}
-.btn-primary:disabled{opacity:.5;cursor:not-allowed}
-/* Kanban */
-.kanban-wrap{padding:0 16px}
-.k-col{margin-bottom:14px}
-.k-col-head{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;padding:6px 0;display:flex;align-items:center;gap:8px;color:var(--text2)}
-.k-col-head.inprogress{color:var(--q2t)}
-.k-col-head .wip{font-size:10px;background:var(--q2bg);color:var(--q2t);padding:2px 8px;border-radius:10px}
-.ktask{background:var(--bg2);border-radius:var(--radius);padding:11px 12px;margin-bottom:7px}
-.ktask-title{font-size:14px;font-weight:500;margin-bottom:6px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
-.ktask-meta{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
-.ktask-actions{display:flex;gap:6px}
-.kbtn{flex:1;padding:7px 6px;border-radius:8px;font-size:12px;font-weight:500;border:none;cursor:pointer;text-align:center;transition:opacity .15s}
-.kbtn:active{opacity:.7}
-.kbtn-start{background:var(--q2bg);color:var(--q2t)}
-.kbtn-done{background:#0d3d2e;color:var(--success)}
-.kbtn-pause{background:var(--q3bg);color:var(--q3t)}
-.kbtn-cancel{background:#444;color:var(--text2)}
-.timer-card{background:var(--q2bg);border-radius:var(--radius);padding:12px;margin-bottom:8px;border:1px solid #3a3a6a}
-.timer-name{font-size:12px;color:var(--q2t);margin-bottom:3px;font-weight:500}
-.timer-val{font-size:26px;font-weight:600;font-family:monospace;color:var(--text)}
-.timer-sub{font-size:11px;color:var(--text2);margin-top:2px}
-.timer-prog{background:#2a2a4a;border-radius:4px;height:5px;margin-top:8px;overflow:hidden}
-.timer-fill{background:var(--accent);height:100%;border-radius:4px;transition:width 1s linear}
-.empty-kanban{text-align:center;padding:20px;color:var(--text2);font-size:13px}
-/* Nav */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:0.5px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
-.nav-btn{flex:1;padding:8px 0 10px;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--text2);font-size:10px;transition:color .15s}
-.nav-btn.on{color:var(--accent)}
-.nav-btn i{font-size:22px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.q-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.q-option{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;cursor:pointer;transition:all .15s;background:var(--bg2)}
+.q-option.selected{border-color:var(--accent);background:#252528}
+.q-option-title{font-size:13px;font-weight:700}
+.btn-primary{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;margin-top:10px;box-shadow:0 4px 12px rgba(107,105,255,0.3)}
+.btn-primary:disabled{opacity:.5}
 </style>
 </head>
 <body>
 
 <div id="page-tasks">
   <div class="topbar">
-    <h1 id="title-tasks">Задачи</h1>
+    <h1>Задачи</h1>
     <button class="icon-btn" onclick="loadTasks()"><i class="ti ti-refresh"></i></button>
   </div>
   <div class="tiles" id="tiles"></div>
@@ -144,7 +110,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="prog-wrap">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label">
-      <span id="prog-title">Прогресс (выполнено / всего)</span>
+      <span id="prog-title">Прогресс нагрузки</span>
       <span id="prog-label">0м / 0м</span>
     </div>
     <div class="total-today-label">
@@ -160,8 +126,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <button onclick="setFilter('cat','personal')">Личное</button>
     </div>
     <div class="seg" id="seg-date">
-      <button class="on" onclick="setFilter('date','today')">Сегодня</button>
-      <button onclick="setFilter('date','all')">Все даты</button>
+      <button id="btn-date-today" class="on" onclick="setFilter('date','today')">Сегодня</button>
+      <button id="btn-date-all" onclick="setFilter('date','all')">Все даты</button>
     </div>
   </div>
   <button class="add-btn" onclick="openModal()"><i class="ti ti-plus"></i> Добавить задачу</button>
@@ -186,14 +152,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div id="page-digest" style="display:none">
   <div class="topbar"><h1>Дайджест</h1></div>
   <div class="digest-wrap">
-    <div class="digest-header">
-      <span>Утренний дайджест</span>
-    </div>
     <div class="digest-box" id="digest-text"></div>
   </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО С КАСУТОМНЫМИ НАСТРОЙКАМИ ПЕРИОДОВ -->
 <div class="modal-overlay" id="modal" style="display:none" onclick="closeModalOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -233,17 +195,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <div class="form-group">
         <label>Базовые дни</label>
         <select id="f-recurrence">
-          <option value="none">1 раз (Обычная)</option>
-          <option value="daily">Каждый день</option>
+          <option value="none">Один раз</option>
+          <option value="daily">Повторяемая</option>
           <option value="weekdays">По будням</option>
           <option value="weekends">По выходным</option>
-          <option value="monthly">1-е число месяца</option>
         </select>
       </div>
     </div>
 
-    <!-- КАСУТОМНЫЙ ДИАПАЗОН ЧИСЕЛ МЕСЯЦА -->
-    <div class="form-row" style="background: rgba(255,255,255,0.03); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 11px;">
+    <div class="form-row" style="background: rgba(255,255,255,0.02); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 11px; border: 1px solid var(--border);">
       <div class="form-group" style="margin-bottom:0">
         <label>С какого числа месяца</label>
         <input type="number" id="f-day-from" placeholder="Напр: 1" min="1" max="31"/>
@@ -254,8 +214,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       </div>
     </div>
 
-    <!-- КАСТОМНЫЙ ИНТЕРВАЛ ВРЕМЕНИ ВНУТРИ ДНЯ -->
-    <div class="form-row" style="background: rgba(255,255,255,0.03); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 11px;">
+    <div class="form-row" style="background: rgba(255,255,255,0.02); padding: 8px; border-radius: var(--radius-sm); margin-bottom: 11px; border: 1px solid var(--border);">
       <div class="form-group" style="margin-bottom:0">
         <label>Время начала (ЧЧ:ММ)</label>
         <input type="time" id="f-time-from"/>
@@ -272,7 +231,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         <input type="date" id="f-deadline"/>
       </div>
       <div class="form-group">
-        <label>Время выполнения (мин)</label>
+        <label>Время (мин)</label>
         <input type="number" id="f-mins" placeholder="30" min="5" max="480"/>
       </div>
     </div>
@@ -303,7 +262,7 @@ let timerInterval = null;
 let currentPage = 'tasks';
 
 const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
-const REC_LABELS = { none:'1 раз', daily:'Каждый день', weekdays:'По будням', weekends:'По выходным', monthly:'Раз в месяц' };
+const REC_LABELS = { none:'Один раз', daily:'Повторяемая', weekdays:'По будням', weekends:'По выходным' };
 
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -341,6 +300,11 @@ function syncCatButtons() {
   const valsCat = ['all','business','personal'];
   document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on', valsCat[i] === filter.cat));
   document.querySelectorAll('#seg-cat-kanban button').forEach((b,i)=>b.classList.toggle('on', valsCat[i] === filter.cat));
+}
+
+function syncDateButtons() {
+  document.getElementById('btn-date-today').classList.toggle('on', filter.date === 'today' && !filter.tile);
+  document.getElementById('btn-date-all').classList.toggle('on', filter.date === 'all' && !filter.tile);
 }
 
 async function loadTasks(){
@@ -462,17 +426,24 @@ function renderTasks(){
   el.innerHTML=html;
 }
 
-function render(){renderTiles();renderProgress();renderTasks();}
+function render(){renderTiles();renderProgress();renderTasks();syncDateButtons();}
 
 function setFilter(k,v){
-  filter[k]=v; if(k === 'date') filter.tile = null;
-  syncCatButtons(); render(); if(currentPage==='kanban') renderKanban();
+  if(k === 'date') {
+    filter.tile = null;
+    filter.date = v;
+  } else {
+    filter[k] = v;
+  }
+  syncCatButtons(); 
+  render(); 
+  if(currentPage==='kanban') renderKanban();
 }
+
 function setTileFilter(key){
   filter.tile = filter.tile === key ? null : key;
-  if(filter.tile) { document.querySelectorAll('#seg-date button').forEach(b=>b.classList.remove('on')); }
-  else { filter.date = 'today'; document.querySelectorAll('#seg-date button').forEach((b,i)=>b.classList.toggle('on',i==0)); }
-  autoSelectCat(); render();
+  autoSelectCat(); 
+  render();
 }
 
 async function toggleDone(id){
@@ -549,7 +520,7 @@ function renderKanban(){
   const priorityOrder = { 1: 1, 3: 2, 2: 3, 4: 4 };
   newTasks.sort((a, b) => priorityOrder[Number(a.quadrant)||1] - priorityOrder[Number(b.quadrant)||1]);
 
-  let html='<div class="k-col"><div class="k-col-head inprogress">В работе</div>';
+  let html='<div class="k-col"><div class="k-col-head inprogress" style="color:var(--q2t)">В работе</div>';
   if(inProgress){
     html+=renderTimerCard(inProgress);
     html+=`<div class="ktask-actions">
@@ -560,7 +531,7 @@ function renderKanban(){
   }else{ html+='<div class="empty-kanban">Нет активной задачи</div>'; }
   html+='</div>';
 
-  html+='<div class="k-col"><div class="k-col-head">Новые ('+newTasks.length+')</div>';
+  html+='<div class="k-col"><div class="k-col-head" style="color:var(--text2)">Новые ('+newTasks.length+')</div>';
   if(newTasks.length){
     html+=newTasks.map(t=>`<div class="ktask">
       <div class="ktask-title">${t.title}</div>
@@ -592,7 +563,7 @@ function startTimerTick(){
   if(timerInterval) clearInterval(timerInterval);
   const inProgress=tasks.find(t=>t.status==='inprogress'); if(!inProgress||!inProgress.started_at) return;
   timerInterval=setInterval(()=>{
-    const val=document.getElementById('timer-val'); const fill=document.getElementById('timer-fill'); if(!val){clearInterval(timerInterval);return;}
+    const val=document.getElementById('timer-val'); if(!val){clearInterval(timerInterval);return;}
     const remainSec=Math.max(0,(Number(inProgress.mins)*60)-Math.floor((new Date()-new Date(inProgress.started_at))/1000));
     val.textContent=Math.floor(remainSec/60).toString().padStart(2,'0')+':'+(remainSec%60).toString().padStart(2,'0');
   },1000);
