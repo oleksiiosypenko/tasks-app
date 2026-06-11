@@ -59,6 +59,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task.q4{border-left-color:var(--q4);opacity:.6}
 .task.done-task{opacity:.4}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
+/* Стиль для просроченных задач */
+.task.missed-task{border-left-color:var(--danger); background:linear-gradient(90deg, #3a1515 0%, var(--bg2) 20%); opacity: 0.7}
+.task.missed-task .task-title{color:#ff827a}
+
 .check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,0.05);color:transparent}
 .check.on{background:var(--success);border-color:var(--success);color:#fff}
 .task-body{flex:1;min-width:0;cursor:pointer}
@@ -71,13 +75,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .b-q2{background:var(--q2bg);color:var(--q2t)}
 .b-q3{background:var(--q3bg);color:var(--q3t)}
 .b-q4{background:var(--q4bg);color:var(--q4t)}
+.b-missed{background:#5a1818;color:#ff827a}
 .task-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .tmeta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;font-weight:500}
 .task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;display:flex;align-items:center;justify-content:center;transition:color .15s}
 .task-del:active{color:var(--danger)}
 .empty{text-align:center;padding:50px 20px;color:var(--text2);font-size:15px}
 
-/* Навечно зафиксированный Канбан */
 .kanban-wrap{padding:0 16px; display:flex; flex-direction:column; gap:16px}
 .k-col{background:rgba(255,255,255,0.02); padding:14px; border-radius:var(--radius); border:1px solid var(--border)}
 .k-col-head{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--border);color:var(--text2);display:flex;align-items:center;gap:6px}
@@ -99,11 +103,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .timer-fill{background:var(--accent);height:100%;border-radius:4px;width:0%}
 .empty-kanban{text-align:center;padding:20px;color:var(--text2);font-size:14px}
 
-/* Идеальный Дайджест */
 .digest-wrap{padding:0 16px}
 .digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
 
-/* Нижнее меню навигации */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 10px rgba(0,0,0,0.3)}
 .nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:700;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em;gap:4px}
 .nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
@@ -328,7 +330,7 @@ async function apiFetch(method,data){
 function autoSelectCat() {
   const originalCat = filter.cat;
   filter.cat = 'all';
-  const activeTasks = getFiltered().filter(t => !t.done);
+  const activeTasks = getFiltered().filter(t => !t.done && t.status !== 'missed');
   if(activeTasks.length > 0) {
     const hasBiz = activeTasks.some(t => t.cat === 'business');
     const hasPers = activeTasks.some(t => t.cat === 'personal');
@@ -385,14 +387,19 @@ function getFiltered(){
   if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
   
   if(filter.tile) {
-    if(filter.tile==='today') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
-    if(filter.tile==='important') t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
-    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
-    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
+    if(filter.tile==='today') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    if(filter.tile==='important') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
+    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
+    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
   } else {
-    if(filter.date==='today') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    if(filter.date==='today') {
+      t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    }
+    // "Все даты" показывает и выполненные, и просроченные (missed) задачи
   }
   t.sort((a,b)=> {
+    if(a.status==='missed' && b.status!=='missed') return 1;
+    if(a.status!=='missed' && b.status==='missed') return -1;
     if(a.done && !b.done) return 1;
     if(!a.done && b.done) return -1;
     return Number(a.quadrant)-Number(b.quadrant);
@@ -404,9 +411,9 @@ function renderTiles(){
   const td=todayStr(), tm=tomorrowStr();
   let baseTasks = [...tasks];
   if(filter.cat!=='all') baseTasks = baseTasks.filter(x=>x.cat===filter.cat);
-  const todayAll=baseTasks.filter(t=>!t.done && t.quadrant!==4 && (!t.deadline || t.deadline>=td));
+  const todayAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline>=td));
   const todayImp=todayAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
-  const tmAll=baseTasks.filter(t=>!t.done && t.quadrant!==4 && (!t.deadline || t.deadline>=tm));
+  const tmAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline>=tm));
   const tmImp=tmAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
 
   const tiles=[
@@ -430,7 +437,7 @@ function renderProgress(){
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
 
-  const filteredTotalMins = list.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0), 0);
+  const filteredTotalMins = list.filter(t=>!t.done && t.status!=='missed').reduce((s,t)=>s+(Number(t.mins)||0), 0);
   document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
 }
 
@@ -439,13 +446,16 @@ function renderTasks(){
   const el=document.getElementById('task-list');
   if(!list.length){el.innerHTML='<div class="empty">Задач нет</div>';return;}
 
-  const groups={1:[],2:[],3:[],4:[]};
-  list.forEach(t=>{ const q=Number(t.quadrant)||1; (groups[q]=groups[q]||[]).push(t); });
-  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет (Беклог)'];
-  const qDotColors=['','#ff453a','#5e5ce6','#ff9f0a','#636366'];
+  const groups={1:[],2:[],3:[],4:[], 5:[]}; // 5 — для просроченных (missed) задачи
+  list.forEach(t=>{ 
+    if(t.status === 'missed') { groups[5].push(t); }
+    else { const q=Number(t.quadrant)||1; (groups[q]=groups[q]||[]).push(t); }
+  });
+  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет (Беклог)', '🚨 Просроченные задачи (Архив)'];
+  const qDotColors=['','#ff453a','#5e5ce6','#ff9f0a','#636366', '#ff453a'];
   let html='';
 
-  [1,2,3,4].forEach(q=>{
+  [1,2,3,4,5].forEach(q=>{
     if(!groups[q]||!groups[q].length) return;
     html+=`<div class="q-label"><span class="q-dot" style="background:${qDotColors[q]}"></span>${qNames[q]}</div>`;
     html+=groups[q].map(t=>{
@@ -456,17 +466,18 @@ function renderTasks(){
       const fDate = fmtDate(t.deadline);
       const isRec = t.recurrence && t.recurrence !== 'none';
       const recIcon = isRec ? ' 🔁' : '';
+      const isMissed = t.status === 'missed';
 
-      return `<div class="task q${q}${t.done?' done-task':''}">
-        <div class="check${t.done?' on':''}" onclick="toggleDone(${t.id})">✔</div>
+      return `<div class="task ${isMissed ? 'missed-task' : 'q'+q}${t.done?' done-task':''}">
+        <div class="check${t.done?' on':''}" onclick="${isMissed ? '' : `toggleDone(${t.id})`}">${isMissed ? '❌' : '✔'}</div>
         <div class="task-body" onclick="openEditModal(${t.id})">
           <div class="task-title"><span>${t.title}${recIcon}</span></div>
           <div class="badges">
             <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
-            <span class="badge b-q${q}">${Q_LABELS[q]}</span>
+            ${isMissed ? '<span class="badge b-missed">Просрочено</span>' : `<span class="badge b-q${q}">${Q_LABELS[q]}</span>`}
           </div>
           <div class="task-meta">
-            ${t.mins?`<span class="tmeta">⏱ Осталось: ${fmtMins(t.mins)}</span>`:''}
+            ${t.mins && !isMissed?`<span class="tmeta">⏱ Осталось: ${fmtMins(t.mins)}</span>`:''}
             ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 Набрано: ${fmtMins(t.worked_mins)}</span>`:''}
             ${specLabel?`<span class="tmeta" style="color:var(--warning)">${specLabel}</span>`:''}
             ${fDate && !t.day_from?`<span class="tmeta">📅 До: ${fDate}</span>`:''}
