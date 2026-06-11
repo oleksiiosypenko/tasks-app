@@ -430,14 +430,25 @@ function renderTiles(){
 }
 
 function renderProgress(){
-  const list=getFiltered();
-  const total=list.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
-  const done=list.reduce((s,t)=>s+(Number(t.worked_mins)||0),0);
-  const pct=total?Math.round(done/total*100):0;
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
+  const list = getFiltered();
+  
+  // Считаем только активные и выполненные задачи (исключаем просроченный архив из прогресса дня)
+  const activeAndDone = list.filter(t => t.status !== 'missed');
+  
+  // Общий изначальный объем времени = сколько осталось сделать + сколько уже набрано минут
+  const total = activeAndDone.reduce((s, t) => s + (Number(t.mins) || 0) + (Number(t.worked_mins) || 0), 0);
+  
+  // Сколько минут реально набрано (и в готовых, и в паузах)
+  const done = activeAndDone.reduce((s, t) => s + (Number(t.worked_mins) || 0), 0);
+  
+  const pct = total ? Math.min(100, Math.round((done / total) * 100)) : 0;
+  
+  // Обновляем визуальный прогресс-бар
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('prog-label').textContent = fmtMins(done) + ' / ' + fmtMins(total) + ' (' + pct + '%)';
 
-  const filteredTotalMins = list.filter(t=>!t.done && t.status!=='missed').reduce((s,t)=>s+(Number(t.mins)||0), 0);
+  // Сколько минут ЧИСТО осталось доработать (выводится в нижнюю строчку)
+  const filteredTotalMins = activeAndDone.filter(t => !t.done).reduce((s, t) => s + (Number(t.mins) || 0), 0);
   document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
 }
 
