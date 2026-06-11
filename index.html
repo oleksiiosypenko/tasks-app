@@ -239,20 +239,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         </select>
       </div>
       <div class="form-group">
-        <label>Повторяемость</label>
+        <label>Повторяемость / Режим</label>
         <select id="f-recurrence">
           <option value="none">1 раз</option>
           <option value="daily">Каждый день</option>
-          <option value="weekdays">По будням</option>
-          <option value="weekends">По выходным</option>
+          <option value="weekdays">По будням (Весь день)</option>
+          <option value="workdays_16_19">По будням (16:00 - 19:00) 🕒</option>
+          <option value="monthly_1_10">1-10 число каждого месяца 📅</option>
           <option value="weekly">Раз в неделю</option>
-          <option value="monthly">Раз в месяц</option>
+          <option value="monthly">Раз в месяц (Обычный)</option>
         </select>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Дедлайн (До какого числа успеть)</label>
+        <label>Дедлайн</label>
         <input type="date" id="f-deadline"/>
       </div>
       <div class="form-group">
@@ -286,7 +287,11 @@ let timerInterval = null;
 let currentPage = 'tasks';
 
 const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
-const REC_LABELS = {none:'1 раз',daily:'Каждый день',weekdays:'По будням',weekends:'По выходным',weekly:'Раз в неделю',monthly:'Раз в месяц'};
+const REC_LABELS = {
+  none:'1 раз', daily:'Каждый день', weekdays:'По будням', 
+  workdays_16_19:'Будни 16:00-19:00', monthly_1_10:'1-10 число месяца', 
+  weekly:'Раз в неделю', monthly:'Раз в месяц'
+};
 
 function showToast(msg){
   const t=document.getElementById('toast');
@@ -346,9 +351,7 @@ async function loadTasks(){
   if(currentPage==='kanban') renderKanban();
 }
 
-function todayStr(){
-  return new Date().toISOString().split('T')[0];
-}
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
 function tomorrowStr(){
   const d=new Date();d.setDate(d.getDate()+1);
   return d.toISOString().split('T')[0];
@@ -460,7 +463,8 @@ function renderTasks(){
           <div class="task-meta">
             ${t.mins?`<span class="tmeta"><i class="ti ti-clock"></i>Осталось: ${fmtMins(t.mins)}</span>`:''}
             ${t.worked_mins?`<span class="tmeta" style="color:var(--success)"><i class="ti ti-chart-bar"></i>Набрано: ${fmtMins(t.worked_mins)}</span>`:''}
-            ${t.deadline?`<span class="tmeta"><i class="ti ti-calendar"></i>Дедлайн: ${fmtDate(t.deadline)}</span>`:''}
+            ${t.recurrence&&t.recurrence!=='none'?`<span class="tmeta" style="color:var(--accent)"><i class="ti ti-repeat"></i>Режим: ${REC_LABELS[t.recurrence]}</span>`:''}
+            ${t.deadline?`<span class="tmeta"><i class="ti ti-calendar"></i>До: ${fmtDate(t.deadline)}</span>`:''}
           </div>
         </div>
         <button class="task-del" onclick="delTask(${t.id})"><i class="ti ti-trash"></i></button>
@@ -588,7 +592,6 @@ async function saveTask(){
   }
 }
 
-// КАНБАН С УЧЕТОМ НАБРАННОГО ВРЕМЕНИ И СБРОСОМ
 function renderKanban(){
   let activeTasks = tasks.filter(t=>!t.done && t.status!=='missed');
   if(filter.cat !== 'all') activeTasks = activeTasks.filter(t => t.cat === filter.cat);
@@ -681,8 +684,7 @@ function startTimerTick(){
 
 function getElapsedMinutes(task) {
   if(!task || !task.started_at) return 0;
-  const elapsedMs = new Date() - new Date(task.started_at);
-  return Math.floor(elapsedMs / 1000 / 60); 
+  return Math.floor((new Date() - new Date(task.started_at)) / 1000 / 60); 
 }
 
 async function kanbanStart(id){
@@ -696,25 +698,20 @@ async function kanbanStart(id){
   await apiFetch('POST',{action:'startTask',id});
 }
 
-// ПАУЗА: Считает сколько минут прошло и вычитает их из задачи
 async function kanbanPause(id){
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
-  
   const diffMins = getElapsedMinutes(t);
-  
   t.status='new';
   t.worked_mins = (Number(t.worked_mins)||0) + diffMins;
   t.mins = Math.max(0, Number(t.mins) - diffMins);
   t.started_at='';
-  
   if(timerInterval) {clearInterval(timerInterval); timerInterval=null;}
   renderKanban(); render();
   await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
-  showToast('Время сохранено на паузу ⏸');
+  showToast('Время сохранено ⏸');
 }
 
-// ОТМЕНА / ВЕРНУТЬ: Просто останавливает таймер без изменения минут задачи
 async function kanbanCancel(id) {
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
@@ -728,12 +725,10 @@ async function kanbanCancel(id) {
 async function kanbanDone(id){
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
-  
   const diffMins = getElapsedMinutes(t);
   t.done=true; t.status='done';
   t.worked_mins = (Number(t.worked_mins)||0) + diffMins;
   t.started_at='';
-  
   if(timerInterval) {clearInterval(timerInterval); timerInterval=null;}
   renderKanban(); render();
   await apiFetch('POST',{action:'doneTask', id, workedMins: diffMins});
@@ -746,27 +741,22 @@ function buildDigest(){
   const q1=active.filter(t=>Number(t.quadrant)===1);
   const q2=active.filter(t=>Number(t.quadrant)===2);
   const q3=active.filter(t=>Number(t.quadrant)===3);
-  const burning=active.filter(t=>Number(t.postpone_count)>=3);
   
   const list = getFiltered();
   const total=list.reduce((s,t)=>s+(Number(t.mins)||0),0);
   const doneMins=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
   
-  const dateStr=new Date().toLocaleDateString('ru',{weekday:'long',day:'numeric',month:'long'});
-  let lines=['📋 Утренний дайджест',dateStr,'─────────────────────',''];
-  if(burning.length){lines.push(`🔥 Горящие (${burning.length}):`);burning.forEach(t=>lines.push(`  • ${t.title} (${t.postpone_count}х)`));lines.push('');}
-  if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
+  let lines=['📋 Утренний дайджест','─────────────────────',''];
+  if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
   if(q3.length){lines.push(`🟡 Срочное, не важное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
-  if(q2.length){lines.push(`🔵 Важное, не срочное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
+  if(q2.length){lines.push(`🔵 Важное, не срочное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
   lines.push('─────────────────────');
   lines.push(`Задач в текущем списке: ${list.length}`);
-  if(total) lines.push(`Прогресс по фильтру: ${fmtMins(doneMins)} / ${fmtMins(total)}`);
   document.getElementById('digest-text').textContent=lines.join('\n');
 }
 
 function copyDigest(){
-  navigator.clipboard.writeText(document.getElementById('digest-text').textContent)
-    .then(()=>showToast('Скопировано!'));
+  navigator.clipboard.writeText(document.getElementById('digest-text').textContent).then(()=>showToast('Скопировано!'));
 }
 
 function showPage(p){
