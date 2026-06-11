@@ -59,7 +59,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task.q4{border-left-color:var(--q4);opacity:.6}
 .task.done-task{opacity:.4}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
-/* Стиль для просроченных задач */
 .task.missed-task{border-left-color:var(--danger); background:linear-gradient(90deg, #3a1515 0%, var(--bg2) 20%); opacity: 0.7}
 .task.missed-task .task-title{color:#ff827a}
 
@@ -315,6 +314,17 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2500);
 }
 
+// ОЧИСТИТЕЛЬ ВРЕМЕНИ: убирает "1899-12-30T..." и оставляет только чистые часы:минуты
+function extractTime(val) {
+  if (!val) return '';
+  const s = String(val);
+  const match = s.match(/T(\d{2}:\d{2})/);
+  if (match) return match[1];
+  const match2 = s.match(/^(\d{2}:\d{2})/);
+  if (match2) return match2[1];
+  return s;
+}
+
 async function apiFetch(method,data){
   try{
     if(method==='GET'){
@@ -381,22 +391,23 @@ function fmtDate(dl){
   } catch(e) { return ''; }
 }
 
+// ИСПРАВЛЕННЫЙ ФИЛЬТР: "Сегодня" показывает <= сегодня, "Завтра+" показывает >= завтра
 function getFiltered(){
   let t=[...tasks];
   const td=todayStr(), tm=tomorrowStr();
   if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
   
   if(filter.tile) {
-    if(filter.tile==='today') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
-    if(filter.tile==='important') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
-    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
-    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
+    if(filter.tile==='today') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline<=td));
+    if(filter.tile==='important') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline<=td));
+    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (x.deadline && x.deadline>=tm));
+    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (x.deadline && x.deadline>=tm));
   } else {
     if(filter.date==='today') {
-      t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+      t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline<=td));
     }
-    // "Все даты" показывает и выполненные, и просроченные (missed) задачи
   }
+  
   t.sort((a,b)=> {
     if(a.status==='missed' && b.status!=='missed') return 1;
     if(a.status!=='missed' && b.status==='missed') return -1;
@@ -411,9 +422,10 @@ function renderTiles(){
   const td=todayStr(), tm=tomorrowStr();
   let baseTasks = [...tasks];
   if(filter.cat!=='all') baseTasks = baseTasks.filter(x=>x.cat===filter.cat);
-  const todayAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline>=td));
+  
+  const todayAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline<=td));
   const todayImp=todayAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
-  const tmAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline>=tm));
+  const tmAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (t.deadline && t.deadline>=tm));
   const tmImp=tmAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
 
   const tiles=[
@@ -431,23 +443,14 @@ function renderTiles(){
 
 function renderProgress(){
   const list = getFiltered();
-  
-  // Считаем только активные и выполненные задачи (исключаем просроченный архив из прогресса дня)
   const activeAndDone = list.filter(t => t.status !== 'missed');
-  
-  // Общий изначальный объем времени = сколько осталось сделать + сколько уже набрано минут
   const total = activeAndDone.reduce((s, t) => s + (Number(t.mins) || 0) + (Number(t.worked_mins) || 0), 0);
-  
-  // Сколько минут реально набрано (и в готовых, и в паузах)
   const done = activeAndDone.reduce((s, t) => s + (Number(t.worked_mins) || 0), 0);
-  
   const pct = total ? Math.min(100, Math.round((done / total) * 100)) : 0;
   
-  // Обновляем визуальный прогресс-бар
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-label').textContent = fmtMins(done) + ' / ' + fmtMins(total) + ' (' + pct + '%)';
 
-  // Сколько минут ЧИСТО осталось доработать (выводится в нижнюю строчку)
   const filteredTotalMins = activeAndDone.filter(t => !t.done).reduce((s, t) => s + (Number(t.mins) || 0), 0);
   document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
 }
@@ -457,7 +460,7 @@ function renderTasks(){
   const el=document.getElementById('task-list');
   if(!list.length){el.innerHTML='<div class="empty">Задач нет</div>';return;}
 
-  const groups={1:[],2:[],3:[],4:[], 5:[]}; // 5 — для просроченных (missed) задачи
+  const groups={1:[],2:[],3:[],4:[], 5:[]};
   list.forEach(t=>{ 
     if(t.status === 'missed') { groups[5].push(t); }
     else { const q=Number(t.quadrant)||1; (groups[q]=groups[q]||[]).push(t); }
@@ -472,7 +475,10 @@ function renderTasks(){
     html+=groups[q].map(t=>{
       let specLabel = '';
       if(t.day_from && t.day_to) specLabel += ` 📅 Дни: ${t.day_from}-${t.day_to}`;
-      if(t.time_from && t.time_to) specLabel += ` 🕒 Окно: ${t.time_from}-${t.time_to}`;
+      
+      let tFrom = extractTime(t.time_from);
+      let tTo = extractTime(t.time_to);
+      if(tFrom && tTo) specLabel += ` 🕒 Окно: ${tFrom}-${tTo}`;
 
       const fDate = fmtDate(t.deadline);
       const isRec = t.recurrence && t.recurrence !== 'none';
@@ -548,10 +554,16 @@ function openModal(){
 function openEditModal(id){
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
   document.getElementById('modal-title').textContent = 'Редактировать задачу';
-  document.getElementById('f-id').value = t.id; document.getElementById('f-title').value = t.title;
-  document.getElementById('f-mins').value = t.mins || ''; document.getElementById('f-recurrence').value = t.recurrence || 'none';
-  document.getElementById('f-day-from').value = t.day_from || ''; document.getElementById('f-day-to').value = t.day_to || '';
-  document.getElementById('f-time-from').value = t.time_from || ''; document.getElementById('f-time-to').value = t.time_to || '';
+  document.getElementById('f-id').value = t.id; 
+  document.getElementById('f-title').value = t.title;
+  document.getElementById('f-mins').value = t.mins || ''; 
+  document.getElementById('f-recurrence').value = t.recurrence || 'none';
+  document.getElementById('f-day-from').value = t.day_from || ''; 
+  document.getElementById('f-day-to').value = t.day_to || '';
+  
+  // Применяем очиститель времени, чтобы поля не ломались
+  document.getElementById('f-time-from').value = extractTime(t.time_from); 
+  document.getElementById('f-time-to').value = extractTime(t.time_to);
   
   if (t.deadline && !String(t.deadline).includes("Invalid")) {
     try { document.getElementById('f-deadline').value = new Date(t.deadline).toISOString().split('T')[0]; } 
@@ -705,28 +717,17 @@ async function kanbanStart(id){
 async function kanbanPause(id){
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
   const diffMins = getElapsedMinutes(t);
-  
-  t.status='new'; 
-  t.worked_mins=(t.worked_mins||0)+diffMins; // Фиксируем набранное время в статистику
-  t.mins=Math.max(0,t.mins-diffMins);          // Уменьшаем оставшееся время задачи
-  t.started_at='';
-  
+  t.status='new'; t.worked_mins=(t.worked_mins||0)+diffMins; t.mins=Math.max(0,t.mins-diffMins); t.started_at='';
   clearInterval(timerInterval); renderKanban(); render();
   await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
   showToast('Задача поставлена на паузу ⏸');
 }
-
 async function kanbanCancel(id) {
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  
-  t.status='new'; 
-  t.started_at=''; // Просто стираем время запуска текущей сессии, ничего не сохраняя
-  
-  clearInterval(timerInterval); renderKanban(); render();
+  t.status='new'; t.started_at=''; clearInterval(timerInterval); renderKanban(); render();
   await apiFetch('POST',{action:'updateTask', id, fields: {status: 'new', started_at: ''}});
-  showToast('Задача возвращена без сохранения времени ↩');
+  showToast('Возвращено без сохранения ↩');
 }
-
 async function kanbanDone(id){
   const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
   const diffMins = getElapsedMinutes(t);
