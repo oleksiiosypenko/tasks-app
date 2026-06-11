@@ -568,7 +568,9 @@ function openModal(){
 }
 
 function openEditModal(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const t = tasks.find(x => String(x.id) === String(id)); 
+  if(!t) return;
+  
   document.getElementById('modal-title').textContent = 'Редактировать задачу';
   document.getElementById('f-id').value = t.id; 
   document.getElementById('f-title').value = t.title;
@@ -577,44 +579,37 @@ function openEditModal(id){
   document.getElementById('f-day-from').value = t.day_from || ''; 
   document.getElementById('f-day-to').value = t.day_to || '';
   
-  document.getElementById('f-time-from').value = extractTime(t.time_from); 
-  document.getElementById('f-time-to').value = extractTime(t.time_to);
+  // Прямое взятие значений без "очистителей", которые могли портить формат
+  document.getElementById('f-time-from').value = t.time_from || ''; 
+  document.getElementById('f-time-to').value = t.time_to || '';
   
-  if (t.deadline && !String(t.deadline).includes("Invalid")) {
-    try { document.getElementById('f-deadline').value = new Date(t.deadline).toISOString().split('T')[0]; } 
-    catch(e) { document.getElementById('f-deadline').value = todayStr(); }
-  } else {
-    document.getElementById('f-deadline').value = todayStr();
-  }
+  // ЕСЛИ дедлайна нет — оставляем поле пустым, а не ставим todayStr()
+  document.getElementById('f-deadline').value = t.deadline ? t.deadline : '';
   
   document.getElementById('f-cat').value = t.cat || 'business';
-  selectQ(Number(t.quadrant)||1); document.getElementById('modal').style.display='flex';
+  selectQ(Number(t.quadrant) || 1); 
+  document.getElementById('modal').style.display = 'flex';
 }
-function closeModal(){document.getElementById('modal').style.display='none';}
-function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
 
 async function saveTask(){
-  const title=document.getElementById('f-title').value.trim(); 
-  if(!title){showToast('Введите название');return;}
+  const title = document.getElementById('f-title').value.trim(); 
+  if(!title){ showToast('Введите название'); return; }
   
   const id = document.getElementById('f-id').value;
-  const btn=document.getElementById('save-btn'); 
-  btn.disabled=true; 
-  btn.textContent='Сохранение...';
+  const btn = document.getElementById('save-btn'); 
+  btn.disabled = true; 
+  btn.textContent = 'Сохранение...';
   
-  // Собираем данные
-  const deadlineVal = document.getElementById('f-deadline').value;
-  
+  // Собираем данные как есть, без доп. модификаций
   const taskData = {
     title, 
     cat: document.getElementById('f-cat').value, 
     quadrant: selectedQ,
     mins: parseInt(document.getElementById('f-mins').value) || 0, 
-    // Если поле пустое, отправляем пустую строку - это значит "нет дедлайна"
-    deadline: deadlineVal || '', 
+    deadline: document.getElementById('f-deadline').value || '', 
     recurrence: document.getElementById('f-recurrence').value,
-    day_from: document.getElementById('f-day-from').value ? parseInt(document.getElementById('f-day-from').value) : '',
-    day_to: document.getElementById('f-day-to').value ? parseInt(document.getElementById('f-day-to').value) : '',
+    day_from: document.getElementById('f-day-from').value || '',
+    day_to: document.getElementById('f-day-to').value || '',
     time_from: document.getElementById('f-time-from').value || '',
     time_to: document.getElementById('f-time-to').value || ''
   };
@@ -622,21 +617,20 @@ async function saveTask(){
   if(id) {
     const t = tasks.find(x => String(x.id) === String(id)); 
     if(t) Object.assign(t, taskData);
-    
-    await apiFetch('POST', {action:'updateTask', id, fields: taskData});
+    await apiFetch('POST', {action: 'updateTask', id, fields: taskData});
     showToast('Сохранено 🔄');
   } else {
-    const newTask = { id:nextId++, ...taskData, done:false, status:'new', started_at:'', notified:false, postpone_count:0, worked_mins:0 };
+    const newTask = { id: nextId++, ...taskData, done: false, status: 'new', started_at: '', notified: false, postpone_count: 0, worked_mins: 0 };
     tasks.push(newTask);
-    await apiFetch('POST', {action:'addTask', task: newTask});
+    await apiFetch('POST', {action: 'addTask', task: newTask});
     showToast('Добавлено ✅');
   }
   
   render(); 
-  if(currentPage==='kanban') renderKanban(); 
+  if(currentPage === 'kanban') renderKanban(); 
   closeModal(); 
-  btn.disabled=false;
-  btn.textContent='Сохранить задачу';
+  btn.disabled = false;
+  btn.textContent = 'Сохранить задачу';
 }
 
 function renderKanban(){
