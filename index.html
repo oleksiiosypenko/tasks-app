@@ -117,6 +117,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .kbtn-start{background:var(--q2bg);color:var(--q2t)}
 .kbtn-done{background:#0d3d2e;color:var(--success)}
 .kbtn-pause{background:var(--q3bg);color:var(--q3t)}
+.kbtn-cancel{background:#444;color:var(--text2)}
 .timer-card{background:var(--q2bg);border-radius:var(--radius);padding:12px;margin-bottom:8px;border:1px solid #3a3a6a}
 .timer-name{font-size:12px;color:var(--q2t);margin-bottom:3px;font-weight:500}
 .timer-val{font-size:26px;font-weight:600;font-family:monospace;color:var(--text)}
@@ -174,7 +175,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-kanban" style="display:none">
-  <div class="topbar"><h1>Канбан</h1></div>
+  <div class="topbar">
+    <h1>Канбан</h1>
+    <button class="icon-btn" onclick="loadTasks()"><i class="ti ti-refresh"></i></button>
+  </div>
+  <div class="filters" style="padding-bottom: 12px;">
+    <div class="seg" id="seg-cat-kanban">
+      <button class="on" onclick="setFilter('cat','all')">Все</button>
+      <button onclick="setFilter('cat','business')">Бизнес</button>
+      <button onclick="setFilter('cat','personal')">Личное</button>
+    </div>
+  </div>
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
@@ -295,10 +306,9 @@ async function apiFetch(method,data){
   }catch(e){showToast('Ошибка соединения');return null;}
 }
 
-// Авто-переключение категории (Все/Бизнес/Личное) в зависимости от наличия активных задач
 function autoSelectCat() {
   const originalCat = filter.cat;
-  filter.cat = 'all'; // Временно сбрасываем, чтобы увидеть все доступные задачи по дате
+  filter.cat = 'all';
   const activeTasks = getFiltered().filter(t => !t.done);
   
   if(activeTasks.length > 0) {
@@ -309,12 +319,17 @@ function autoSelectCat() {
     else if(hasBiz) filter.cat = 'business';
     else if(hasPers) filter.cat = 'personal';
   } else {
-    filter.cat = originalCat; // Возвращаем как было, если пусто
+    filter.cat = originalCat;
   }
-  
-  // Обновляем визуал кнопок категорий
+  syncCatButtons();
+}
+
+function syncCatButtons() {
   const valsCat = ['all','business','personal'];
   document.querySelectorAll('#seg-cat button').forEach((b,i)=>{
+    b.classList.toggle('on', valsCat[i] === filter.cat);
+  });
+  document.querySelectorAll('#seg-cat-kanban button').forEach((b,i)=>{
     b.classList.toggle('on', valsCat[i] === filter.cat);
   });
 }
@@ -326,7 +341,7 @@ async function loadTasks(){
     tasks=data;
     nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;
   }
-  autoSelectCat(); // Выставляем правильную вкладку при старте
+  autoSelectCat();
   render();
   if(currentPage==='kanban') renderKanban();
 }
@@ -349,32 +364,19 @@ function fmtDate(dl){
   return d.toLocaleDateString('ru',{day:'numeric',month:'short'});
 }
 
-// Главная фильтрация
 function getFiltered(){
   let t=[...tasks];
   const td=todayStr(), tm=tomorrowStr();
   
-  // 1. Категория
   if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
   
-  // 2. Дата / Плитка (AND логика)
   if(filter.tile) {
-    if(filter.tile==='today') {
-      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
-    }
-    if(filter.tile==='important') {
-      t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
-    }
-    if(filter.tile==='tomorrow') {
-      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
-    }
-    if(filter.tile==='imp_tomorrow') {
-      t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
-    }
+    if(filter.tile==='today') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    if(filter.tile==='important') t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
+    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
+    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
   } else {
-    if(filter.date==='today') {
-      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
-    }
+    if(filter.date==='today') t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
   }
 
   t.sort((a,b)=>{
@@ -388,7 +390,6 @@ function getFiltered(){
 function renderTiles(){
   const td=todayStr(), tm=tomorrowStr();
   let baseTasks = [...tasks];
-  
   if(filter.cat!=='all') baseTasks = baseTasks.filter(x=>x.cat===filter.cat);
 
   const todayAll=baseTasks.filter(t=>!t.done && t.quadrant!==4 && (!t.deadline || t.deadline>=td));
@@ -412,14 +413,13 @@ function renderTiles(){
 
 function renderProgress(){
   const list=getFiltered();
-  const total=list.reduce((s,t)=>s+(Number(t.mins)||0),0);
-  const done=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const total=list.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
+  const done=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.worked_mins)||0),0) + list.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.worked_mins)||0),0);
   const pct=total?Math.round(done/total*100):0;
   
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
 
-  // Динамический счетчик невыполненных задач ТЕКУЩЕГО ФИЛЬТРА
   const activeFilteredTasks = list.filter(t => !t.done);
   const filteredTotalMins = activeFilteredTasks.reduce((s,t)=>s+(Number(t.mins)||0), 0);
   document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
@@ -458,9 +458,9 @@ function renderTasks(){
             ${inprog?'<span class="badge b-inprogress"><i class="ti ti-player-play" style="font-size:10px"></i> В работе</span>':''}
           </div>
           <div class="task-meta">
-            ${t.mins?`<span class="tmeta"><i class="ti ti-clock"></i>${fmtMins(t.mins)}</span>`:''}
+            ${t.mins?`<span class="tmeta"><i class="ti ti-clock"></i>Осталось: ${fmtMins(t.mins)}</span>`:''}
+            ${t.worked_mins?`<span class="tmeta" style="color:var(--success)"><i class="ti ti-chart-bar"></i>Набрано: ${fmtMins(t.worked_mins)}</span>`:''}
             ${t.deadline?`<span class="tmeta"><i class="ti ti-calendar"></i>Дедлайн: ${fmtDate(t.deadline)}</span>`:''}
-            ${t.recurrence&&t.recurrence!=='none'?`<span class="tmeta">${REC_LABELS[t.recurrence]}</span>`:''}
           </div>
         </div>
         <button class="task-del" onclick="delTask(${t.id})"><i class="ti ti-trash"></i></button>
@@ -474,18 +474,10 @@ function render(){renderTiles();renderProgress();renderTasks();}
 
 function setFilter(k,v){
   filter[k]=v;
-  const vals={cat:['all','business','personal'],date:['today','all']};
-  
   if(k === 'date') filter.tile = null; 
-  
-  document.querySelectorAll('#seg-cat button').forEach((b,i)=>{
-    b.classList.toggle('on',vals.cat[i]===filter.cat);
-  });
-  document.querySelectorAll('#seg-date button').forEach((b,i)=>{
-    b.classList.toggle('on',vals.date[i]===filter.date);
-  });
-  
+  syncCatButtons();
   render();
+  if(currentPage==='kanban') renderKanban();
 }
 
 function setTileFilter(key){
@@ -496,7 +488,7 @@ function setTileFilter(key){
     filter.date = 'today';
     document.querySelectorAll('#seg-date button').forEach((b,i)=>b.classList.toggle('on',i===0));
   }
-  autoSelectCat(); // Автоматически подбираем категорию под плитку
+  autoSelectCat();
   render();
 }
 
@@ -506,16 +498,16 @@ async function toggleDone(id){
   t.done=!t.done;
   t.status=t.done?'done':'new';
   render();
-  await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status}});
-  if(t.done) showToast('Выполнено! ✅');
+  if(currentPage==='kanban') renderKanban();
+  await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status}, workedMins: 0});
 }
 
 async function delTask(id){
   if(!confirm('Удалить задачу?')) return;
   tasks=tasks.filter(x=>String(x.id)!==String(id));
   render();
+  if(currentPage==='kanban') renderKanban();
   await apiFetch('POST',{action:'deleteTask',id});
-  showToast('Удалено');
 }
 
 function selectQ(q){
@@ -579,28 +571,33 @@ async function saveTask(){
   if(id) {
     const t=tasks.find(x=>String(x.id)===String(id));
     if(t) Object.assign(t, taskData);
-    render(); closeModal();
+    render(); if(currentPage==='kanban') renderKanban(); closeModal();
     btn.disabled=false;
     await apiFetch('POST', {action:'updateTask', id, fields: taskData});
     showToast('Задача обновлена 🔄');
   } else {
     const newTask = {
       id:nextId++, ...taskData,
-      done:false, status:'new', started_at:'', notified:false, postpone_count:0
+      done:false, status:'new', started_at:'', notified:false, postpone_count:0, worked_mins:0
     };
     tasks.push(newTask);
-    render(); closeModal();
+    render(); if(currentPage==='kanban') renderKanban(); closeModal();
     btn.disabled=false;
     const res=await apiFetch('POST',{action:'addTask', task: newTask});
     showToast(res?.ok?'Задача добавлена ✅':'Ошибка сохранения');
   }
 }
 
-// KANBAN
+// КАНБАН С УЧЕТОМ НАБРАННОГО ВРЕМЕНИ И СБРОСОМ
 function renderKanban(){
-  const activeTasks=tasks.filter(t=>!t.done&&t.status!=='missed');
-  const newTasks=activeTasks.filter(t=>t.status==='new'||!t.status);
-  const inProgress=activeTasks.find(t=>t.status==='inprogress');
+  let activeTasks = tasks.filter(t=>!t.done && t.status!=='missed');
+  if(filter.cat !== 'all') activeTasks = activeTasks.filter(t => t.cat === filter.cat);
+  
+  const newTasks = activeTasks.filter(t=>t.status==='new' || !t.status);
+  const inProgress = activeTasks.find(t=>t.status==='inprogress');
+
+  const priorityOrder = { 1: 1, 3: 2, 2: 3, 4: 4 };
+  newTasks.sort((a, b) => priorityOrder[Number(a.quadrant)||1] - priorityOrder[Number(b.quadrant)||1]);
 
   let html='';
   html+='<div class="k-col">';
@@ -609,10 +606,11 @@ function renderKanban(){
     html+=renderTimerCard(inProgress);
     html+=`<div class="ktask-actions" style="margin-bottom:8px">
       <button class="kbtn kbtn-done" onclick="kanbanDone(${inProgress.id})"><i class="ti ti-check"></i> Готово</button>
-      <button class="kbtn kbtn-pause" onclick="kanbanPause(${inProgress.id})"><i class="ti ti-player-pause"></i> На паузу</button>
+      <button class="kbtn kbtn-pause" onclick="kanbanPause(${inProgress.id})"><i class="ti ti-player-pause"></i> Пауза</button>
+      <button class="kbtn kbtn-cancel" onclick="kanbanCancel(${inProgress.id})"><i class="ti ti-x"></i> Вернуть</button>
     </div>`;
   }else{
-    html+='<div class="empty-kanban">Нет активной задачи<br><small>Возьми задачу из списка ниже</small></div>';
+    html+='<div class="empty-kanban">Нет активной задачи<br><small>Выберите из списка ниже</small></div>';
   }
   html+='</div>';
 
@@ -627,17 +625,17 @@ function renderKanban(){
         <div class="ktask-meta">
           <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
           <span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>
-          ${t.mins?`<span class="tmeta"><i class="ti ti-clock"></i>${fmtMins(t.mins)}</span>`:''}
+          <span class="tmeta"><i class="ti ti-clock"></i>${fmtMins(t.mins)}</span>
         </div>
         <div class="ktask-actions">
           <button class="kbtn kbtn-start" onclick="kanbanStart(${t.id})"${inProgress?' disabled style="opacity:.4"':''}>
-            ${inProgress?'Завершите текущую':'Взять в работу'}
+            В работу
           </button>
         </div>
       </div>`;
     }).join('');
   }else{
-    html+='<div class="empty-kanban">Все задачи выполнены!</div>';
+    html+='<div class="empty-kanban">Нет задач в этой категории</div>';
   }
   html+='</div>';
 
@@ -656,7 +654,7 @@ function renderTimerCard(t){
   return `<div class="timer-card" id="timer-card">
     <div class="timer-name">${t.title}</div>
     <div class="timer-val" id="timer-val">${mm}:${ss}</div>
-    <div class="timer-sub">Осталось ${fmtMins(Math.ceil(remainSec/60))} из ${fmtMins(t.mins)}</div>
+    <div class="timer-sub">Осталось ${fmtMins(Math.ceil(remainSec/60))} (уже набрано: ${fmtMins(t.worked_mins)})</div>
     <div class="timer-prog"><div class="timer-fill" id="timer-fill" style="width:${pct}%"></div></div>
   </div>`;
 }
@@ -681,43 +679,70 @@ function startTimerTick(){
   },1000);
 }
 
+function getElapsedMinutes(task) {
+  if(!task || !task.started_at) return 0;
+  const elapsedMs = new Date() - new Date(task.started_at);
+  return Math.floor(elapsedMs / 1000 / 60); 
+}
+
 async function kanbanStart(id){
   const inProg=tasks.find(t=>t.status==='inprogress');
-  if(inProg&&String(inProg.id)!==String(id)){showToast('Сначала заверши текущую задачу!');return;}
+  if(inProg){showToast('Сначала заверши текущую задачу!');return;}
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
   t.status='inprogress';
   t.started_at=new Date().toISOString();
-  t.notified=false;
   renderKanban();render();
   await apiFetch('POST',{action:'startTask',id});
 }
 
+// ПАУЗА: Считает сколько минут прошло и вычитает их из задачи
 async function kanbanPause(id){
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
-  t.status='new';t.started_at='';t.notified=false;
-  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
-  renderKanban();render();
-  await apiFetch('POST',{action:'pauseTask',id});
-  showToast('Задача на паузе');
+  
+  const diffMins = getElapsedMinutes(t);
+  
+  t.status='new';
+  t.worked_mins = (Number(t.worked_mins)||0) + diffMins;
+  t.mins = Math.max(0, Number(t.mins) - diffMins);
+  t.started_at='';
+  
+  if(timerInterval) {clearInterval(timerInterval); timerInterval=null;}
+  renderKanban(); render();
+  await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
+  showToast('Время сохранено на паузу ⏸');
+}
+
+// ОТМЕНА / ВЕРНУТЬ: Просто останавливает таймер без изменения минут задачи
+async function kanbanCancel(id) {
+  const t=tasks.find(x=>String(x.id)===String(id));
+  if(!t) return;
+  t.status='new'; t.started_at='';
+  if(timerInterval) {clearInterval(timerInterval); timerInterval=null;}
+  renderKanban(); render();
+  await apiFetch('POST',{action:'updateTask', id, fields: {status: 'new', started_at: ''}});
+  showToast('Сброшено');
 }
 
 async function kanbanDone(id){
   const t=tasks.find(x=>String(x.id)===String(id));
   if(!t) return;
-  t.done=true;t.status='done';
-  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
-  renderKanban();render();
-  await apiFetch('POST',{action:'doneTask',id});
-  showToast('Выполнено! 🎉');
+  
+  const diffMins = getElapsedMinutes(t);
+  t.done=true; t.status='done';
+  t.worked_mins = (Number(t.worked_mins)||0) + diffMins;
+  t.started_at='';
+  
+  if(timerInterval) {clearInterval(timerInterval); timerInterval=null;}
+  renderKanban(); render();
+  await apiFetch('POST',{action:'doneTask', id, workedMins: diffMins});
+  showToast('Завершено! 🎉');
 }
 
-// DIGEST
 function buildDigest(){
   const td=todayStr();
   const active=tasks.filter(t=>!t.done && t.status!=='missed' && (!t.deadline || t.deadline>=td));
-  const done=tasks.filter(t=>t.done);
   const q1=active.filter(t=>Number(t.quadrant)===1);
   const q2=active.filter(t=>Number(t.quadrant)===2);
   const q3=active.filter(t=>Number(t.quadrant)===3);
@@ -731,8 +756,8 @@ function buildDigest(){
   let lines=['📋 Утренний дайджест',dateStr,'─────────────────────',''];
   if(burning.length){lines.push(`🔥 Горящие (${burning.length}):`);burning.forEach(t=>lines.push(`  • ${t.title} (${t.postpone_count}х)`));lines.push('');}
   if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
-  if(q2.length){lines.push(`🔵 Важное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
-  if(q3.length){lines.push(`🟡 Срочное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q3.length){lines.push(`🟡 Срочное, не важное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q2.length){lines.push(`🔵 Важное, не срочное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
   lines.push('─────────────────────');
   lines.push(`Задач в текущем списке: ${list.length}`);
   if(total) lines.push(`Прогресс по фильтру: ${fmtMins(doneMins)} / ${fmtMins(total)}`);
