@@ -41,7 +41,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
 .prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text);margin-top:4px}
 .total-today-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text2);margin-top:8px;padding-top:6px;border-top:1px solid var(--border)}
-.total-today-label strong{color: var(--warning)}
+.total-today-label strong{color: var(--warning); font-size: 14px;}
 .filters{display:flex;gap:6px;padding:6px 16px;overflow-x:auto;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:2px;flex-shrink:0}
@@ -66,8 +66,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task-title span{flex:1;min-width:0}
 .badges{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px}
 .badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:500;white-space:nowrap}
-.b-personal{background:#3d2f6b;color:#bf9fff}
 .b-business{background:#0d3d2e;color:#34c759}
+.b-personal{background:#3d2f6b;color:#bf9fff}
 .b-q1{background:var(--q1bg);color:var(--q1t)}
 .b-q2{background:var(--q2bg);color:var(--q2t)}
 .b-q3{background:var(--q3bg);color:var(--q3t)}
@@ -149,11 +149,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="prog-wrap">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label">
-      <span id="prog-title">Задачи по фильтру</span>
+      <span id="prog-title">Прогресс (выполнено / всего)</span>
       <span id="prog-label">0м / 0м</span>
     </div>
     <div class="total-today-label">
-      <span>Задач на сегодня всего:</span>
+      <span id="total-today-title">⏱ Осталось времени (по фильтру):</span>
       <span id="total-today-val"><strong>0м</strong></span>
     </div>
   </div>
@@ -161,8 +161,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="filters">
     <div class="seg" id="seg-cat">
       <button class="on" onclick="setFilter('cat','all')">Все</button>
-      <button onclick="setFilter('cat','personal')">Личное</button>
       <button onclick="setFilter('cat','business')">Бизнес</button>
+      <button onclick="setFilter('cat','personal')">Личное</button>
     </div>
     <div class="seg" id="seg-date">
       <button class="on" onclick="setFilter('date','today')">Сегодня</button>
@@ -223,8 +223,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <div class="form-group">
         <label>Категория</label>
         <select id="f-cat">
-          <option value="personal">Личное</option>
           <option value="business">Бизнес</option>
+          <option value="personal">Личное</option>
         </select>
       </div>
       <div class="form-group">
@@ -295,6 +295,30 @@ async function apiFetch(method,data){
   }catch(e){showToast('Ошибка соединения');return null;}
 }
 
+// Авто-переключение категории (Все/Бизнес/Личное) в зависимости от наличия активных задач
+function autoSelectCat() {
+  const originalCat = filter.cat;
+  filter.cat = 'all'; // Временно сбрасываем, чтобы увидеть все доступные задачи по дате
+  const activeTasks = getFiltered().filter(t => !t.done);
+  
+  if(activeTasks.length > 0) {
+    const hasBiz = activeTasks.some(t => t.cat === 'business');
+    const hasPers = activeTasks.some(t => t.cat === 'personal');
+    
+    if(hasBiz && hasPers) filter.cat = 'all';
+    else if(hasBiz) filter.cat = 'business';
+    else if(hasPers) filter.cat = 'personal';
+  } else {
+    filter.cat = originalCat; // Возвращаем как было, если пусто
+  }
+  
+  // Обновляем визуал кнопок категорий
+  const valsCat = ['all','business','personal'];
+  document.querySelectorAll('#seg-cat button').forEach((b,i)=>{
+    b.classList.toggle('on', valsCat[i] === filter.cat);
+  });
+}
+
 async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap"><i class="ti ti-loader spin"></i><br>Загрузка...</div>';
   const data=await apiFetch('GET');
@@ -302,6 +326,7 @@ async function loadTasks(){
     tasks=data;
     nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;
   }
+  autoSelectCat(); // Выставляем правильную вкладку при старте
   render();
   if(currentPage==='kanban') renderKanban();
 }
@@ -324,27 +349,32 @@ function fmtDate(dl){
   return d.toLocaleDateString('ru',{day:'numeric',month:'short'});
 }
 
+// Главная фильтрация
 function getFiltered(){
   let t=[...tasks];
   const td=todayStr(), tm=tomorrowStr();
   
+  // 1. Категория
   if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
   
-  if(filter.date==='today') {
-    t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
-  }
-
-  if(filter.tile==='today') {
-    t=t.filter(x=>!x.done && (!x.deadline || x.deadline>=td));
-  }
-  if(filter.tile==='important') {
-    t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
-  }
-  if(filter.tile==='tomorrow') {
-    t=t.filter(x=>!x.done && (!x.deadline || x.deadline>=tm));
-  }
-  if(filter.tile==='imp_tomorrow') {
-    t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
+  // 2. Дата / Плитка (AND логика)
+  if(filter.tile) {
+    if(filter.tile==='today') {
+      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    }
+    if(filter.tile==='important') {
+      t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=td));
+    }
+    if(filter.tile==='tomorrow') {
+      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=tm));
+    }
+    if(filter.tile==='imp_tomorrow') {
+      t=t.filter(x=>!x.done && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline>=tm));
+    }
+  } else {
+    if(filter.date==='today') {
+      t=t.filter(x=>!x.done && x.quadrant!==4 && (!x.deadline || x.deadline>=td));
+    }
   }
 
   t.sort((a,b)=>{
@@ -357,9 +387,13 @@ function getFiltered(){
 
 function renderTiles(){
   const td=todayStr(), tm=tomorrowStr();
-  const todayAll=tasks.filter(t=>!t.done && (!t.deadline || t.deadline>=td));
+  let baseTasks = [...tasks];
+  
+  if(filter.cat!=='all') baseTasks = baseTasks.filter(x=>x.cat===filter.cat);
+
+  const todayAll=baseTasks.filter(t=>!t.done && t.quadrant!==4 && (!t.deadline || t.deadline>=td));
   const todayImp=todayAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
-  const tmAll=tasks.filter(t=>!t.done && (!t.deadline || t.deadline>=tm));
+  const tmAll=baseTasks.filter(t=>!t.done && t.quadrant!==4 && (!t.deadline || t.deadline>=tm));
   const tmImp=tmAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
 
   const tiles=[
@@ -384,22 +418,11 @@ function renderProgress(){
   
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
-  
-  let labelText = "Задачи по фильтру";
-  if(filter.tile) {
-    if(filter.tile==='today') labelText="Общее время на сегодня";
-    if(filter.tile==='important') labelText="Время важных задач";
-    if(filter.tile==='tomorrow') labelText="Время задач на завтра+";
-  } else if (filter.date==='today') {
-    labelText="Время на сегодня";
-  }
-  document.getElementById('prog-title').textContent = labelText;
 
-  // СТАТИЧЕСКИЙ СЧЕТЧИК: Время всех невыполненных задач на сегодня
-  const td=todayStr();
-  const rawTodayTasks = tasks.filter(t => !t.done && t.quadrant !== 4 && (!t.deadline || t.deadline >= td));
-  const absoluteTotalToday = rawTodayTasks.reduce((s,t)=>s+(Number(t.mins)||0), 0);
-  document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(absoluteTotalToday)}</strong>`;
+  // Динамический счетчик невыполненных задач ТЕКУЩЕГО ФИЛЬТРА
+  const activeFilteredTasks = list.filter(t => !t.done);
+  const filteredTotalMins = activeFilteredTasks.reduce((s,t)=>s+(Number(t.mins)||0), 0);
+  document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
 }
 
 function renderTasks(){
@@ -430,7 +453,7 @@ function renderTasks(){
         <div class="task-body" onclick="openEditModal(${t.id})">
           <div class="task-title"><span>${t.title}${fireIcon}${recIcon}</span></div>
           <div class="badges">
-            <span class="badge ${t.cat==='personal'?'b-personal':'b-business'}">${t.cat==='personal'?'Личное':'Бизнес'}</span>
+            <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
             <span class="badge b-q${q}">${Q_LABELS[q]}</span>
             ${inprog?'<span class="badge b-inprogress"><i class="ti ti-player-play" style="font-size:10px"></i> В работе</span>':''}
           </div>
@@ -451,19 +474,29 @@ function render(){renderTiles();renderProgress();renderTasks();}
 
 function setFilter(k,v){
   filter[k]=v;
-  const segs={cat:'seg-cat',date:'seg-date'};
-  const vals={cat:['all','personal','business'],date:['today','all']};
-  document.querySelectorAll('#'+segs[k]+' button').forEach((b,i)=>{
-    b.classList.toggle('on',vals[k][i]===v);
+  const vals={cat:['all','business','personal'],date:['today','all']};
+  
+  if(k === 'date') filter.tile = null; 
+  
+  document.querySelectorAll('#seg-cat button').forEach((b,i)=>{
+    b.classList.toggle('on',vals.cat[i]===filter.cat);
   });
-  filter.tile=null;
+  document.querySelectorAll('#seg-date button').forEach((b,i)=>{
+    b.classList.toggle('on',vals.date[i]===filter.date);
+  });
+  
   render();
 }
 
 function setTileFilter(key){
-  filter.tile=filter.tile===key?null:key;
-  filter.date='all';
-  document.querySelectorAll('#seg-date button').forEach((b,i)=>b.classList.toggle('on',i===1));
+  filter.tile = filter.tile === key ? null : key;
+  if(filter.tile) {
+    document.querySelectorAll('#seg-date button').forEach(b=>b.classList.remove('on'));
+  } else {
+    filter.date = 'today';
+    document.querySelectorAll('#seg-date button').forEach((b,i)=>b.classList.toggle('on',i===0));
+  }
+  autoSelectCat(); // Автоматически подбираем категорию под плитку
   render();
 }
 
@@ -499,7 +532,7 @@ function openModal(){
   document.getElementById('f-mins').value = '';
   document.getElementById('f-recurrence').value = 'none';
   document.getElementById('f-deadline').value = todayStr();
-  document.getElementById('f-cat').value = filter.cat!=='all'?filter.cat:'personal';
+  document.getElementById('f-cat').value = filter.cat!=='all'?filter.cat:'business';
   selectQ(1);
   document.getElementById('save-btn').textContent = 'Добавить';
   document.getElementById('modal').style.display='flex';
@@ -516,7 +549,7 @@ function openEditModal(id){
   document.getElementById('f-mins').value = t.mins || '';
   document.getElementById('f-recurrence').value = t.recurrence || 'none';
   document.getElementById('f-deadline').value = t.deadline || todayStr();
-  document.getElementById('f-cat').value = t.cat || 'personal';
+  document.getElementById('f-cat').value = t.cat || 'business';
   selectQ(Number(t.quadrant)||1);
   
   document.getElementById('save-btn').textContent = 'Сохранить изменения';
@@ -592,7 +625,7 @@ function renderKanban(){
       return `<div class="ktask">
         <div class="ktask-title">${t.title}${fire}${t.recurrence&&t.recurrence!=='none'?' 🔁':''}</div>
         <div class="ktask-meta">
-          <span class="badge ${t.cat==='personal'?'b-personal':'b-business'}">${t.cat==='personal'?'Личное':'Бизнес'}</span>
+          <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
           <span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>
           ${t.mins?`<span class="tmeta"><i class="ti ti-clock"></i>${fmtMins(t.mins)}</span>`:''}
         </div>
