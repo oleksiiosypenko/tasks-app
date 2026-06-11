@@ -594,14 +594,25 @@ function closeModal(){document.getElementById('modal').style.display='none';}
 function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
 
 async function saveTask(){
-  const title=document.getElementById('f-title').value.trim(); if(!title){showToast('Введите название');return;}
+  const title=document.getElementById('f-title').value.trim(); 
+  if(!title){showToast('Введите название');return;}
+  
   const id = document.getElementById('f-id').value;
-  const btn=document.getElementById('save-btn'); btn.disabled=true; btn.textContent='Сохранение...';
+  const btn=document.getElementById('save-btn'); 
+  btn.disabled=true; 
+  btn.textContent='Сохранение...';
+  
+  // Собираем данные
+  const deadlineVal = document.getElementById('f-deadline').value;
   
   const taskData = {
-    title, cat:document.getElementById('f-cat').value, quadrant:selectedQ,
-    mins:parseInt(document.getElementById('f-mins').value)||0, deadline:document.getElementById('f-deadline').value,
-    recurrence:document.getElementById('f-recurrence').value,
+    title, 
+    cat: document.getElementById('f-cat').value, 
+    quadrant: selectedQ,
+    mins: parseInt(document.getElementById('f-mins').value) || 0, 
+    // Если поле пустое, отправляем пустую строку - это значит "нет дедлайна"
+    deadline: deadlineVal || '', 
+    recurrence: document.getElementById('f-recurrence').value,
     day_from: document.getElementById('f-day-from').value ? parseInt(document.getElementById('f-day-from').value) : '',
     day_to: document.getElementById('f-day-to').value ? parseInt(document.getElementById('f-day-to').value) : '',
     time_from: document.getElementById('f-time-from').value || '',
@@ -609,16 +620,23 @@ async function saveTask(){
   };
 
   if(id) {
-    const t=tasks.find(x=>String(x.id)===String(id)); if(t) Object.assign(t, taskData);
-    render(); if(currentPage==='kanban') renderKanban(); closeModal(); btn.disabled=false;
+    const t = tasks.find(x => String(x.id) === String(id)); 
+    if(t) Object.assign(t, taskData);
+    
     await apiFetch('POST', {action:'updateTask', id, fields: taskData});
     showToast('Сохранено 🔄');
   } else {
     const newTask = { id:nextId++, ...taskData, done:false, status:'new', started_at:'', notified:false, postpone_count:0, worked_mins:0 };
-    tasks.push(newTask); render(); if(currentPage==='kanban') renderKanban(); closeModal(); btn.disabled=false;
-    await apiFetch('POST',{action:'addTask', task: newTask});
+    tasks.push(newTask);
+    await apiFetch('POST', {action:'addTask', task: newTask});
     showToast('Добавлено ✅');
   }
+  
+  render(); 
+  if(currentPage==='kanban') renderKanban(); 
+  closeModal(); 
+  btn.disabled=false;
+  btn.textContent='Сохранить задачу';
 }
 
 function renderKanban(){
