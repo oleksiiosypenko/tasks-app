@@ -103,7 +103,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .digest-wrap{padding:0 16px}
 .digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
 
-/* Абсолютно автономное нижнее меню с графическими SVG-иконками */
+/* Нижнее меню навигации */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 10px rgba(0,0,0,0.3)}
 .nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:700;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em;gap:4px}
 .nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
@@ -359,6 +359,8 @@ async function loadTasks(){
   }
   autoSelectCat();
   render();
+  if(currentPage==='kanban') renderKanban();
+  if(currentPage==='digest') buildDigest();
 }
 
 function todayStr(){ return new Date().toISOString().split('T')[0]; }
@@ -452,11 +454,13 @@ function renderTasks(){
       if(t.time_from && t.time_to) specLabel += ` 🕒 Окно: ${t.time_from}-${t.time_to}`;
 
       const fDate = fmtDate(t.deadline);
+      const isRec = t.recurrence && t.recurrence !== 'none';
+      const recIcon = isRec ? ' 🔁' : '';
 
       return `<div class="task q${q}${t.done?' done-task':''}">
         <div class="check${t.done?' on':''}" onclick="toggleDone(${t.id})">✔</div>
         <div class="task-body" onclick="openEditModal(${t.id})">
-          <div class="task-title"><span>${t.title}</span></div>
+          <div class="task-title"><span>${t.title}${recIcon}</span></div>
           <div class="badges">
             <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
             <span class="badge b-q${q}">${Q_LABELS[q]}</span>
@@ -590,14 +594,18 @@ function renderKanban(){
 
   html+='<div class="k-col"><div class="k-col-head">📋 Новые ('+newTasks.length+')</div>';
   if(newTasks.length){
-    html+=newTasks.map(t=>`<div class="ktask">
-      <div class="ktask-title">${t.title}</div>
-      <div class="ktask-meta">
-        <span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>
-        <span class="tmeta">⏱ ${fmtMins(t.mins)}</span>
-      </div>
-      <div class="ktask-actions"><button class="kbtn kbtn-start" onclick="kanbanStart(${t.id})"${inProgress?' disabled style="opacity:.4"':''}>В работу</button></div>
-    </div>`).join('');
+    html+=newTasks.map(t=>{
+      const isRec = t.recurrence && t.recurrence !== 'none';
+      const recIcon = isRec ? ' 🔁' : '';
+      return `<div class="ktask">
+        <div class="ktask-title">${t.title}${recIcon}</div>
+        <div class="ktask-meta">
+          <span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>
+          <span class="tmeta">⏱ ${fmtMins(t.mins)}</span>
+        </div>
+        <div class="ktask-actions"><button class="kbtn kbtn-start" onclick="kanbanStart(${t.id})"${inProgress?' disabled style="opacity:.4"':''}>В работу</button></div>
+      </div>`;
+    }).join('');
   }else{ html+='<div class="empty-kanban">Пусто</div>'; }
   html+='</div>';
   document.getElementById('kanban-wrap').innerHTML=html; startTimerTick();
@@ -661,6 +669,35 @@ function showPage(p){
   });
   if(p==='kanban') renderKanban();
   if(p==='digest') buildDigest();
+}
+
+function getElapsedMinutes(task) { return task?.started_at ? Math.floor((new Date() - new Date(task.started_at)) / 60000) : 0; }
+
+async function kanbanStart(id){
+  const inProg=tasks.find(t=>t.status==='inprogress');
+  if(inProg){showToast('Сначала заверши текущую задачу!');return;}
+  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  t.status='inprogress'; t.started_at=new Date().toISOString(); renderKanban(); render();
+  await apiFetch('POST',{action:'startTask',id});
+}
+async function kanbanPause(id){
+  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const diffMins = getElapsedMinutes(t);
+  t.status='new'; t.worked_mins=(t.worked_mins||0)+diffMins; t.mins=Math.max(0,t.mins-diffMins); t.started_at='';
+  clearInterval(timerInterval); renderKanban(); render();
+  await apiFetch('POST',{action:'pauseTask', id, workedMins: diffMins});
+}
+async function kanbanCancel(id) {
+  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  t.status='new'; t.started_at=''; clearInterval(timerInterval); renderKanban(); render();
+  await apiFetch('POST',{action:'updateTask', id, fields: {status: 'new', started_at: ''}});
+}
+async function kanbanDone(id){
+  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const diffMins = getElapsedMinutes(t);
+  t.done=true; t.status='done'; t.worked_mins=(t.worked_mins||0)+diffMins; t.started_at='';
+  clearInterval(timerInterval); renderKanban(); render();
+  await apiFetch('POST',{action:'doneTask', id, workedMins: diffMins});
 }
 loadTasks();
 </script>
