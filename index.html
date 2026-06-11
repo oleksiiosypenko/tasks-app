@@ -57,7 +57,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task.q2{border-left-color:var(--q2);background:linear-gradient(90deg, #16162a 0%, var(--bg2) 15%)}
 .task.q3{border-left-color:var(--q3);background:linear-gradient(90deg, #241f16 0%, var(--bg2) 15%)}
 .task.q4{border-left-color:var(--q4);opacity:.6}
-.task.done-task{opacity:.4; filter: grayscale(50%);}
+.task.q6{border-left-color:var(--success);background:linear-gradient(90deg, #0a2914 0%, var(--bg2) 15%)}
+.task.done-task{opacity:.5; filter: grayscale(30%);}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
 .task.missed-task{border-left-color:var(--danger); background:linear-gradient(90deg, #3a1515 0%, var(--bg2) 20%); opacity: 0.7}
 .task.missed-task .task-title{color:#ff827a}
@@ -390,6 +391,7 @@ function fmtDate(dl){
   } catch(e) { return ''; }
 }
 
+// Теперь фильтр НЕ ПРЯЧЕТ задачу, если она была выполнена. Она просто останется в текущем дне
 function getFiltered(){
   let t=[...tasks];
   const td=todayStr(), tm=tomorrowStr();
@@ -397,16 +399,16 @@ function getFiltered(){
   
   if(filter.tile) {
     if(filter.tile==='today') {
-      t = t.filter(x => x.status!=='missed' && x.quadrant!==4 && (x.done ? (!x.deadline || x.deadline>=td) : (!x.deadline || x.deadline<=td)));
+      t = t.filter(x => x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline<=td));
     }
     if(filter.tile==='important') {
-      t = t.filter(x => x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (x.done ? (!x.deadline || x.deadline>=td) : (!x.deadline || x.deadline<=td)));
+      t = t.filter(x => x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (!x.deadline || x.deadline<=td));
     }
-    if(filter.tile==='tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && x.quadrant!==4 && (x.deadline && x.deadline>=tm));
-    if(filter.tile==='imp_tomorrow') t=t.filter(x=>!x.done && x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (x.deadline && x.deadline>=tm));
+    if(filter.tile==='tomorrow') t=t.filter(x=>x.status!=='missed' && x.quadrant!==4 && (x.deadline && x.deadline>=tm));
+    if(filter.tile==='imp_tomorrow') t=t.filter(x=>x.status!=='missed' && (Number(x.quadrant)===1 || Number(x.quadrant)===2) && (x.deadline && x.deadline>=tm));
   } else {
     if(filter.date==='today') {
-      t = t.filter(x => x.status!=='missed' && x.quadrant!==4 && (x.done ? (!x.deadline || x.deadline>=td) : (!x.deadline || x.deadline<=td)));
+      t = t.filter(x => x.status!=='missed' && x.quadrant!==4 && (!x.deadline || x.deadline<=td));
     }
   }
   
@@ -425,7 +427,6 @@ function renderTiles(){
   let baseTasks = [...tasks];
   if(filter.cat!=='all') baseTasks = baseTasks.filter(x=>x.cat===filter.cat);
   
-  // В плитках считаем ТОЛЬКО оставшиеся невыполненные задачи!
   const todayAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (!t.deadline || t.deadline<=td));
   const todayImp=todayAll.filter(t=>Number(t.quadrant)===1 || Number(t.quadrant)===2);
   const tmAll=baseTasks.filter(t=>!t.done && t.status!=='missed' && t.quadrant!==4 && (t.deadline && t.deadline>=tm));
@@ -448,16 +449,12 @@ function renderProgress(){
   const list = getFiltered();
   const activeAndDone = list.filter(t => t.status !== 'missed');
   
-  // Общий объем минут: складываем всё (и оставшееся время, и уже набранное)
   const total = activeAndDone.reduce((s, t) => s + (Number(t.mins) || 0) + (Number(t.worked_mins) || 0), 0);
   
-  // Идеальный подсчет выполненного времени
   const done = activeAndDone.reduce((s, t) => {
     if (t.done) {
-      // Если стоит галочка "сделано", засчитываем все 100% времени задачи
       return s + (Number(t.mins) || 0) + (Number(t.worked_mins) || 0);
     } else {
-      // Если задача не сделана, засчитываем только то, что набрано "на паузе"
       return s + (Number(t.worked_mins) || 0);
     }
   }, 0);
@@ -467,7 +464,6 @@ function renderProgress(){
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-label').textContent = fmtMins(done) + ' / ' + fmtMins(total) + ' (' + pct + '%)';
 
-  // Вывод внизу: считаем только те минуты, которые РЕАЛЬНО осталось отработать сегодня
   const filteredTotalMins = activeAndDone.filter(t => !t.done).reduce((s, t) => s + (Number(t.mins) || 0), 0);
   document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(filteredTotalMins)}</strong>`;
 }
@@ -477,16 +473,19 @@ function renderTasks(){
   const el=document.getElementById('task-list');
   if(!list.length){el.innerHTML='<div class="empty">Задач нет</div>';return;}
 
-  const groups={1:[],2:[],3:[],4:[], 5:[]};
+  // ДОБАВЛЕНА 6 ГРУППА: Специально для выполненных задач
+  const groups={1:[],2:[],3:[],4:[], 5:[], 6:[]};
   list.forEach(t=>{ 
     if(t.status === 'missed') { groups[5].push(t); }
+    else if(t.done) { groups[6].push(t); } // Отправляем в блок готовых
     else { const q=Number(t.quadrant)||1; (groups[q]=groups[q]||[]).push(t); }
   });
-  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет (Беклог)', '🚨 Просроченные задачи (Архив)'];
-  const qDotColors=['','#ff453a','#5e5ce6','#ff9f0a','#636366', '#ff453a'];
+  
+  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет (Беклог)', '🚨 Просроченные задачи (Архив)', '✅ Выполненные'];
+  const qDotColors=['','#ff453a','#5e5ce6','#ff9f0a','#636366', '#ff453a', '#30d158'];
   let html='';
 
-  [1,2,3,4,5].forEach(q=>{
+  [1,2,3,4,5,6].forEach(q=>{
     if(!groups[q]||!groups[q].length) return;
     html+=`<div class="q-label"><span class="q-dot" style="background:${qDotColors[q]}"></span>${qNames[q]}</div>`;
     html+=groups[q].map(t=>{
@@ -508,7 +507,7 @@ function renderTasks(){
           <div class="task-title"><span>${t.title}${recIcon}</span></div>
           <div class="badges">
             <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
-            ${isMissed ? '<span class="badge b-missed">Просрочено</span>' : `<span class="badge b-q${q}">${Q_LABELS[q]}</span>`}
+            ${isMissed ? '<span class="badge b-missed">Просрочено</span>' : (t.done ? '' : `<span class="badge b-q${q}">${Q_LABELS[q]}</span>`)}
           </div>
           <div class="task-meta">
             ${t.mins && !isMissed && !t.done ?`<span class="tmeta">⏱ Осталось: ${fmtMins(t.mins)}</span>`:''}
