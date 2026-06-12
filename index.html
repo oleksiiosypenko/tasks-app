@@ -7,10 +7,10 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:85px;background:#0d0d0e;color:#ffffff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:15px;padding-bottom:85px;background:#0d0d0e;color:#fff}
 :root{
-  --bg:#0d0d0e;--bg2:#1e1e20;--bg3:#333336;--text:#ffffff;--text2:#b0b0b5;
-  --accent:#6b69ff;--accent-text:#ffffff;--border:#3a3a3c;
+  --bg:#0d0d0e;--bg2:#1e1e20;--bg3:#333336;--text:#fff;--text2:#b0b0b5;
+  --accent:#6b69ff;--border:#3a3a3c;
   --q1:#ff453a;--q1bg:#4a1515;--q1t:#ff827a;
   --q2:#5e5ce6;--q2bg:#1e1e4a;--q2t:#a3a3ff;
   --q3:#ff9f0a;--q3bg:#4d3000;--q3t:#ffc15e;
@@ -19,18 +19,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   --radius:12px;--radius-sm:8px;
 }
 .topbar{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
-.topbar h1{font-size:22px;font-weight:700;color:#fff}
-.icon-btn{background:none;border:none;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center;padding:6px;transition:transform 0.2s}
+.topbar h1{font-size:22px;font-weight:700}
+.icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
 .tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:8px 16px 6px}
-.tile{background:var(--bg2);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.tile{background:var(--bg2);border-radius:var(--radius);padding:14px;cursor:pointer;transition:all .2s;border:1.5px solid transparent;box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .tile.active{border-color:var(--accent);background:#252528}
-.tile:active{transform:scale(0.98)}
-.tile-n{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px;color:#fff}
+.tile:active{transform:scale(.98)}
+.tile-n{font-size:26px;font-weight:700;line-height:1;margin-bottom:4px}
 .tile-l{font-size:12px;color:var(--text2);font-weight:500}
 .tile-n.orange{color:var(--warning)}
 .tile-n.red{color:var(--danger)}
-.prog-wrap{margin:8px 16px;background:var(--bg2);padding:12px;border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+.prog-wrap{margin:8px 16px;background:var(--bg2);padding:12px;border-radius:var(--radius);box-shadow:0 2px 8px rgba(0,0,0,.2)}
 .prog-bar{background:var(--bg3);border-radius:6px;height:8px;overflow:hidden}
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
 .prog-label{display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-top:6px;font-weight:500}
@@ -38,26 +38,26 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .total-today-label strong{color:#ffb340;font-size:15px;font-weight:700}
 .filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
-.seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0;box-shadow:0 2px 4px rgba(0,0,0,0.15)}
-.seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;transition:all .15s;font-weight:600}
+.seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0}
+.seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;font-weight:600}
 .seg button.on{background:var(--accent);color:#fff;font-weight:700}
-.add-btn{margin:8px 16px;padding:12px;border:1.5px dashed var(--accent);border-radius:var(--radius);background:rgba(107,105,255,0.05);cursor:pointer;color:#a3a1ff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px);transition:all 0.15s}
-.add-btn:active{background:rgba(107,105,255,0.15);transform:scale(0.99)}
+.add-btn{margin:8px 16px;padding:12px;border:1.5px dashed var(--accent);border-radius:var(--radius);background:rgba(107,105,255,.05);cursor:pointer;color:#a3a1ff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px)}
+.add-btn:active{background:rgba(107,105,255,.15)}
 .task-list{padding:4px 16px;display:flex;flex-direction:column;gap:8px}
 .q-label{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 2px;display:flex;align-items:center;gap:6px}
 .q-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:12px;display:flex;gap:10px;align-items:flex-start;border-left:4px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,0.15)}
+.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:12px;display:flex;gap:10px;align-items:flex-start;border-left:4px solid var(--border);box-shadow:0 2px 6px rgba(0,0,0,.15)}
 .task.q1{border-left-color:var(--q1);background:linear-gradient(90deg,#241616 0%,var(--bg2) 15%)}
 .task.q2{border-left-color:var(--q2);background:linear-gradient(90deg,#16162a 0%,var(--bg2) 15%)}
 .task.q3{border-left-color:var(--q3);background:linear-gradient(90deg,#241f16 0%,var(--bg2) 15%)}
 .task.q4{border-left-color:var(--q4);opacity:.6}
 .task.q6{border-left-color:var(--success);background:linear-gradient(90deg,#0a2914 0%,var(--bg2) 15%)}
-.task.done-task{opacity:.5;filter:grayscale(30%)}
+.task.done-task{opacity:.5}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
 .task.missed-task{border-left-color:var(--danger);background:linear-gradient(90deg,#3a1515 0%,var(--bg2) 20%);opacity:.7}
 .task.missed-task .task-title{color:#ff827a}
-.check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,0.05);color:transparent}
-.check.on{background:var(--success);border-color:var(--success);color:#fff}
+.check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,.05)}
+.check.on{background:var(--success);border-color:var(--success)}
 .task-body{flex:1;min-width:0;cursor:pointer}
 .task-title{font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;word-break:break-word;line-height:1.4}
 .badges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
@@ -71,54 +71,61 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .b-missed{background:#5a1818;color:#ff827a}
 .task-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .tmeta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:4px;font-weight:500}
-.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;display:flex;align-items:center;justify-content:center;transition:color .15s}
+.task-del{background:none;border:none;cursor:pointer;color:var(--text2);padding:4px;display:flex;align-items:center}
 .task-del:active{color:var(--danger)}
 .empty{text-align:center;padding:50px 20px;color:var(--text2);font-size:15px}
 .kanban-wrap{padding:0 16px;display:flex;flex-direction:column;gap:16px}
-.k-col{background:rgba(255,255,255,0.02);padding:14px;border-radius:var(--radius);border:1px solid var(--border)}
+.k-col{background:rgba(255,255,255,.02);padding:14px;border-radius:var(--radius);border:1px solid var(--border)}
 .k-col-head{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding-bottom:10px;margin-bottom:12px;border-bottom:1px solid var(--border);color:var(--text2);display:flex;align-items:center;gap:6px}
 .k-col-head.inprogress{color:var(--q2t)}
-.ktask{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,0.05);box-shadow:0 2px 6px rgba(0,0,0,0.1)}
+.ktask{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
 .ktask-title{font-size:15px;font-weight:600;margin-bottom:8px;color:#fff;line-height:1.4}
 .ktask-meta{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
 .ktask-actions{display:flex;gap:8px}
-.kbtn{flex:1;padding:10px 8px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;text-align:center;transition:opacity 0.15s;display:flex;align-items:center;justify-content:center;gap:4px}
-.kbtn:active{opacity:0.8}
+.kbtn{flex:1;padding:10px 8px;border-radius:8px;font-size:13px;font-weight:700;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.kbtn:active{opacity:.8}
 .kbtn-start{background:var(--accent);color:#fff}
 .kbtn-done{background:var(--success);color:#fff}
 .kbtn-pause{background:var(--warning);color:#000}
 .kbtn-cancel{background:var(--bg3);color:#fff}
-.timer-card{background:var(--q2bg);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;border:1px solid #3a3a6a;box-shadow:inset 0 0 10px rgba(0,0,0,0.2)}
+.timer-card{background:var(--q2bg);border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;border:1px solid #3a3a6a}
 .timer-name{font-size:13px;color:var(--q2t);margin-bottom:6px;font-weight:600}
 .timer-val{font-size:32px;font-weight:700;font-family:monospace;color:#fff;line-height:1}
 .timer-prog{background:#2a2a4a;border-radius:4px;height:6px;margin-top:10px;overflow:hidden}
 .timer-fill{background:var(--accent);height:100%;border-radius:4px;width:0%}
 .empty-kanban{text-align:center;padding:20px;color:var(--text2);font-size:14px}
 .digest-wrap{padding:0 16px}
-.digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border);box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -4px 10px rgba(0,0,0,0.3)}
-.nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:700;transition:all 0.15s;text-transform:uppercase;letter-spacing:0.04em;gap:4px}
+.digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
+.nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;gap:4px}
 .nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
-.nav-btn.on{color:var(--accent);background:rgba(107,105,255,0.04);border-top:2px solid var(--accent);padding-top:8px}
-.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.4)}
+.nav-btn.on{color:var(--accent);border-top:2px solid var(--accent);padding-top:8px}
+.toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none}
 .toast.show{opacity:1}
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
 .modal{background:#171719;border-radius:24px 24px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border-top:1px solid #2c2c2e}
 .modal-handle{width:40px;height:5px;background:var(--bg3);border-radius:3px;margin:0 auto 16px}
-.modal h2{font-size:19px;font-weight:700;margin-bottom:16px;color:#fff}
+.modal h2{font-size:19px;font-weight:700;margin-bottom:16px}
 .form-group{margin-bottom:14px}
 .form-group label{font-size:13px;color:#fff;display:block;margin-bottom:6px;font-weight:600}
+.form-group label span{color:var(--text2);font-weight:400;font-size:11px;margin-left:4px}
 .form-group input,.form-group select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg2);color:#fff;outline:none;font-weight:500}
 .form-group input:focus,.form-group select:focus{border-color:var(--accent)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-section{background:rgba(255,255,255,.02);padding:10px;border-radius:var(--radius-sm);margin-bottom:14px;border:1px solid var(--border)}
+.form-section-title{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
 .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .q-option{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;cursor:pointer;transition:all .15s;background:var(--bg2)}
 .q-option.selected{border-color:var(--accent);background:#252528}
 .q-option-title{font-size:13px;font-weight:700}
+.q-option-sub{font-size:10px;color:var(--text2);margin-top:2px}
 .btn-primary{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
 .btn-primary:disabled{opacity:.5}
 .loading-wrap{text-align:center;padding:40px;color:var(--text2);font-size:14px;font-weight:600}
-.optional-label{font-size:11px;color:var(--text2);font-weight:400;margin-left:4px}
+/* Маска времени */
+.time-input-wrap{position:relative}
+.time-input-wrap input{padding-right:40px}
+.time-input-wrap::after{content:'🕒';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:16px;pointer-events:none}
 </style>
 </head>
 <body>
@@ -126,21 +133,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div id="page-tasks">
   <div class="topbar">
     <h1>Задачи</h1>
-    <button class="icon-btn" onclick="loadTasks()" aria-label="Обновить">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+    <button class="icon-btn" onclick="loadTasks()">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
     </button>
   </div>
   <div class="tiles" id="tiles"></div>
   <div class="prog-wrap">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
-    <div class="prog-label">
-      <span>Прогресс нагрузки</span>
-      <span id="prog-label">0м / 0м</span>
-    </div>
-    <div class="total-today-label">
-      <span>⏱ Осталось (по фильтру):</span>
-      <span id="total-today-val"><strong>0м</strong></span>
-    </div>
+    <div class="prog-label"><span>Прогресс нагрузки</span><span id="prog-label">0м / 0м</span></div>
+    <div class="total-today-label"><span>⏱ Осталось (по фильтру):</span><span id="total-today-val"><strong>0м</strong></span></div>
   </div>
   <div class="filters">
     <div class="seg" id="seg-cat">
@@ -161,7 +162,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="topbar">
     <h1>Канбан</h1>
     <button class="icon-btn" onclick="loadTasks()">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
     </button>
   </div>
   <div class="filters" style="padding-bottom:12px">
@@ -176,9 +177,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 
 <div id="page-digest" style="display:none">
   <div class="topbar"><h1>Дайджест</h1></div>
-  <div class="digest-wrap">
-    <div class="digest-box" id="digest-text"></div>
-  </div>
+  <div class="digest-wrap"><div class="digest-box" id="digest-text"></div></div>
 </div>
 
 <div class="modal-overlay" id="modal" style="display:none" onclick="closeModalOutside(event)">
@@ -186,27 +185,34 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     <div class="modal-handle"></div>
     <h2 id="modal-title">Новая задача</h2>
     <input type="hidden" id="f-id"/>
+
     <div class="form-group">
       <label>Название</label>
       <input type="text" id="f-title" placeholder="Что нужно сделать?"/>
     </div>
+
     <div class="form-group">
       <label>Квадрант (Матрица Эйзенхауэра)</label>
-      <div class="q-grid" id="q-grid">
+      <div class="q-grid">
         <div class="q-option selected" data-q="1" onclick="selectQ(1)">
           <div class="q-option-title" style="color:var(--q1t)">Важное + Срочное</div>
+          <div class="q-option-sub">Кризисы, дедлайны</div>
         </div>
         <div class="q-option" data-q="2" onclick="selectQ(2)">
           <div class="q-option-title" style="color:var(--q2t)">Важное, не срочное</div>
+          <div class="q-option-sub">Стратегия, развитие</div>
         </div>
         <div class="q-option" data-q="3" onclick="selectQ(3)">
           <div class="q-option-title" style="color:var(--q3t)">Срочное, не важное</div>
+          <div class="q-option-sub">Рутина, мелочи</div>
         </div>
         <div class="q-option" data-q="4" onclick="selectQ(4)">
           <div class="q-option-title" style="color:var(--q4t)">Низкий приоритет</div>
+          <div class="q-option-sub">Отложить</div>
         </div>
       </div>
     </div>
+
     <div class="form-row">
       <div class="form-group">
         <label>Категория</label>
@@ -227,36 +233,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         </select>
       </div>
     </div>
-    <div class="form-row" style="background:rgba(255,255,255,0.02);padding:8px;border-radius:var(--radius-sm);margin-bottom:11px;border:1px solid var(--border)">
-      <div class="form-group" style="margin-bottom:0">
-        <label>С числа месяца <span class="optional-label">(необяз.)</span></label>
-        <input type="number" id="f-day-from" placeholder="Напр: 1" min="1" max="31"/>
-      </div>
-      <div class="form-group" style="margin-bottom:0">
-        <label>По число месяца <span class="optional-label">(необяз.)</span></label>
-        <input type="number" id="f-day-to" placeholder="Напр: 10" min="1" max="31"/>
-      </div>
-    </div>
-    <div class="form-row" style="background:rgba(255,255,255,0.02);padding:8px;border-radius:var(--radius-sm);margin-bottom:11px;border:1px solid var(--border)">
-      <div class="form-group" style="margin-bottom:0">
-        <label>Время начала <span class="optional-label">(необяз.)</span></label>
-        <input type="text" id="f-time-from" placeholder="09:00" pattern="\d{2}:\d{2}"/>
-      </div>
-      <div class="form-group" style="margin-bottom:0">
-        <label>Время окончания <span class="optional-label">(необяз.)</span></label>
-        <input type="text" id="f-time-to" placeholder="10:00" pattern="\d{2}:\d{2}"/>
-      </div>
-    </div>
+
     <div class="form-row">
       <div class="form-group">
-        <label>Дедлайн <span class="optional-label">(необяз.)</span></label>
+        <label>Дедлайн <span>(необяз.)</span></label>
         <input type="date" id="f-deadline"/>
       </div>
       <div class="form-group">
-        <label>Время (мин)</label>
+        <label>Длительность (мин)</label>
         <input type="number" id="f-mins" placeholder="30" min="5" max="480"/>
       </div>
     </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Временное окно <span style="font-weight:400;text-transform:none">(необязательно)</span></div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>С какого времени</label>
+          <div class="time-input-wrap">
+            <input type="text" id="f-time-from" placeholder="09:00" maxlength="5" inputmode="numeric"/>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>До какого времени</label>
+          <div class="time-input-wrap">
+            <input type="text" id="f-time-to" placeholder="10:00" maxlength="5" inputmode="numeric"/>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Дни месяца <span style="font-weight:400;text-transform:none">(для повторяемых)</span></div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>С числа</label>
+          <input type="number" id="f-day-from" placeholder="1" min="1" max="31" inputmode="numeric"/>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>По число</label>
+          <input type="number" id="f-day-to" placeholder="31" min="1" max="31" inputmode="numeric"/>
+        </div>
+      </div>
+    </div>
+
     <button class="btn-primary" id="save-btn" onclick="saveTask()">Сохранить задачу</button>
   </div>
 </div>
@@ -293,146 +313,128 @@ let currentPage = 'tasks';
 
 const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2500);
+// ---- Маска времени HH:MM ----
+function initTimeMask(inputId) {
+  const el = document.getElementById(inputId);
+  if(!el) return;
+  el.addEventListener('input', function(e) {
+    let v = this.value.replace(/\D/g,'');
+    if(v.length >= 3) v = v.slice(0,2) + ':' + v.slice(2,4);
+    this.value = v;
+  });
+  el.addEventListener('blur', function() {
+    const v = this.value;
+    if(!v) return;
+    const m = v.match(/^(\d{1,2}):?(\d{0,2})$/);
+    if(m) {
+      const hh = Math.min(23, parseInt(m[1]||0)).toString().padStart(2,'0');
+      const mm = Math.min(59, parseInt(m[2]||0)).toString().padStart(2,'0');
+      this.value = hh + ':' + mm;
+    } else {
+      this.value = '';
+    }
+  });
 }
 
-// FIX 1: Надёжный парсер времени — обрабатывает Date-объект из Sheets, строки HH:MM, ISO
-function extractTime(val){
-  if(!val) return '';
-  const s = String(val).trim();
-  // ISO формат из Google Sheets: "1899-12-30T09:00:00.000Z"
-  const isoMatch = s.match(/T(\d{2}:\d{2})/);
-  if(isoMatch) return isoMatch[1];
-  // Просто HH:MM
-  const hmMatch = s.match(/^(\d{1,2}):(\d{2})/);
-  if(hmMatch) return hmMatch[1].padStart(2,'0')+':'+hmMatch[2];
-  return '';
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 2500);
 }
 
-// FIX 2: Надёжный парсер даты — не слетает в Invalid Date
-function extractDate(val){
-  if(!val) return '';
-  const s = String(val).trim();
-  if(!s || s==='Invalid Date' || s==='0' || s==='false') return '';
-  // Уже YYYY-MM-DD
-  if(/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-  // ISO строка
-  if(s.includes('T')){
-    const part = s.split('T')[0];
-    if(/^\d{4}-\d{2}-\d{2}$/.test(part)) return part;
+// ---- Нормализация данных из Sheets ----
+function normalizeTask(t) {
+  // Дата: берём только YYYY-MM-DD часть
+  let deadline = '';
+  if(t.deadline) {
+    const s = String(t.deadline);
+    const m = s.match(/^(\d{4}-\d{2}-\d{2})/);
+    if(m && parseInt(m[1]) > 2000) deadline = m[1];
   }
-  // Попытка через Date (для случаев типа "Thu Jun 12 2026")
-  try{
-    const d = new Date(s);
-    if(!isNaN(d.getTime())){
-      // Защита от "дат" типа 1899 (Sheets конвертирует время в дату)
-      if(d.getFullYear() < 2000) return '';
-      return d.toISOString().split('T')[0];
-    }
-  }catch(e){}
-  return '';
-}
-
-async function apiFetch(method,data){
-  try{
-    if(method==='GET'){
-      const r=await fetch(API+'?action=getTasks&t='+Date.now());
-      return await r.json();
-    }else{
-      const r=await fetch(API,{method:'POST',body:JSON.stringify(data)});
-      return await r.json();
-    }
-  }catch(e){showToast('Ошибка соединения');return null;}
-}
-
-// FIX 3: Нормализация задачи после загрузки из Sheets
-function normalizeTask(t){
+  // Время: уже должно быть HH:MM после фикса getTasks, но на всякий случай
+  function cleanTime(v) {
+    if(!v) return '';
+    const s = String(v);
+    const iso = s.match(/T(\d{2}):(\d{2})/);
+    if(iso) return iso[1]+':'+iso[2];
+    const hm = s.match(/^(\d{2}):(\d{2})/);
+    if(hm) return hm[0];
+    return '';
+  }
   return {
     ...t,
-    deadline: extractDate(t.deadline),
-    time_from: extractTime(t.time_from),
-    time_to: extractTime(t.time_to),
+    id: String(t.id),
+    deadline,
+    time_from: cleanTime(t.time_from),
+    time_to: cleanTime(t.time_to),
     quadrant: Number(t.quadrant)||1,
     mins: Number(t.mins)||0,
     worked_mins: Number(t.worked_mins)||0,
     postpone_count: Number(t.postpone_count)||0,
+    day_from: t.day_from ? String(t.day_from) : '',
+    day_to: t.day_to ? String(t.day_to) : '',
     done: t.done===true||t.done==='TRUE'||t.done===1||t.done==='true',
     notified: t.notified===true||t.notified==='TRUE',
+    status: t.status||'new',
+    recurrence: t.recurrence||'none',
+    started_at: t.started_at||'',
   };
 }
 
-function autoSelectCat(){
-  const tmp = filter.cat;
-  filter.cat='all';
-  const active=getFiltered().filter(t=>!t.done&&t.status!=='missed');
-  if(active.length>0){
-    const hasBiz=active.some(t=>t.cat==='business');
-    const hasPers=active.some(t=>t.cat==='personal');
-    filter.cat=(hasBiz&&hasPers)?'all':hasBiz?'business':'personal';
-  } else { filter.cat=tmp; }
-  syncCatButtons();
+async function apiFetch(method, data) {
+  try {
+    if(method==='GET') {
+      const r = await fetch(API+'?action=getTasks&t='+Date.now());
+      return await r.json();
+    } else {
+      const r = await fetch(API, {method:'POST', body:JSON.stringify(data)});
+      return await r.json();
+    }
+  } catch(e) { showToast('Ошибка соединения'); return null; }
 }
 
-function syncCatButtons(){
-  const vals=['all','business','personal'];
-  document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===filter.cat));
-  document.querySelectorAll('#seg-cat-kanban button').forEach((b,i)=>b.classList.toggle('on',vals[i]===filter.cat));
-}
-
-function syncDateButtons(){
-  document.getElementById('btn-date-today').classList.toggle('on',filter.date==='today'&&!filter.tile);
-  document.getElementById('btn-date-all').classList.toggle('on',filter.date==='all'&&!filter.tile);
-}
-
-async function loadTasks(){
-  document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка данных...</div>';
-  const data=await apiFetch('GET');
-  if(data&&Array.isArray(data)){
-    // FIX 3: нормализуем все задачи сразу при загрузке
-    tasks=data.map(normalizeTask);
-    nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;
+async function loadTasks() {
+  document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
+  const data = await apiFetch('GET');
+  if(data && Array.isArray(data)) {
+    tasks = data.map(normalizeTask);
+    nextId = Math.max(...tasks.map(t=>Number(t.id)||0), Date.now()) + 1;
   }
-  autoSelectCat();
-  render();
+  autoSelectCat(); render();
   if(currentPage==='kanban') renderKanban();
   if(currentPage==='digest') buildDigest();
 }
 
-function todayStr(){ return new Date().toISOString().split('T')[0]; }
-function tomorrowStr(){ return new Date(Date.now()+86400000).toISOString().split('T')[0]; }
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function tomorrowStr() { return new Date(Date.now()+86400000).toISOString().split('T')[0]; }
 
-function fmtMins(m){
-  m=Number(m); if(!m)return '0м';
-  if(m<60)return m+'м';
+function fmtMins(m) {
+  m=Number(m); if(!m) return '0м';
+  if(m<60) return m+'м';
   return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');
 }
 
-function fmtDate(dl){
+function fmtDate(dl) {
   if(!dl) return '';
-  try{
-    const d=new Date(dl+'T00:00:00');
+  try {
+    const d = new Date(dl+'T12:00:00'); // noon — без сдвига timezone
     if(isNaN(d.getTime())) return '';
     return d.toLocaleDateString('ru',{day:'numeric',month:'short'});
-  }catch(e){return '';}
+  } catch(e) { return ''; }
 }
 
-function getFiltered(){
-  let t=[...tasks];
-  const td=todayStr(), tm=tomorrowStr();
-  if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
-
-  if(filter.tile){
-    if(filter.tile==='today')       t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-    if(filter.tile==='important')   t=t.filter(x=>x.status!=='missed'&&(Number(x.quadrant)===1||Number(x.quadrant)===2)&&(!x.deadline||x.deadline<=td));
-    if(filter.tile==='tomorrow')    t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline&&x.deadline>=tm);
-    if(filter.tile==='imp_tomorrow')t=t.filter(x=>x.status!=='missed'&&(Number(x.quadrant)===1||Number(x.quadrant)===2)&&x.deadline&&x.deadline>=tm);
-  } else {
-    if(filter.date==='today') t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
+function getFiltered() {
+  let t = [...tasks];
+  const td = todayStr(), tm = tomorrowStr();
+  if(filter.cat!=='all') t = t.filter(x=>x.cat===filter.cat);
+  if(filter.tile) {
+    if(filter.tile==='today')        t = t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
+    if(filter.tile==='important')    t = t.filter(x=>x.status!=='missed'&&(Number(x.quadrant)===1||Number(x.quadrant)===2)&&(!x.deadline||x.deadline<=td));
+    if(filter.tile==='tomorrow')     t = t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline&&x.deadline>=tm);
+    if(filter.tile==='imp_tomorrow') t = t.filter(x=>x.status!=='missed'&&(Number(x.quadrant)===1||Number(x.quadrant)===2)&&x.deadline&&x.deadline>=tm);
+  } else if(filter.date==='today') {
+    t = t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
   }
-
   t.sort((a,b)=>{
     if(a.status==='missed'&&b.status!=='missed') return 1;
     if(a.status!=='missed'&&b.status==='missed') return -1;
@@ -443,74 +445,96 @@ function getFiltered(){
   return t;
 }
 
-function renderTiles(){
-  const td=todayStr(),tm=tomorrowStr();
-  let base=[...tasks];
-  if(filter.cat!=='all') base=base.filter(x=>x.cat===filter.cat);
-  const todayAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&(!t.deadline||t.deadline<=td));
-  const todayImp=todayAll.filter(t=>Number(t.quadrant)===1||Number(t.quadrant)===2);
-  const tmAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&t.deadline&&t.deadline>=tm);
-  const tmImp=tmAll.filter(t=>Number(t.quadrant)===1||Number(t.quadrant)===2);
-  const tiles=[
-    {key:'today',n:todayAll.length,label:'📅 Сегодня'},
-    {key:'important',n:todayImp.length,label:'⚡ Важные',cls:'orange'},
-    {key:'tomorrow',n:tmAll.length,label:'📅 Завтра+'},
-    {key:'imp_tomorrow',n:tmImp.length,label:'⚡ Важные завтра',cls:'red'},
+function autoSelectCat() {
+  const tmp = filter.cat;
+  filter.cat = 'all';
+  const active = getFiltered().filter(t=>!t.done&&t.status!=='missed');
+  if(active.length>0) {
+    const hasBiz = active.some(t=>t.cat==='business');
+    const hasPers = active.some(t=>t.cat==='personal');
+    filter.cat = (hasBiz&&hasPers)?'all':hasBiz?'business':'personal';
+  } else { filter.cat = tmp; }
+  syncCatButtons();
+}
+
+function syncCatButtons() {
+  const vals = ['all','business','personal'];
+  document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===filter.cat));
+  document.querySelectorAll('#seg-cat-kanban button').forEach((b,i)=>b.classList.toggle('on',vals[i]===filter.cat));
+}
+
+function syncDateButtons() {
+  document.getElementById('btn-date-today').classList.toggle('on', filter.date==='today'&&!filter.tile);
+  document.getElementById('btn-date-all').classList.toggle('on', filter.date==='all'&&!filter.tile);
+}
+
+function renderTiles() {
+  const td=todayStr(), tm=tomorrowStr();
+  let base = [...tasks];
+  if(filter.cat!=='all') base = base.filter(x=>x.cat===filter.cat);
+  const todayAll = base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&(!t.deadline||t.deadline<=td));
+  const todayImp = todayAll.filter(t=>Number(t.quadrant)===1||Number(t.quadrant)===2);
+  const tmAll    = base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&t.deadline&&t.deadline>=tm);
+  const tmImp    = tmAll.filter(t=>Number(t.quadrant)===1||Number(t.quadrant)===2);
+  const tiles = [
+    {key:'today',       n:todayAll.length, label:'📅 Сегодня'},
+    {key:'important',   n:todayImp.length, label:'⚡ Важные', cls:'orange'},
+    {key:'tomorrow',    n:tmAll.length,    label:'📅 Завтра+'},
+    {key:'imp_tomorrow',n:tmImp.length,    label:'⚡ Важные завтра', cls:'red'},
   ];
-  document.getElementById('tiles').innerHTML=tiles.map(tile=>`
+  document.getElementById('tiles').innerHTML = tiles.map(tile=>`
     <div class="tile${filter.tile===tile.key?' active':''}" onclick="setTileFilter('${tile.key}')">
       <div class="tile-n ${tile.cls||''}">${tile.n}</div>
       <div class="tile-l">${tile.label}</div>
     </div>`).join('');
 }
 
-function renderProgress(){
-  const list=getFiltered();
-  const activeAndDone=list.filter(t=>t.status!=='missed');
-  const total=activeAndDone.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
-  const done=activeAndDone.reduce((s,t)=>{
+function renderProgress() {
+  const list = getFiltered();
+  const ad = list.filter(t=>t.status!=='missed');
+  const total = ad.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
+  const done  = ad.reduce((s,t)=>{
     if(t.done) return s+(Number(t.mins)||0)+(Number(t.worked_mins)||0);
     return s+(Number(t.worked_mins)||0);
   },0);
-  const pct=total?Math.min(100,Math.round(done/total*100)):0;
-  document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
-  const remaining=activeAndDone.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
-  document.getElementById('total-today-val').innerHTML=`<strong>${fmtMins(remaining)}</strong>`;
+  const pct = total ? Math.min(100,Math.round(done/total*100)) : 0;
+  document.getElementById('prog-fill').style.width = pct+'%';
+  document.getElementById('prog-label').textContent = fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
+  const rem = ad.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  document.getElementById('total-today-val').innerHTML = `<strong>${fmtMins(rem)}</strong>`;
 }
 
-function renderTasks(){
-  const list=getFiltered();
-  const el=document.getElementById('task-list');
-  if(!list.length){el.innerHTML='<div class="empty">Задач нет</div>';return;}
-
-  const groups={1:[],2:[],3:[],4:[],5:[],6:[]};
+function renderTasks() {
+  const list = getFiltered();
+  const el = document.getElementById('task-list');
+  if(!list.length){ el.innerHTML='<div class="empty">Задач нет</div>'; return; }
+  const groups = {1:[],2:[],3:[],4:[],5:[],6:[]};
   list.forEach(t=>{
     if(t.status==='missed') groups[5].push(t);
     else if(t.done) groups[6].push(t);
     else groups[Number(t.quadrant)||1].push(t);
   });
-
-  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет','🚨 Просроченные (Архив)','✅ Выполненные'];
-  const qDots=['','#ff453a','#5e5ce6','#ff9f0a','#636366','#ff453a','#30d158'];
-  let html='';
+  const qNames = ['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет','🚨 Просроченные','✅ Выполненные'];
+  const qDots  = ['','#ff453a','#5e5ce6','#ff9f0a','#636366','#ff453a','#30d158'];
+  let html = '';
   [1,2,3,4,5,6].forEach(q=>{
     if(!groups[q]||!groups[q].length) return;
-    html+=`<div class="q-label"><span class="q-dot" style="background:${qDots[q]}"></span>${qNames[q]}</div>`;
-    html+=groups[q].map(t=>{
-      const pc=Number(t.postpone_count)||0;
-      const fireIcon=pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
-      const recIcon=t.recurrence&&t.recurrence!=='none'?' 🔁':'';
-      const isMissed=t.status==='missed';
-      const fDate=fmtDate(t.deadline);
-      let specLabel='';
-      if(t.day_from&&t.day_to) specLabel+=` 📅 ${t.day_from}-${t.day_to} число`;
-      if(t.time_from&&t.time_to) specLabel+=` 🕒 ${t.time_from}–${t.time_to}`;
-
+    html += `<div class="q-label"><span class="q-dot" style="background:${qDots[q]}"></span>${qNames[q]}</div>`;
+    html += groups[q].map(t=>{
+      const pc = Number(t.postpone_count)||0;
+      const fire = pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
+      const rec  = t.recurrence&&t.recurrence!=='none'?' 🔁':'';
+      const isMissed = t.status==='missed';
+      const fDate = fmtDate(t.deadline);
+      let extra = '';
+      if(t.day_from&&t.day_to) extra += ` 📅 ${t.day_from}–${t.day_to} число`;
+      else if(t.day_from) extra += ` 📅 с ${t.day_from} числа`;
+      if(t.time_from&&t.time_to) extra += ` 🕒 ${t.time_from}–${t.time_to}`;
+      else if(t.time_from) extra += ` 🕒 с ${t.time_from}`;
       return `<div class="task ${isMissed?'missed-task':'q'+q}${t.done?' done-task':''}">
-        <div class="check${t.done?' on':''}" onclick="${isMissed?'':('toggleDone('+t.id+')')}">${isMissed?'❌':'✔'}</div>
-        <div class="task-body" onclick="openEditModal(${t.id})">
-          <div class="task-title">${t.title}${fireIcon}${recIcon}</div>
+        <div class="check${t.done?' on':''}" onclick="${isMissed?'':('toggleDone("'+t.id+'")')}">${t.done?'✔':''}</div>
+        <div class="task-body" onclick="openEditModal('${t.id}')">
+          <div class="task-title">${t.title}${fire}${rec}</div>
           <div class="badges">
             <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
             ${isMissed?'<span class="badge b-missed">Просрочено</span>':(!t.done?`<span class="badge b-q${q}">${Q_LABELS[q]}</span>`:'')}
@@ -518,43 +542,43 @@ function renderTasks(){
           <div class="task-meta">
             ${t.mins&&!isMissed&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}
             ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 ${fmtMins(t.worked_mins)}</span>`:''}
-            ${fDate&&!t.day_from?`<span class="tmeta">📅 ${fDate}</span>`:''}
-            ${specLabel?`<span class="tmeta" style="color:var(--warning)">${specLabel}</span>`:''}
+            ${fDate?`<span class="tmeta">📅 ${fDate}</span>`:''}
+            ${extra?`<span class="tmeta" style="color:var(--warning)">${extra}</span>`:''}
           </div>
         </div>
-        <button class="task-del" onclick="delTask(${t.id})">❌</button>
+        <button class="task-del" onclick="delTask('${t.id}')">❌</button>
       </div>`;
     }).join('');
   });
-  el.innerHTML=html;
+  el.innerHTML = html;
 }
 
-function render(){renderTiles();renderProgress();renderTasks();syncDateButtons();}
+function render(){ renderTiles(); renderProgress(); renderTasks(); syncDateButtons(); }
 
 function setFilter(k,v){
-  if(k==='date'){filter.tile=null;filter.date=v;}
+  if(k==='date'){ filter.tile=null; filter.date=v; }
   else filter[k]=v;
   syncCatButtons(); render();
   if(currentPage==='kanban') renderKanban();
 }
 
 function setTileFilter(key){
-  filter.tile=filter.tile===key?null:key;
+  filter.tile = filter.tile===key ? null : key;
   autoSelectCat(); render();
 }
 
 async function toggleDone(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const t = tasks.find(x=>x.id===id); if(!t) return;
   t.done=!t.done; t.status=t.done?'done':'new';
   render(); if(currentPage==='kanban') renderKanban();
-  await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status},workedMins:0});
+  await apiFetch('POST',{action:t.done?'doneTask':'updateTask', id, fields:{done:t.done,status:t.status}, workedMins:0});
 }
 
 async function delTask(id){
   if(!confirm('Удалить задачу?')) return;
-  tasks=tasks.filter(x=>String(x.id)!==String(id));
+  tasks = tasks.filter(x=>x.id!==id);
   render(); if(currentPage==='kanban') renderKanban();
-  await apiFetch('POST',{action:'deleteTask',id});
+  await apiFetch('POST',{action:'deleteTask', id});
 }
 
 function selectQ(q){
@@ -562,112 +586,109 @@ function selectQ(q){
   document.querySelectorAll('.q-option').forEach(el=>el.classList.toggle('selected',Number(el.dataset.q)===q));
 }
 
-// FIX 4: openModal — дедлайн пустой по умолчанию, не подставляем дату
 function openModal(){
-  document.getElementById('modal-title').textContent='Новая задача';
-  document.getElementById('f-id').value='';
-  document.getElementById('f-title').value='';
-  document.getElementById('f-mins').value='';
-  document.getElementById('f-recurrence').value='none';
-  document.getElementById('f-day-from').value='';
-  document.getElementById('f-day-to').value='';
-  document.getElementById('f-time-from').value='';
-  document.getElementById('f-time-to').value='';
-  document.getElementById('f-deadline').value=''; // пустой — бессрочное по умолчанию
-  // Категория из активного фильтра
-  document.getElementById('f-cat').value=filter.cat!=='all'?filter.cat:'business';
+  document.getElementById('modal-title').textContent = 'Новая задача';
+  document.getElementById('f-id').value = '';
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-mins').value = '';
+  document.getElementById('f-recurrence').value = 'none';
+  document.getElementById('f-day-from').value = '';
+  document.getElementById('f-day-to').value = '';
+  document.getElementById('f-time-from').value = '';
+  document.getElementById('f-time-to').value = '';
+  document.getElementById('f-deadline').value = '';
+  document.getElementById('f-cat').value = filter.cat!=='all' ? filter.cat : 'business';
   selectQ(1);
-  document.getElementById('modal').style.display='flex';
-  setTimeout(()=>document.getElementById('f-title').focus(),100);
+  document.getElementById('modal').style.display = 'flex';
+  setTimeout(()=>document.getElementById('f-title').focus(), 100);
 }
 
-// FIX 5: openEditModal — используем normalizeTask данные, которые уже нормализованы
 function openEditModal(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  document.getElementById('modal-title').textContent='Редактировать задачу';
-  document.getElementById('f-id').value=t.id;
-  document.getElementById('f-title').value=t.title||'';
-  document.getElementById('f-mins').value=t.mins||'';
-  document.getElementById('f-recurrence').value=t.recurrence||'none';
-  document.getElementById('f-day-from').value=t.day_from||'';
-  document.getElementById('f-day-to').value=t.day_to||'';
-  // FIX: time уже нормализован при loadTasks через extractTime
-  document.getElementById('f-time-from').value=t.time_from||'';
-  document.getElementById('f-time-to').value=t.time_to||'';
-  // FIX: deadline уже нормализован при loadTasks через extractDate
-  document.getElementById('f-deadline').value=t.deadline||'';
-  document.getElementById('f-cat').value=t.cat||'business';
+  const t = tasks.find(x=>x.id===id); if(!t) return;
+  document.getElementById('modal-title').textContent = 'Редактировать задачу';
+  document.getElementById('f-id').value      = t.id;
+  document.getElementById('f-title').value   = t.title||'';
+  document.getElementById('f-mins').value    = t.mins||'';
+  document.getElementById('f-recurrence').value = t.recurrence||'none';
+  document.getElementById('f-day-from').value = t.day_from||'';
+  document.getElementById('f-day-to').value   = t.day_to||'';
+  document.getElementById('f-time-from').value = t.time_from||'';
+  document.getElementById('f-time-to').value   = t.time_to||'';
+  document.getElementById('f-deadline').value  = t.deadline||'';
+  document.getElementById('f-cat').value       = t.cat||'business';
   selectQ(Number(t.quadrant)||1);
-  document.getElementById('modal').style.display='flex';
+  document.getElementById('modal').style.display = 'flex';
 }
 
-function closeModal(){document.getElementById('modal').style.display='none';}
-function closeModalOutside(e){if(e.target===document.getElementById('modal'))closeModal();}
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+function closeModalOutside(e){ if(e.target===document.getElementById('modal')) closeModal(); }
 
 async function saveTask(){
-  const title=document.getElementById('f-title').value.trim();
-  if(!title){showToast('Введите название');return;}
-  const id=document.getElementById('f-id').value;
-  const btn=document.getElementById('save-btn');
+  const title = document.getElementById('f-title').value.trim();
+  if(!title){ showToast('Введите название'); return; }
+  const id = document.getElementById('f-id').value;
+  const btn = document.getElementById('save-btn');
   btn.disabled=true; btn.textContent='Сохранение...';
 
-  const taskData={
+  const taskData = {
     title,
-    cat:document.getElementById('f-cat').value,
-    quadrant:selectedQ,
-    mins:parseInt(document.getElementById('f-mins').value)||0,
-    // FIX: сохраняем пустую строку если дедлайн не указан
-    deadline:document.getElementById('f-deadline').value||'',
-    recurrence:document.getElementById('f-recurrence').value,
-    day_from:document.getElementById('f-day-from').value?parseInt(document.getElementById('f-day-from').value):'',
-    day_to:document.getElementById('f-day-to').value?parseInt(document.getElementById('f-day-to').value):'',
-    // FIX: сохраняем время как строку HH:MM
-    time_from:document.getElementById('f-time-from').value||'',
-    time_to:document.getElementById('f-time-to').value||'',
+    cat:        document.getElementById('f-cat').value,
+    quadrant:   selectedQ,
+    mins:       parseInt(document.getElementById('f-mins').value)||0,
+    deadline:   document.getElementById('f-deadline').value||'',
+    recurrence: document.getElementById('f-recurrence').value,
+    day_from:   document.getElementById('f-day-from').value||'',
+    day_to:     document.getElementById('f-day-to').value||'',
+    time_from:  document.getElementById('f-time-from').value||'',
+    time_to:    document.getElementById('f-time-to').value||'',
   };
 
   if(id){
-    const t=tasks.find(x=>String(x.id)===String(id));
-    if(t) Object.assign(t,taskData);
+    const t = tasks.find(x=>x.id===id);
+    if(t) Object.assign(t, taskData);
     render(); if(currentPage==='kanban') renderKanban();
     closeModal(); btn.disabled=false; btn.textContent='Сохранить задачу';
-    await apiFetch('POST',{action:'updateTask',id,fields:taskData});
+    await apiFetch('POST',{action:'updateTask', id, fields:taskData});
     showToast('Сохранено 🔄');
   } else {
-    const newTask={id:nextId++,...taskData,done:false,status:'new',started_at:'',notified:false,postpone_count:0,worked_mins:0};
+    const newTask = {
+      id: String(nextId++), ...taskData,
+      done:false, status:'new', started_at:'',
+      notified:false, postpone_count:0, worked_mins:0
+    };
     tasks.push(newTask);
     render(); if(currentPage==='kanban') renderKanban();
     closeModal(); btn.disabled=false; btn.textContent='Сохранить задачу';
-    await apiFetch('POST',{action:'addTask',task:newTask});
+    await apiFetch('POST',{action:'addTask', task:newTask});
     showToast('Добавлено ✅');
   }
 }
 
 function renderKanban(){
-  let active=tasks.filter(t=>!t.done&&t.status!=='missed');
-  if(filter.cat!=='all') active=active.filter(t=>t.cat===filter.cat);
-  const newTasks=active.filter(t=>t.status==='new'||!t.status);
-  const inProgress=active.find(t=>t.status==='inprogress');
-  const pOrder={1:1,3:2,2:3,4:4};
+  let active = tasks.filter(t=>!t.done&&t.status!=='missed');
+  if(filter.cat!=='all') active = active.filter(t=>t.cat===filter.cat);
+  const newTasks   = active.filter(t=>t.status==='new'||!t.status);
+  const inProgress = active.find(t=>t.status==='inprogress');
+  const pOrder = {1:1,3:2,2:3,4:4};
   newTasks.sort((a,b)=>pOrder[Number(a.quadrant)||1]-pOrder[Number(b.quadrant)||1]);
 
-  let html='<div class="k-col"><div class="k-col-head inprogress">🔥 В работе</div>';
+  let html = '<div class="k-col"><div class="k-col-head inprogress">🔥 В работе</div>';
   if(inProgress){
-    html+=renderTimerCard(inProgress);
-    html+=`<div class="ktask-actions">
-      <button class="kbtn kbtn-done" onclick="kanbanDone(${inProgress.id})">Готово</button>
-      <button class="kbtn kbtn-pause" onclick="kanbanPause(${inProgress.id})">Пауза</button>
-      <button class="kbtn kbtn-cancel" onclick="kanbanCancel(${inProgress.id})">Вернуть</button>
+    html += renderTimerCard(inProgress);
+    html += `<div class="ktask-actions">
+      <button class="kbtn kbtn-done"   onclick="kanbanDone('${inProgress.id}')">Готово</button>
+      <button class="kbtn kbtn-pause"  onclick="kanbanPause('${inProgress.id}')">Пауза</button>
+      <button class="kbtn kbtn-cancel" onclick="kanbanCancel('${inProgress.id}')">Вернуть</button>
     </div>`;
-  } else { html+='<div class="empty-kanban">Нет активной задачи</div>'; }
-  html+='</div>';
+  } else { html += '<div class="empty-kanban">Нет активной задачи</div>'; }
+  html += '</div>';
 
-  html+=`<div class="k-col"><div class="k-col-head">📋 Новые (${newTasks.length})</div>`;
+  html += `<div class="k-col"><div class="k-col-head">📋 Новые (${newTasks.length})</div>`;
   if(newTasks.length){
-    html+=newTasks.map(t=>{
-      const pc=Number(t.postpone_count)||0;
-      const fire=pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
-      const rec=t.recurrence&&t.recurrence!=='none'?' 🔁':'';
+    html += newTasks.map(t=>{
+      const pc = Number(t.postpone_count)||0;
+      const fire = pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
+      const rec  = t.recurrence&&t.recurrence!=='none'?' 🔁':'';
       return `<div class="ktask">
         <div class="ktask-title">${t.title}${fire}${rec}</div>
         <div class="ktask-meta">
@@ -675,24 +696,24 @@ function renderKanban(){
           <span class="tmeta">⏱ ${fmtMins(t.mins)}</span>
         </div>
         <div class="ktask-actions">
-          <button class="kbtn kbtn-start" onclick="kanbanStart(${t.id})"${inProgress?' disabled style="opacity:.4"':''}>В работу</button>
+          <button class="kbtn kbtn-start" onclick="kanbanStart('${t.id}')"${inProgress?' disabled style="opacity:.4"':''}>В работу</button>
         </div>
       </div>`;
     }).join('');
-  } else { html+='<div class="empty-kanban">Пусто</div>'; }
-  html+='</div>';
-  document.getElementById('kanban-wrap').innerHTML=html;
+  } else { html += '<div class="empty-kanban">Пусто</div>'; }
+  html += '</div>';
+  document.getElementById('kanban-wrap').innerHTML = html;
   startTimerTick();
 }
 
 function renderTimerCard(t){
-  const started=t.started_at?new Date(t.started_at):new Date();
-  const totalSec=(Number(t.mins)||30)*60;
-  const elapsedSec=Math.floor((new Date()-started)/1000);
-  const remainSec=Math.max(0,totalSec-elapsedSec);
-  const pct=Math.min(100,Math.round(elapsedSec/totalSec*100));
-  const mm=Math.floor(remainSec/60).toString().padStart(2,'0');
-  const ss=(remainSec%60).toString().padStart(2,'0');
+  const started  = t.started_at ? new Date(t.started_at) : new Date();
+  const totalSec = (Number(t.mins)||30)*60;
+  const elapsed  = Math.floor((new Date()-started)/1000);
+  const remain   = Math.max(0, totalSec-elapsed);
+  const pct      = Math.min(100, Math.round(elapsed/totalSec*100));
+  const mm = Math.floor(remain/60).toString().padStart(2,'0');
+  const ss = (remain%60).toString().padStart(2,'0');
   return `<div class="timer-card">
     <div class="timer-name">${t.title}</div>
     <div class="timer-val" id="timer-val">${mm}:${ss}</div>
@@ -702,93 +723,96 @@ function renderTimerCard(t){
 
 function startTimerTick(){
   if(timerInterval) clearInterval(timerInterval);
-  const ip=tasks.find(t=>t.status==='inprogress');
+  const ip = tasks.find(t=>t.status==='inprogress');
   if(!ip||!ip.started_at) return;
-  timerInterval=setInterval(()=>{
-    const val=document.getElementById('timer-val');
-    const fill=document.getElementById('timer-fill');
-    if(!val){clearInterval(timerInterval);return;}
-    const totalSec=(Number(ip.mins)||30)*60;
-    const elapsedSec=Math.floor((new Date()-new Date(ip.started_at))/1000);
-    const remainSec=Math.max(0,totalSec-elapsedSec);
-    const pct=Math.min(100,Math.round(elapsedSec/totalSec*100));
-    val.textContent=Math.floor(remainSec/60).toString().padStart(2,'0')+':'+(remainSec%60).toString().padStart(2,'0');
-    if(fill) fill.style.width=pct+'%';
-  },1000);
+  timerInterval = setInterval(()=>{
+    const val  = document.getElementById('timer-val');
+    const fill = document.getElementById('timer-fill');
+    if(!val){ clearInterval(timerInterval); return; }
+    const totalSec = (Number(ip.mins)||30)*60;
+    const elapsed  = Math.floor((new Date()-new Date(ip.started_at))/1000);
+    const remain   = Math.max(0, totalSec-elapsed);
+    const pct      = Math.min(100, Math.round(elapsed/totalSec*100));
+    val.textContent = Math.floor(remain/60).toString().padStart(2,'0')+':'+(remain%60).toString().padStart(2,'0');
+    if(fill) fill.style.width = pct+'%';
+  }, 1000);
 }
 
 function buildDigest(){
-  const td=todayStr();
-  const active=tasks.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
-  const q1=active.filter(t=>Number(t.quadrant)===1);
-  const q2=active.filter(t=>Number(t.quadrant)===2);
-  const q3=active.filter(t=>Number(t.quadrant)===3);
-  const list=getFiltered();
-  const total=list.reduce((s,t)=>s+(Number(t.mins)||0),0);
-  const doneMins=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
-  let lines=['📋 Утренний дайджест','─────────────────────',''];
-  if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
-  if(q3.length){lines.push(`🟡 Срочное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
-  if(q2.length){lines.push(`🔵 Важное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  const td = todayStr();
+  const active = tasks.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
+  const q1 = active.filter(t=>Number(t.quadrant)===1);
+  const q2 = active.filter(t=>Number(t.quadrant)===2);
+  const q3 = active.filter(t=>Number(t.quadrant)===3);
+  const list = getFiltered();
+  const total = list.reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const doneMins = list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  let lines = ['📋 Утренний дайджест','─────────────────────',''];
+  if(q1.length){ lines.push(`🔴 Важное+Срочное (${q1.length}):`); q1.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  if(q3.length){ lines.push(`🟡 Срочное (${q3.length}):`);       q3.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  if(q2.length){ lines.push(`🔵 Важное (${q2.length}):`);        q2.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
   lines.push('─────────────────────');
   lines.push(`Задач: ${list.length}`);
   if(total) lines.push(`Осталось: ${fmtMins(total-doneMins)}`);
-  const el=document.getElementById('digest-text');
-  if(el) el.textContent=lines.join('\n');
+  const el = document.getElementById('digest-text');
+  if(el) el.textContent = lines.join('\n');
 }
 
 function showPage(p){
-  currentPage=p;
+  currentPage = p;
   ['tasks','kanban','digest'].forEach(x=>{
-    document.getElementById('page-'+x).style.display=x===p?'block':'none';
-    const b=document.getElementById('nav-'+x);
-    if(b) b.classList.toggle('on',x===p);
+    document.getElementById('page-'+x).style.display = x===p?'block':'none';
+    const b = document.getElementById('nav-'+x);
+    if(b) b.classList.toggle('on', x===p);
   });
   if(p==='kanban') renderKanban();
   if(p==='digest') buildDigest();
 }
 
 function getElapsedMinutes(task){
-  return task?.started_at?Math.floor((new Date()-new Date(task.started_at))/60000):0;
+  return task?.started_at ? Math.floor((new Date()-new Date(task.started_at))/60000) : 0;
 }
 
 async function kanbanStart(id){
-  const ip=tasks.find(t=>t.status==='inprogress');
-  if(ip){showToast('Сначала заверши текущую задачу!');return;}
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const ip = tasks.find(t=>t.status==='inprogress');
+  if(ip){ showToast('Сначала заверши текущую задачу!'); return; }
+  const t = tasks.find(x=>x.id===id); if(!t) return;
   t.status='inprogress'; t.started_at=new Date().toISOString();
   renderKanban(); render();
-  await apiFetch('POST',{action:'startTask',id});
+  await apiFetch('POST',{action:'startTask', id});
 }
 
 async function kanbanPause(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  const diff=getElapsedMinutes(t);
+  const t = tasks.find(x=>x.id===id); if(!t) return;
+  const diff = getElapsedMinutes(t);
   t.status='new'; t.worked_mins=(Number(t.worked_mins)||0)+diff;
   t.mins=Math.max(0,(Number(t.mins)||0)-diff); t.started_at='';
   clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'pauseTask',id,workedMins:diff});
+  await apiFetch('POST',{action:'pauseTask', id, workedMins:diff});
   showToast('Пауза ⏸');
 }
 
 async function kanbanCancel(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
+  const t = tasks.find(x=>x.id===id); if(!t) return;
   t.status='new'; t.started_at='';
   clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'updateTask',id,fields:{status:'new',started_at:''}});
+  await apiFetch('POST',{action:'updateTask', id, fields:{status:'new',started_at:''}});
   showToast('Возвращено ↩');
 }
 
 async function kanbanDone(id){
-  const t=tasks.find(x=>String(x.id)===String(id)); if(!t) return;
-  const diff=getElapsedMinutes(t);
+  const t = tasks.find(x=>x.id===id); if(!t) return;
+  const diff = getElapsedMinutes(t);
   t.done=true; t.status='done';
   t.worked_mins=(Number(t.worked_mins)||0)+diff; t.started_at='';
   clearInterval(timerInterval); renderKanban(); render();
-  await apiFetch('POST',{action:'doneTask',id,workedMins:diff});
+  await apiFetch('POST',{action:'doneTask', id, workedMins:diff});
   showToast('Выполнено! 🎉');
 }
 
+// Инициализация масок времени после загрузки DOM
+initTimeMask('f-time-from');
+initTimeMask('f-time-to');
 loadTasks();
 </script>
 </body>
