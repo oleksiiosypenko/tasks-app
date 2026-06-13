@@ -205,59 +205,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
-<div id="page-settings" style="display:none">
-  <div class="topbar">
-    <h1>Настройки</h1>
-    <button class="icon-btn" onclick="showPage('tasks')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-  </div>
-  <div class="settings-wrap">
-    <div class="settings-section">
-      <div class="settings-section-title">👁 Отображение</div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Показывать выполненные</div></div>
-        <button class="toggle on" id="s-show-done" onclick="this.classList.toggle('on'); saveSettings()"></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal-overlay" id="modal" style="display:none">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <h2 id="modal-title">Новая задача</h2>
-    <input type="hidden" id="f-id"/>
-    <div class="form-group">
-      <label>Название</label>
-      <input type="text" id="f-title" placeholder="Что нужно сделать?"/>
-    </div>
-    <div class="form-group">
-      <label>Квадрант</label>
-      <div class="q-grid">
-        <div class="q-option selected" data-q="1" onclick="selectQ(1)"><div class="q-option-title" style="color:var(--q1t)">Важное+Срочное</div></div>
-        <div class="q-option" data-q="2" onclick="selectQ(2)"><div class="q-option-title" style="color:var(--q2t)">Важное, не срочное</div></div>
-        <div class="q-option" data-q="3" onclick="selectQ(3)"><div class="q-option-title" style="color:var(--q3t)">Срочное, не важное</div></div>
-        <div class="q-option" data-q="4" onclick="selectQ(4)"><div class="q-option-title" style="color:var(--q4t)">Низкий приоритет</div></div>
-      </div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Категория</label><select id="f-cat"><option value="business">Бизнес</option><option value="personal">Личное</option></select></div>
-      <div class="form-group"><label>Повторяемость</label><select id="f-recurrence"><option value="none">Один раз</option><option value="daily">Каждый день</option><option value="weekdays">По будням</option><option value="weekends">По выходным</option></select></div>
-    </div>
-    <div class="form-row">
-      <div class="form-group"><label>Дедлайн</label><input type="date" id="f-deadline"/></div>
-      <div class="form-group"><label>Длительность (мин)</label><input type="number" id="f-mins" placeholder="30"/></div>
-    </div>
-    <div class="form-section">
-      <div class="form-section-title">🕒 Временное окно</div>
-      <div class="form-row">
-        <div class="form-group"><label>С</label><div class="time-wrap"><input type="text" id="f-time-from" placeholder="09:00"/></div></div>
-        <div class="form-group"><label>До</label><div class="time-wrap"><input type="text" id="f-time-to" placeholder="10:00"/></div></div>
-      </div>
-    </div>
-    <button class="btn-primary" id="save-btn" onclick="saveTask()">Сохранить задачу</button>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <nav class="bottom-nav">
@@ -306,16 +253,6 @@ async function apiFetch(method,data){
   catch(e){ showToast('Ошибка соединения'); return null; }
 }
 
-async function loadSettings(){
-  try{ const r=await fetch(API+'?action=getSettings'); const d=await r.json(); if(d&&!d.error) appSettings={...appSettings,...d}; }catch(e){}
-  const tsd=document.getElementById('s-show-done'); if(tsd) tsd.classList.toggle('on',!!appSettings.showDone);
-}
-
-async function saveSettings(){
-  appSettings.showDone=document.getElementById('s-show-done')?.classList.contains('on');
-  await apiFetch('POST',{action:'saveSettings',settings:appSettings}); showToast('Сохранено ✅');
-}
-
 async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
   const data=await apiFetch('GET'); if(data&&Array.isArray(data)){ tasks=data.map(normalizeTask); nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1; }
@@ -359,16 +296,36 @@ function renderTiles(){
   document.getElementById('tiles').innerHTML=tiles.map(tile=>`<div class="tile${filter.tile===tile.key?' active':''}" onclick="setTileFilter('${tile.key}')"><div class="tile-n ${tile.cls||''}">${tile.n}</div><div class="tile-l">${tile.label}</div></div>`).join('');
 }
 
+/* ИСПРАВЛЕННЫЙ МАТЕМАТИЧЕСКИЙ РАСЧЕТ ПРОГРЕСС-БАРА: Больше никакого задвоения минут */
 function renderProgress(){
   const list=getFiltered(); const ad=list.filter(t=>t.status!=='missed');
-  const total=ad.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
-  const done=ad.reduce((s,t)=>t.done?s+(Number(t.mins)||0)+(Number(t.worked_mins)||0):s+(Number(t.worked_mins)||0),0);
-  const pct=total?Math.min(100,Math.round(done/total*100)):0;
-  document.getElementById('prog-fill').style.width=pct+'%'; document.getElementById('prog-label').textContent=fmtMins(done)+' / '+fmtMins(total)+' ('+pct+'%)';
-  const rem=ad.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0); document.getElementById('total-val').innerHTML=`<strong>${fmtMins(rem)}</strong>`;
+  
+  // Общий объём времени за сегодня
+  const total = ad.reduce((s, t) => {
+    if(t.done) {
+      // Для закрытой задачи берем максимум между тем, что планировали и тем, что реально наработали
+      return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
+    }
+    // Для активных задач берем плановые минуты плюс то, что уже успели наработать на паузах
+    return s + (Number(t.mins)||0) + (Number(t.worked_mins)||0);
+  }, 0);
+
+  // Сколько времени уже реально "успешно выполнено" или набрано
+  const done = ad.reduce((s, t) => {
+    if(t.done) {
+      return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
+    }
+    return s + (Number(t.worked_mins)||0);
+  }, 0);
+
+  const pct = total ? Math.min(100, Math.round(done / total * 100)) : 0;
+  document.getElementById('prog-fill').style.width = pct + '%'; 
+  document.getElementById('prog-label').textContent = fmtMins(done) + ' / ' + fmtMins(total) + ' (' + pct + '%)';
+  
+  const rem = ad.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0); 
+  document.getElementById('total-val').innerHTML = `<strong>${fmtMins(rem)}</strong>`;
 }
 
-/* ОБНОВЛЕННАЯ ФУНКЦИЯ: Теперь worked_mins (Набрано) красиво выводится прямо в карточке задачи */
 function renderTasks(){
   const list=getFiltered(); const el=document.getElementById('task-list'); if(!list.length){el.innerHTML='<div class="empty">Задач нет ✨</div>';return;}
   const groups={1:[],2:[],3:[],4:[],6:[]};
@@ -396,7 +353,6 @@ function renderTasks(){
       let actionBtn=(!t.done && t.status!=='inprogress' && t.status!=='paused')?`<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`:'';
       if(!t.done && (t.status==='inprogress'||t.status==='paused')) actionBtn=`<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
 
-      // Добавляем красивую зеленую плашку, если в задаче накопились минуты worked_mins
       const workedLabel = (t.worked_mins > 0) ? `<span class="tmeta" style="color:var(--success); font-weight:700;">📊 Набрано: ${fmtMins(t.worked_mins)}</span>` : '';
 
       return `<div class="task ${cls}" data-id="${t.id}">
