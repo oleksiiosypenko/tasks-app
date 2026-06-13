@@ -64,7 +64,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .task.q3{border-left-color:var(--q3);background:linear-gradient(90deg,#241f16 0%,var(--bg2) 15%)}
 .task.q4{border-left-color:var(--q4);opacity:.6}
 
-/* Выполненные */
 .task.q6{border-left-color:var(--success);background:linear-gradient(90deg,#0a2410 0%,var(--bg2) 15%)}
 .task.done-task{opacity:.5;filter:grayscale(20%)}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
@@ -122,6 +121,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .timer-block{background:#0d0d1a;border-radius:var(--radius-sm);padding:14px;margin-bottom:12px;border:1px solid #2a2a4a}
 .timer-val{font-size:42px;font-weight:700;font-family:monospace;color:#fff;line-height:1;text-align:center}
 .timer-val.paused-val{color:#555}
+.timer-sub{font-size:12px;color:var(--text2);text-align:center;margin-top:4px}
 .timer-prog{background:#1a1a2a;border-radius:4px;height:6px;margin-top:10px;overflow:hidden}
 .timer-fill{background:var(--accent);height:100%;border-radius:4px;transition:width 1s linear}
 .timer-fill.paused-fill{background:#444}
@@ -135,34 +135,57 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .kbtn-cancel{background:var(--bg3);color:#fff}
 .kbtn-extend{background:#1a1a3a;color:#a3a3ff;border:1px solid #3a3a6a}
 
-/* Bottom Nav */
+/* Digest & Settings */
+.digest-wrap{padding:0 16px}
+.digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border)}
+.settings-wrap{padding:0 16px}
+.settings-section{margin-bottom:20px}
+.settings-section-title{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+.settings-row{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;border:1px solid var(--border)}
+.settings-row-label{font-size:14px;font-weight:600}
+.settings-row-sub{font-size:12px;color:var(--text2);margin-top:2px}
+.settings-row input,.settings-row select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:6px 10px;font-size:14px;font-weight:600;min-width:80px;text-align:center}
+.settings-full{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;border:1px solid var(--border)}
+.settings-full label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px;font-weight:600}
+.settings-full input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:14px}
+.toggle{width:48px;height:26px;background:var(--bg3);border-radius:13px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;border:none}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
+.toggle.on::after{left:25px}
+.settings-save-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
+
+/* Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;gap:3px}
 .nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .nav-btn.on{color:var(--accent);border-top:2px solid var(--accent);padding-top:8px}
 
-/* Modals */
+/* Modal */
 .toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
-.modal{background:#171719;border-radius:24px 24px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border-top:1px solid #2c2e}
+.modal{background:#171719;border-radius:24px 24px 0 0;padding:20px 16px 36px;width:100%;max-height:92vh;overflow-y:auto;border-top:1px solid #2c2c2e}
 .modal-handle{width:40px;height:5px;background:var(--bg3);border-radius:3px;margin:0 auto 16px}
 .modal h2{font-size:19px;font-weight:700;margin-bottom:16px}
 .form-group{margin-bottom:14px}
 .form-group label{font-size:13px;color:#fff;display:block;margin-bottom:6px;font-weight:600}
+.form-group label span{color:var(--text2);font-weight:400;font-size:11px;margin-left:4px}
 .form-group input,.form-group select{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;background:var(--bg2);color:#fff;outline:none;font-weight:500}
+.form-group input:focus,.form-group select:focus{border-color:var(--accent)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .form-section{background:rgba(255,255,255,.02);padding:10px;border-radius:var(--radius-sm);margin-bottom:14px;border:1px solid var(--border)}
 .form-section-title{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
 .q-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.q-option{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;cursor:pointer;background:var(--bg2)}
+.q-option{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;cursor:pointer;transition:all .15s;background:var(--bg2)}
 .q-option.selected{border-color:var(--accent);background:#252528}
 .q-option-title{font-size:13px;font-weight:700}
 .q-option-sub{font-size:10px;color:var(--text2);margin-top:2px}
-.btn-primary{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:700}
+.notif-info{background:var(--q2bg);border:1px solid #3a3a6a;border-radius:var(--radius-sm);padding:10px;margin-top:8px;font-size:12px;color:var(--q2t);line-height:1.5}
+.btn-primary{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
+.btn-primary:disabled{opacity:.5}
 .loading-wrap{text-align:center;padding:40px;color:var(--text2);font-size:14px;font-weight:600}
 .time-wrap{position:relative}
-.time-wrap::after{content:'🕒';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px}
+.time-wrap::after{content:'🕒';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
 .time-wrap input{padding-right:36px}
 </style>
 </head>
@@ -172,8 +195,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="topbar">
     <h1>Задачи</h1>
     <div class="topbar-right">
-      <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
-      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="icon-btn" onclick="loadTasks()">
+        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+      </button>
+      <button class="icon-btn" onclick="showPage('settings')">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
     </div>
   </div>
   <div class="tiles" id="tiles"></div>
@@ -200,16 +227,180 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <div id="page-kanban" style="display:none">
   <div class="topbar">
     <h1>Канбан</h1>
-    <button class="icon-btn" onclick="renderKanban()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
+    <button class="icon-btn" onclick="renderKanban()">
+      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+    </button>
   </div>
   <div class="kanban-wrap" id="kanban-wrap"></div>
+</div>
+
+<div id="page-digest" style="display:none">
+  <div class="topbar"><h1>Дайджест</h1></div>
+  <div class="digest-wrap"><div class="digest-box" id="digest-text"></div></div>
+</div>
+
+<div id="page-settings" style="display:none">
+  <div class="topbar">
+    <h1>Настройки</h1>
+    <button class="icon-btn" onclick="showPage('tasks')">
+      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="settings-wrap">
+    <div class="settings-section">
+      <div class="settings-section-title">🔔 Уведомления</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Время дайджеста</div><div class="settings-row-sub">Утреннее сообщение</div></div>
+        <input type="text" id="s-digest-time" value="08:00" maxlength="5" inputmode="numeric" style="width:75px"/>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Напомнить за N мин</div><div class="settings-row-sub">До конца задачи</div></div>
+        <input type="number" id="s-notify-before" value="10" min="0" max="60" style="width:65px"/>
+      </div>
+      <div class="settings-full">
+        <label>Текст уведомления ({task} = название)</label>
+        <input type="text" id="s-notify-text" placeholder="⏰ До конца «{task}» осталось 10 мин"/>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Уведомления включены</div></div>
+        <button class="toggle on" id="s-notify-on" onclick="this.classList.toggle('on')"></button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">⏰ Рабочие часы</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Начало дня</div></div>
+        <input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Конец дня</div></div>
+        <input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/>
+      </div>
+    </div>
+    <div class="settings-section">
+      <div class="settings-section-title">👁 Отображение</div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Показывать выполненные</div></div>
+        <button class="toggle" id="s-show-done" onclick="this.classList.toggle('on')"></button>
+      </div>
+      <div class="settings-row">
+        <div><div class="settings-row-label">Сортировка</div></div>
+        <select id="s-sort" style="width:130px">
+          <option value="quadrant">По квадранту</option>
+          <option value="deadline">По дедлайну</option>
+        </select>
+      </div>
+    </div>
+    <button class="settings-save-btn" onclick="saveSettings()">💾 Сохранить</button>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal" style="display:none">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <h2 id="modal-title">Новая задача</h2>
+    <input type="hidden" id="f-id"/>
+    <div class="form-group">
+      <label>Название</label>
+      <input type="text" id="f-title" placeholder="Что нужно сделать?"/>
+    </div>
+    <div class="form-group">
+      <label>Квадрант</label>
+      <div class="q-grid">
+        <div class="q-option selected" data-q="1" onclick="selectQ(1)">
+          <div class="q-option-title" style="color:var(--q1t)">Важное + Срочное</div>
+          <div class="q-option-sub">Кризисы, дедлайны</div>
+        </div>
+        <div class="q-option" data-q="2" onclick="selectQ(2)">
+          <div class="q-option-title" style="color:var(--q2t)">Важное, не срочное</div>
+          <div class="q-option-sub">Стратегия, развитие</div>
+        </div>
+        <div class="q-option" data-q="3" onclick="selectQ(3)">
+          <div class="q-option-title" style="color:var(--q3t)">Срочное, не важное</div>
+          <div class="q-option-sub">Рутина, мелочи</div>
+        </div>
+        <div class="q-option" data-q="4" onclick="selectQ(4)">
+          <div class="q-option-title" style="color:var(--q4t)">Низкий приоритет</div>
+          <div class="q-option-sub">Отложить</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Категория</label>
+        <select id="f-cat">
+          <option value="business">Бизнес</option>
+          <option value="personal">Личное</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Повторяемость</label>
+        <select id="f-recurrence">
+          <option value="none">Один раз</option>
+          <option value="daily">Каждый день</option>
+          <option value="weekdays">По будням</option>
+          <option value="weekends">По выходным</option>
+          <option value="weekly">Раз в неделю</option>
+          <option value="monthly">Раз в месяц</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Дедлайн <span>(необяз.)</span></label>
+        <input type="date" id="f-deadline"/>
+      </div>
+      <div class="form-group">
+        <label>Длительность (мин)</label>
+        <input type="number" id="f-mins" placeholder="30" min="5" max="480"/>
+      </div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">🕒 Временное окно <span style="font-weight:400;text-transform:none;font-size:10px">(необязательно)</span></div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>С</label>
+          <div class="time-wrap"><input type="text" id="f-time-from" placeholder="09:00" maxlength="5" inputmode="numeric"/></div>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>До</label>
+          <div class="time-wrap"><input type="text" id="f-time-to" placeholder="10:00" maxlength="5" inputmode="numeric"/></div>
+        </div>
+      </div>
+      <div class="notif-info" id="notif-info" style="display:none"></div>
+    </div>
+    <div class="form-section">
+      <div class="form-section-title">📅 Дни месяца <span style="font-weight:400;text-transform:none;font-size:10px">(для повторяемых)</span></div>
+      <div class="form-row">
+        <div class="form-group" style="margin-bottom:0">
+          <label>С числа</label>
+          <input type="number" id="f-day-from" placeholder="1" min="1" max="31" inputmode="numeric"/>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+          <label>По число</label>
+          <input type="number" id="f-day-to" placeholder="31" min="1" max="31" inputmode="numeric"/>
+        </div>
+      </div>
+    </div>
+    <button class="btn-primary" id="save-btn" onclick="saveTask()">Сохранить задачу</button>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Задачи</button>
-  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')"><svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg>Фокус</button>
+  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">
+    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+    Задачи
+  </button>
+  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')">
+    <svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg>
+    Фокус
+  </button>
+  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')">
+    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
+    Дайджест
+  </button>
 </nav>
 
 <script>
@@ -220,15 +411,30 @@ let tasks = [];
 let nextId = Date.now();
 let filter = {cat:'all', date:'today', tile:null};
 let selectedQ = 1; let timerInterval = null; let currentPage = 'tasks';
-let appSettings = { digestTime:'08:00', notifyBefore:10, notifyText:'', notifyOn:true, showDone:true };
+let appSettings = { 
+  digestTime:'08:00', notifyBefore:10, 
+  notifyText:'⏰ До конца «{task}» осталось 10 мин', 
+  notifyOn:true, workFrom:'09:00', workTo:'18:00',
+  showDone:true, sortBy:'quadrant' 
+};
 
 const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
+// ---- Utility ----
 function initTimeMask(id) {
   const el = document.getElementById(id); if(!el) return;
   el.addEventListener('input', function(){
     let v = this.value.replace(/\D/g,''); if(v.length>4) v=v.slice(0,4);
     if(v.length>=3) v=v.slice(0,2)+':'+v.slice(2); this.value=v;
+  });
+  el.addEventListener('blur', function(){
+    const v=this.value; if(!v) return;
+    const m=v.match(/^(\d{1,2}):?(\d{0,2})$/);
+    if(m){
+      const hh=Math.min(23,parseInt(m[1]||0)).toString().padStart(2,'0');
+      const mm=Math.min(59,parseInt(m[2]||0)).toString().padStart(2,'0');
+      this.value=hh+':'+mm;
+    } else this.value='';
   });
 }
 
@@ -240,8 +446,13 @@ function showToast(msg){
 function normalizeTask(t){
   let deadline=''; if(t.deadline){ const m=String(t.deadline).match(/^(\d{4}-\d{2}-\d{2})/); if(m) deadline=m[1]; }
   function cleanTime(v){ if(!v) return ''; const s=String(v), iso=s.match(/T(\d{2}):(\d{2})/); return iso?iso[1]+':'+iso[2]:(s.match(/^(\d{2}):(\d{2})/)?s.slice(0,5):''); }
-  return { ...t, id:String(t.id), deadline, time_from:cleanTime(t.time_from), time_to:cleanTime(t.time_to), quadrant:Number(t.quadrant)||1, mins:Number(t.mins)||0, worked_mins:Number(t.worked_mins)||0, 
-  done: String(t.done).toLowerCase()==='true'||t.done===1||t.done===true, status:t.status||'new', recurrence:t.recurrence||'none', started_at:t.started_at||'', paused_at:t.paused_at||'', paused_remaining:Number(t.paused_remaining)||0 };
+  return { 
+    ...t, id:String(t.id), deadline, time_from:cleanTime(t.time_from), time_to:cleanTime(t.time_to), quadrant:Number(t.quadrant)||1, 
+    mins:Number(t.mins)||0, worked_mins:Number(t.worked_mins)||0, postpone_count:Number(t.postpone_count)||0,
+    day_from:t.day_from?String(t.day_from):'', day_to:t.day_to?String(t.day_to):'',
+    done: String(t.done).toLowerCase()==='true'||t.done===1||t.done===true, status:t.status||'new', recurrence:t.recurrence||'none', 
+    started_at:t.started_at||'', paused_at:t.paused_at||'', paused_remaining:Number(t.paused_remaining)||0, notified:t.notified===true||t.notified==='TRUE'
+  };
 }
 
 function todayStr(){ const d=new Date(); return new Date(d.getTime()-(d.getTimezoneOffset()*60000)).toISOString().split('T')[0]; }
@@ -253,15 +464,51 @@ async function apiFetch(method,data){
   catch(e){ showToast('Ошибка соединения'); return null; }
 }
 
+// ---- Settings ----
+async function loadSettings(){
+  try{ const r=await fetch(API+'?action=getSettings'); const d=await r.json(); if(d&&!d.error) appSettings={...appSettings,...d}; }catch(e){}
+  applySettingsUI();
+}
+
+function applySettingsUI(){
+  const s=appSettings;
+  const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
+  sv('s-digest-time',s.digestTime); sv('s-notify-before',s.notifyBefore);
+  sv('s-notify-text',s.notifyText); sv('s-work-from',s.workFrom);
+  sv('s-work-to',s.workTo); sv('s-sort',s.sortBy);
+  const ton=document.getElementById('s-notify-on'); const tsd=document.getElementById('s-show-done');
+  if(ton) ton.classList.toggle('on',!!s.notifyOn);
+  if(tsd) tsd.classList.toggle('on',!!s.showDone);
+}
+
+async function saveSettings(){
+  appSettings={
+    digestTime:document.getElementById('s-digest-time')?.value||'08:00',
+    notifyBefore:parseInt(document.getElementById('s-notify-before')?.value)||10,
+    notifyText:document.getElementById('s-notify-text')?.value||'⏰ До конца «{task}» осталось 10 мин',
+    notifyOn:document.getElementById('s-notify-on')?.classList.contains('on'),
+    workFrom:document.getElementById('s-work-from')?.value||'09:00',
+    workTo:document.getElementById('s-work-to')?.value||'18:00',
+    showDone:document.getElementById('s-show-done')?.classList.contains('on'),
+    sortBy:document.getElementById('s-sort')?.value||'quadrant',
+  };
+  showToast('Сохраняю...');
+  const res=await apiFetch('POST',{action:'saveSettings',settings:appSettings});
+  showToast(res?.ok?'Сохранено ✅':'Ошибка');
+  renderTasks(); // Обновляем списки после переключения "Показывать выполненные"
+}
+
+// ---- Tasks Load ----
 async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
   const data=await apiFetch('GET'); if(data&&Array.isArray(data)){ tasks=data.map(normalizeTask); nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1; }
-  autoSelectCat(); render(); if(currentPage==='kanban') renderKanban();
+  autoSelectCat(); render(); if(currentPage==='kanban') renderKanban(); if(currentPage==='digest') buildDigest();
 }
 
 function fmtMins(m){ m=Number(m); return !m?'0м':(m<60?m+'м':Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'')); }
 function fmtDate(dl){ if(!dl)return ''; const d=new Date(dl+'T12:00:00'); return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'}); }
 
+// ---- Filters & Sorts ----
 function getFiltered(){
   let t=[...tasks]; const td=todayStr(), tm=tomorrowStr();
   if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
@@ -271,9 +518,15 @@ function getFiltered(){
   else if(filter.tile==='overdue') t=t.filter(x=>getTaskOverdueType(x)!==null&&!x.done);
   else if(filter.date==='today') t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
 
+  if(!appSettings.showDone&&filter.tile!=='overdue') t=t.filter(x=>!x.done);
+
   t.sort((a,b)=>{
     if(a.status==='inprogress'||a.status==='paused') return -1; if(b.status==='inprogress'||b.status==='paused') return 1;
     if(a.done && !b.done) return 1; if(!a.done && b.done) return -1;
+    if(appSettings.sortBy==='deadline'){
+      if(a.deadline&&b.deadline) return a.deadline.localeCompare(b.deadline);
+      if(a.deadline) return -1; if(b.deadline) return 1;
+    }
     return Number(a.quadrant)-Number(b.quadrant);
   });
   return t;
@@ -296,32 +549,20 @@ function renderTiles(){
   document.getElementById('tiles').innerHTML=tiles.map(tile=>`<div class="tile${filter.tile===tile.key?' active':''}" onclick="setTileFilter('${tile.key}')"><div class="tile-n ${tile.cls||''}">${tile.n}</div><div class="tile-l">${tile.label}</div></div>`).join('');
 }
 
-/* ИСПРАВЛЕННЫЙ МАТЕМАТИЧЕСКИЙ РАСЧЕТ ПРОГРЕСС-БАРА: Больше никакого задвоения минут */
+// Корректная математика прогресс-бара без задвоений минут
 function renderProgress(){
   const list=getFiltered(); const ad=list.filter(t=>t.status!=='missed');
-  
-  // Общий объём времени за сегодня
   const total = ad.reduce((s, t) => {
-    if(t.done) {
-      // Для закрытой задачи берем максимум между тем, что планировали и тем, что реально наработали
-      return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
-    }
-    // Для активных задач берем плановые минуты плюс то, что уже успели наработать на паузах
+    if(t.done) return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
     return s + (Number(t.mins)||0) + (Number(t.worked_mins)||0);
   }, 0);
-
-  // Сколько времени уже реально "успешно выполнено" или набрано
   const done = ad.reduce((s, t) => {
-    if(t.done) {
-      return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
-    }
+    if(t.done) return s + Math.max(Number(t.mins)||0, Number(t.worked_mins)||0);
     return s + (Number(t.worked_mins)||0);
   }, 0);
-
   const pct = total ? Math.min(100, Math.round(done / total * 100)) : 0;
   document.getElementById('prog-fill').style.width = pct + '%'; 
   document.getElementById('prog-label').textContent = fmtMins(done) + ' / ' + fmtMins(total) + ' (' + pct + '%)';
-  
   const rem = ad.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0); 
   document.getElementById('total-val').innerHTML = `<strong>${fmtMins(rem)}</strong>`;
 }
@@ -385,7 +626,7 @@ function render(){ renderTiles(); renderProgress(); renderTasks(); syncDateButto
 
 function setFilter(k,v){ 
   if(k==='date'){ filter.tile=null; filter.date=v; autoSelectCat(); } 
-  else if(k==='cat') { filter.cat=v; }
+  else if(k==='cat') { filter.cat=v; syncCatButtons(); } // Исправлено: UI кнопок будет переключаться визуально
   render(); 
 }
 
@@ -402,11 +643,29 @@ async function delTask(id){
   await apiFetch('POST',{action:'deleteTask',id});
 }
 
+// ---- Modal / Edit ----
 function selectQ(q){ selectedQ=q; document.querySelectorAll('.q-option').forEach(el=>el.classList.toggle('selected',Number(el.dataset.q)===q)); }
+
+function updateNotifInfo(){
+  const tf=document.getElementById('f-time-from').value; const tt=document.getElementById('f-time-to').value; const mins=parseInt(document.getElementById('f-mins').value)||0;
+  const box=document.getElementById('notif-info'); if(!box) return;
+  if(!appSettings.notifyOn||(!tf&&!tt)){ box.style.display='none'; return; }
+  const before=appSettings.notifyBefore||10; let info='';
+  if(tt){
+    const [h,m]=tt.split(':').map(Number); const nm=h*60+m-before;
+    if(nm>=0) info=`🔔 Уведомление придёт в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')} (за ${before} мин до окончания)`;
+  } else if(tf&&mins){
+    const [h,m]=tf.split(':').map(Number); const nm=h*60+m+mins-before;
+    if(nm>=0&&nm<1440) info=`🔔 Уведомление придёт в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')}`;
+  }
+  if(info){ box.style.display='block'; box.textContent=info; } else box.style.display='none';
+}
+
 function openModal(){
   document.getElementById('modal-title').textContent='Новая задача'; document.getElementById('f-id').value='';
   ['f-title','f-mins','f-time-from','f-time-to','f-day-from','f-day-to'].forEach(id=>{document.getElementById(id).value='';});
-  document.getElementById('f-deadline').value=''; document.getElementById('f-recurrence').value='none'; selectQ(1);
+  document.getElementById('f-deadline').value=''; document.getElementById('f-recurrence').value='none'; 
+  document.getElementById('f-cat').value=filter.cat!=='all'?filter.cat:'business'; document.getElementById('notif-info').style.display='none'; selectQ(1);
   document.getElementById('modal').style.display='flex';
 }
 
@@ -418,20 +677,22 @@ function openEditModal(id){
   document.getElementById('f-day-to').value=t.day_to||''; document.getElementById('f-time-from').value=t.time_from||'';
   document.getElementById('f-time-to').value=t.time_to||''; document.getElementById('f-deadline').value=t.deadline||'';
   document.getElementById('f-cat').value=t.cat||'business'; selectQ(Number(t.quadrant)||1);
-  document.getElementById('modal').style.display='flex';
+  document.getElementById('modal').style.display='flex'; updateNotifInfo();
 }
 function closeModal(){ document.getElementById('modal').style.display='none'; }
 document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+['f-time-from','f-time-to','f-mins','f-deadline'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',updateNotifInfo);});
 
 async function saveTask(){
   const title=document.getElementById('f-title').value.trim(); if(!title) return;
   const id=document.getElementById('f-id').value; const btn=document.getElementById('save-btn');
   btn.disabled=true; const taskData={ title, cat:document.getElementById('f-cat').value, quadrant:selectedQ, mins:parseInt(document.getElementById('f-mins').value)||0, deadline:document.getElementById('f-deadline').value||'', recurrence:document.getElementById('f-recurrence').value, day_from:document.getElementById('f-day-from').value||'', day_to:document.getElementById('f-day-to').value||'', time_from:document.getElementById('f-time-from').value||'', time_to:document.getElementById('f-time-to').value||'' };
   if(id){ const t=tasks.find(x=>x.id===id); if(t) Object.assign(t,taskData); closeModal(); await apiFetch('POST',{action:'updateTask',id,fields:taskData}); }
-  else { const newTask={id:String(nextId++),...taskData,done:false,status:'new',worked_mins:0}; tasks.push(newTask); closeModal(); await apiFetch('POST',{action:'addTask',task:newTask}); }
+  else { const newTask={id:String(nextId++),...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0}; tasks.push(newTask); closeModal(); await apiFetch('POST',{action:'addTask',task:newTask}); }
   btn.disabled=false; loadTasks();
 }
 
+// ---- Kanban ----
 function renderKanban(){
   const wrap=document.getElementById('kanban-wrap'); const active=tasks.find(t=>t.status==='inprogress'||t.status==='paused');
   if(!active){ wrap.innerHTML=`<div class="k-empty"><span class="k-empty-icon">⏱</span>Нет активной задачи</div>`; return; }
@@ -440,10 +701,12 @@ function renderKanban(){
   const totalSec=(Number(active.mins)||30)*60; const pct=totalSec?Math.min(100,Math.round((totalSec-remainSec)/totalSec*100)):0;
 
   wrap.innerHTML=`<div class="k-card ${isPaused?'paused':'inprogress'}">
+    <div class="k-card-head"><div class="k-status-dot ${isPaused?'paused':'inprogress'}"></div><div class="k-status-label ${isPaused?'paused':'inprogress'}">${isPaused?'На паузе':'В работе'}</div></div>
     <div class="k-title">${active.title}</div>
     <div class="timer-block">
-      <div class="timer-val" id="timer-val">${Math.floor(remainSec/60).toString().padStart(2,'0')}:${(remainSec%60).toString().padStart(2,'0')}</div>
-      <div class="timer-prog"><div class="timer-fill" id="timer-fill" style="width:${pct}%"></div></div>
+      <div class="timer-val ${isPaused?'paused-val':''}" id="timer-val">${Math.floor(remainSec/60).toString().padStart(2,'0')}:${(remainSec%60).toString().padStart(2,'0')}</div>
+      <div class="timer-sub">Всего: ${fmtMins(active.mins)}${active.worked_mins?' · Набрано: '+fmtMins(active.worked_mins):''}</div>
+      <div class="timer-prog"><div class="timer-fill ${isPaused?'paused-fill':''}" id="timer-fill" style="width:${pct}%"></div></div>
     </div>
     ${isPaused?`
     <div class="k-actions">
@@ -456,7 +719,8 @@ function renderKanban(){
       <button class="kbtn kbtn-done" onclick="kanbanDone('${active.id}')">✅ Готово</button>
       <button class="kbtn kbtn-pause" onclick="kanbanPause('${active.id}')">⏸ Пауза</button>
     </div>
-    <div class="k-actions2"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть в список</button></div>`}
+    <div class="k-actions2"><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',10)">+10 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',20)">+20 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',30)">+30 мин</button></div>
+    <div class="k-actions2" style="margin-top:8px"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть в список</button></div>`}
   </div>`;
   startTimerTick(active, remainSec, totalSec, isPaused);
 }
@@ -470,9 +734,7 @@ function startTimerTick(task, initRemain, totalSec, isPaused){
   },1000);
 }
 
-function getElapsedMinutes(task){
-  return task?.started_at ? Math.floor((new Date() - new Date(task.started_at))/60000) : 0;
-}
+function getElapsedMinutes(task){ return task?.started_at ? Math.floor((new Date() - new Date(task.started_at))/60000) : 0; }
 
 async function kanbanStart(id){
   const active=tasks.find(t=>t.status==='inprogress'||t.status==='paused'); if(active) return;
@@ -513,12 +775,39 @@ async function kanbanDone(id){
   await apiFetch('POST',{action:'doneTask',id,workedMins:diff});
 }
 
-function showPage(p){
-  currentPage=p; ['tasks','kanban','digest'].forEach(x=>{ const pg=document.getElementById('page-'+x); if(pg) pg.style.display=x===p?'block':'none'; const b=document.getElementById('nav-'+x); if(b) b.classList.toggle('on',x===p); });
-  if(p==='kanban') renderKanban();
+async function kanbanExtend(id,addMins){
+  const t=tasks.find(x=>x.id===id); if(!t) return;
+  t.mins=(Number(t.mins)||0)+addMins; renderKanban(); render();
+  await apiFetch('POST',{action:'updateTask',id,fields:{mins:t.mins}});
 }
 
-['f-time-from','f-time-to'].forEach(initTimeMask); loadTasks();
+// ---- Digest ----
+function buildDigest(){
+  const td=todayStr();
+  const active=tasks.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
+  const overdue=tasks.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
+  const q1=active.filter(t=>Number(t.quadrant)===1); const q2=active.filter(t=>Number(t.quadrant)===2); const q3=active.filter(t=>Number(t.quadrant)===3);
+  const list=getFiltered(); const total=list.reduce((s,t)=>s+(Number(t.mins)||0),0); const doneMins=list.filter(t=>t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  let lines=['📋 Утренний дайджест','─────────────────────',''];
+  if(overdue.length){ lines.push(`⚠️ Просрочено (${overdue.length}):`); overdue.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  if(q1.length){ lines.push(`🔴 Важное+Срочное (${q1.length}):`); q1.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  if(q3.length){ lines.push(`🟡 Срочное (${q3.length}):`); q3.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  if(q2.length){ lines.push(`🔵 Важное (${q2.length}):`); q2.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
+  lines.push('─────────────────────'); lines.push(`Задач: ${list.length}`);
+  if(total) lines.push(`Осталось: ${fmtMins(total-doneMins)}`);
+  const el=document.getElementById('digest-text'); if(el) el.textContent=lines.join('\n');
+}
+
+// ---- Routing ----
+function showPage(p){
+  currentPage=p; ['tasks','kanban','digest','settings'].forEach(x=>{ const pg=document.getElementById('page-'+x); if(pg) pg.style.display=x===p?'block':'none'; const b=document.getElementById('nav-'+x); if(b) b.classList.toggle('on',x===p); });
+  if(p==='kanban') renderKanban();
+  if(p==='digest') buildDigest();
+  if(p==='settings') applySettingsUI();
+  if(p!=='kanban'&&timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+}
+
+['f-time-from','f-time-to','s-digest-time','s-work-from','s-work-to'].forEach(initTimeMask); loadSettings(); loadTasks();
 </script>
 </body>
 </html>
