@@ -135,27 +135,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .kbtn-cancel{background:var(--bg3);color:#fff}
 .kbtn-extend{background:#1a1a3a;color:#a3a3ff;border:1px solid #3a3a6a}
 
-/* Digest */
-.digest-wrap{padding:0 16px}
-.digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border)}
-
-/* Settings */
-.settings-wrap{padding:0 16px}
-.settings-section{margin-bottom:20px}
-.settings-section-title{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
-.settings-row{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;border:1px solid var(--border)}
-.settings-row-label{font-size:14px;font-weight:600}
-.settings-row-sub{font-size:12px;color:var(--text2);margin-top:2px}
-.settings-row input,.settings-row select{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:6px 10px;font-size:14px;font-weight:600;min-width:80px;text-align:center}
-.settings-full{background:var(--bg2);border-radius:var(--radius-sm);padding:14px;margin-bottom:8px;border:1px solid var(--border)}
-.settings-full label{font-size:13px;color:var(--text2);display:block;margin-bottom:6px;font-weight:600}
-.settings-full input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-sm);color:#fff;padding:10px 12px;font-size:14px}
-.toggle{width:48px;height:26px;background:var(--bg3);border-radius:13px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;border:none}
-.toggle.on{background:var(--accent)}
-.toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
-.toggle.on::after{left:25px}
-.settings-save-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
-
 /* Bottom Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;gap:3px}
@@ -189,13 +168,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </head>
 <body>
 
-<!-- TASKS -->
 <div id="page-tasks">
   <div class="topbar">
     <h1>Задачи</h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
-      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     </div>
   </div>
   <div class="tiles" id="tiles"></div>
@@ -219,7 +197,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="task-list" id="task-list"></div>
 </div>
 
-<!-- KANBAN -->
 <div id="page-kanban" style="display:none">
   <div class="topbar">
     <h1>Канбан</h1>
@@ -228,13 +205,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
-<!-- DIGEST -->
-<div id="page-digest" style="display:none">
-  <div class="topbar"><h1>Дайджест</h1></div>
-  <div class="digest-wrap"><div class="digest-box" id="digest-text"></div></div>
-</div>
-
-<!-- SETTINGS -->
 <div id="page-settings" style="display:none">
   <div class="topbar">
     <h1>Настройки</h1>
@@ -242,29 +212,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   </div>
   <div class="settings-wrap">
     <div class="settings-section">
-      <div class="settings-section-title">🔔 Уведомления</div>
+      <div class="settings-section-title">👁 Отображение</div>
       <div class="settings-row">
-        <div><div class="settings-row-label">Время дайджеста</div></div>
-        <input type="text" id="s-digest-time" value="08:00" maxlength="5" style="width:75px"/>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Напомнить за N мин</div></div>
-        <input type="number" id="s-notify-before" value="10" style="width:65px"/>
-      </div>
-      <div class="settings-full">
-        <label>Текст уведомления</label>
-        <input type="text" id="s-notify-text"/>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Уведомления включены</div></div>
-        <button class="toggle on" id="s-notify-on" onclick="this.classList.toggle('on')"></button>
+        <div><div class="settings-row-label">Показывать выполненные</div></div>
+        <button class="toggle on" id="s-show-done" onclick="this.classList.toggle('on'); saveSettings()"></button>
       </div>
     </div>
-    <button class="settings-save-btn" onclick="saveSettings()">💾 Сохранить</button>
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal" style="display:none">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -298,12 +254,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         <div class="form-group"><label>До</label><div class="time-wrap"><input type="text" id="f-time-to" placeholder="10:00"/></div></div>
       </div>
     </div>
-    <div class="form-section">
-      <div class="form-row">
-        <div class="form-group"><label>С числа</label><input type="number" id="f-day-from"/></div>
-        <div class="form-group"><label>По число</label><input type="number" id="f-day-to"/></div>
-      </div>
-    </div>
     <button class="btn-primary" id="save-btn" onclick="saveTask()">Сохранить задачу</button>
   </div>
 </div>
@@ -313,7 +263,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <nav class="bottom-nav">
   <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Задачи</button>
   <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')"><svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg>Фокус</button>
-  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Дайджест</button>
 </nav>
 
 <script>
@@ -348,7 +297,6 @@ function normalizeTask(t){
   done: String(t.done).toLowerCase()==='true'||t.done===1||t.done===true, status:t.status||'new', recurrence:t.recurrence||'none', started_at:t.started_at||'', paused_at:t.paused_at||'', paused_remaining:Number(t.paused_remaining)||0 };
 }
 
-/* ИСПРАВЛЕНИЕ: Локальная зона для "Сегодня", чтобы избежать багов с пропаданием после полуночи */
 function todayStr(){ const d=new Date(); return new Date(d.getTime()-(d.getTimezoneOffset()*60000)).toISOString().split('T')[0]; }
 function tomorrowStr(){ const d=new Date(Date.now()+86400000); return new Date(d.getTime()-(d.getTimezoneOffset()*60000)).toISOString().split('T')[0]; }
 function getTaskOverdueType(t){ if(t.status==='missed') return 'missed'; if(t.deadline&&!t.done&&t.deadline<todayStr()) return 'deadline'; return null; }
@@ -420,6 +368,7 @@ function renderProgress(){
   const rem=ad.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0); document.getElementById('total-val').innerHTML=`<strong>${fmtMins(rem)}</strong>`;
 }
 
+/* ОБНОВЛЕННАЯ ФУНКЦИЯ: Теперь worked_mins (Набрано) красиво выводится прямо в карточке задачи */
 function renderTasks(){
   const list=getFiltered(); const el=document.getElementById('task-list'); if(!list.length){el.innerHTML='<div class="empty">Задач нет ✨</div>';return;}
   const groups={1:[],2:[],3:[],4:[],6:[]};
@@ -447,12 +396,20 @@ function renderTasks(){
       let actionBtn=(!t.done && t.status!=='inprogress' && t.status!=='paused')?`<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`:'';
       if(!t.done && (t.status==='inprogress'||t.status==='paused')) actionBtn=`<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
 
+      // Добавляем красивую зеленую плашку, если в задаче накопились минуты worked_mins
+      const workedLabel = (t.worked_mins > 0) ? `<span class="tmeta" style="color:var(--success); font-weight:700;">📊 Набрано: ${fmtMins(t.worked_mins)}</span>` : '';
+
       return `<div class="task ${cls}" data-id="${t.id}">
         <div class="check${t.done?' on':''}" data-action="toggle" data-id="${t.id}">${t.done?'✔':''}</div>
         <div class="task-body" data-action="edit" data-id="${t.id}">
           <div class="task-title">${t.title}${fire}${rec}</div>
           <div class="badges"><span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>${statusBadge}</div>
-          <div class="task-meta">${t.mins&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}${fDate?`<span class="tmeta">📅 ${fDate}</span>`:''}${extra?`<span class="tmeta" style="color:var(--warning)">${extra}</span>`:''}</div>
+          <div class="task-meta">
+            ${t.mins&&!t.done?`<span class="tmeta">⏱ Оставшееся: ${fmtMins(t.mins)}</span>`:''}
+            ${workedLabel}
+            ${fDate?`<span class="tmeta">📅 ${fDate}</span>`:''}
+            ${extra?`<span class="tmeta" style="color:var(--warning)">${extra}</span>`:''}
+          </div>
           ${actionBtn?`<div class="task-actions">${actionBtn}</div>`:''}
         </div>
         <button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>
@@ -470,11 +427,9 @@ document.getElementById('task-list').addEventListener('click',function(e){
 
 function render(){ renderTiles(); renderProgress(); renderTasks(); syncDateButtons(); }
 
-/* ИСПРАВЛЕНИЕ ФИЛЬТРОВ: Кнопки Категорий больше не сбрасываются авто-функцией при нажатии */
 function setFilter(k,v){ 
   if(k==='date'){ filter.tile=null; filter.date=v; autoSelectCat(); } 
-  else if(k==='cat') { filter.cat=v; syncCatButtons(); }
-  else { filter[k]=v; }
+  else if(k==='cat') { filter.cat=v; }
   render(); 
 }
 
@@ -528,7 +483,6 @@ function renderKanban(){
   let remainSec=isPaused?Number(active.paused_remaining)||0:Math.max(0,(Number(active.mins)||30)*60-Math.floor((new Date()-new Date(active.started_at))/1000));
   const totalSec=(Number(active.mins)||30)*60; const pct=totalSec?Math.min(100,Math.round((totalSec-remainSec)/totalSec*100)):0;
 
-  /* ИСПРАВЛЕНИЕ: Кнопки 'Продолжить' и 'Готово' переставлены местами */
   wrap.innerHTML=`<div class="k-card ${isPaused?'paused':'inprogress'}">
     <div class="k-title">${active.title}</div>
     <div class="timer-block">
@@ -587,7 +541,6 @@ async function kanbanResume(id){
   renderKanban(); render(); await apiFetch('POST',{action:'updateTask',id,fields:{status:'inprogress',mins:t.mins,started_at:t.started_at,paused_remaining:0,paused_at:''}});
 }
 
-/* ИСПРАВЛЕНИЕ: Авто-переброс на "Задачи" при отмене и завершении через Канбан */
 async function kanbanCancel(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
   t.status='new'; t.started_at=''; t.paused_remaining=0; t.paused_at=''; if(timerInterval) clearInterval(timerInterval);
@@ -605,7 +558,7 @@ async function kanbanDone(id){
 }
 
 function showPage(p){
-  currentPage=p; ['tasks','kanban','digest','settings'].forEach(x=>{ const pg=document.getElementById('page-'+x); if(pg) pg.style.display=x===p?'block':'none'; const b=document.getElementById('nav-'+x); if(b) b.classList.toggle('on',x===p); });
+  currentPage=p; ['tasks','kanban','digest'].forEach(x=>{ const pg=document.getElementById('page-'+x); if(pg) pg.style.display=x===p?'block':'none'; const b=document.getElementById('nav-'+x); if(b) b.classList.toggle('on',x===p); });
   if(p==='kanban') renderKanban();
 }
 
