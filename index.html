@@ -207,7 +207,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </head>
 <body>
 
-<!-- TASKS -->
 <div id="page-tasks">
   <div class="topbar">
     <h1>Задачи</h1>
@@ -256,7 +255,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="task-list" id="task-list"></div>
 </div>
 
-<!-- KANBAN -->
 <div id="page-kanban" style="display:none">
   <div class="topbar">
     <h1>Фокус</h1>
@@ -267,13 +265,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
-<!-- DIGEST -->
 <div id="page-digest" style="display:none">
   <div class="topbar"><h1>Дайджест</h1></div>
   <div class="digest-wrap"><div class="digest-box" id="digest-text"></div></div>
 </div>
 
-<!-- SETTINGS -->
 <div id="page-settings" style="display:none">
   <div class="topbar">
     <h1>Настройки</h1>
@@ -316,7 +312,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <div class="settings-section-title">👁 Отображение</div>
       <div class="settings-row">
         <div><div class="settings-row-label">Показывать выполненные</div></div>
-        <button class="toggle" id="s-show-done" onclick="this.classList.toggle('on')"></button>
+        <button class="toggle on" id="s-show-done" onclick="this.classList.toggle('on')"></button>
       </div>
       <div class="settings-row">
         <div><div class="settings-row-label">Сортировка</div></div>
@@ -330,7 +326,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modal" style="display:none">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -426,7 +421,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   </div>
 </div>
 
-<!-- Context Menu -->
 <div class="ctx-menu" id="ctx-menu" style="display:none">
   <div class="ctx-item" id="ctx-start">▶ В работу</div>
   <div class="ctx-item" id="ctx-edit">✏️ Редактировать</div>
@@ -468,11 +462,12 @@ let timerInterval = null;
 let currentPage = 'tasks';
 let ctxTaskId = null;
 let longPressTimer = null;
+// Поменяли настройку showDone на true по умолчанию!
 let appSettings = {
   digestTime:'08:00', notifyBefore:10,
   notifyText:'⏰ До конца «{task}» осталось 10 мин',
   notifyOn:true, workFrom:'09:00', workTo:'18:00',
-  showDone:false, sortBy:'quadrant'
+  showDone:true, sortBy:'quadrant'
 };
 
 const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
