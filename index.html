@@ -215,7 +215,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         <svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
       </button>
       <button class="icon-btn" onclick="showPage('settings')">
-        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
@@ -462,7 +462,6 @@ let timerInterval = null;
 let currentPage = 'tasks';
 let ctxTaskId = null;
 let longPressTimer = null;
-// Поменяли настройку showDone на true по умолчанию!
 let appSettings = {
   digestTime:'08:00', notifyBefore:10,
   notifyText:'⏰ До конца «{task}» осталось 10 мин',
@@ -499,11 +498,27 @@ function hapticNotif(type='warning'){
   try{ tg?.HapticFeedback?.notificationOccurred(type); }catch(e){}
 }
 
-// ---- Normalize ----
+// ПРАВКА ДАТ: жесткий фильтр от 1899 года и Invalid Date
 function normalizeTask(t){
   let deadline='';
-  if(t.deadline){ const m=String(t.deadline).match(/^(\d{4}-\d{2}-\d{2})/); if(m&&parseInt(m[1])>2000) deadline=m[1]; }
-  function cleanTime(v){ if(!v) return ''; const s=String(v), iso=s.match(/T(\d{2}):(\d{2})/); return iso?iso[1]+':'+iso[2]:(s.match(/^\d{2}:\d{2}/)?s.slice(0,5):''); }
+  if(t.deadline && t.deadline !== 'Invalid Date' && t.deadline !== 'undefined'){ 
+    const s = String(t.deadline); 
+    const m = s.match(/^(\d{4}-\d{2}-\d{2})/); 
+    if(m && parseInt(m[1]) > 2000) deadline = m[1]; 
+  }
+
+  function cleanTime(v){ 
+    if(!v || v==='Invalid Date' || v==='undefined') return ''; 
+    const s=String(v); 
+    // Ловим время из строки типа "1899-12-30T06:36:00.000Z"
+    let m = s.match(/T(\d{2}):(\d{2})/); 
+    if(m) return m[1]+':'+m[2]; 
+    // Ловим обычное "06:36"
+    m = s.match(/(\d{2}):(\d{2})/); 
+    if(m) return m[1]+':'+m[2]; 
+    return ''; 
+  }
+
   return {
     ...t, id:String(t.id), deadline,
     time_from:cleanTime(t.time_from), time_to:cleanTime(t.time_to),
@@ -533,7 +548,6 @@ function getTaskOverdueType(t){
   if(t.done) return null;
   if(t.status==='missed') return 'missed';
   if(t.deadline && t.deadline<todayStr()) return 'deadline';
-  // Проверка просрочки по временному окну
   if(t.time_to){
     const now=new Date();
     const [h,m]=t.time_to.split(':').map(Number);
@@ -541,6 +555,52 @@ function getTaskOverdueType(t){
     if(now>end) return 'window';
   }
   return null;
+}
+
+// НОВАЯ ФУНКЦИЯ: генератор повторяющихся задач
+function generateNextRecurringTask(t) {
+  let base = new Date();
+  if (t.deadline) {
+    const dl = new Date(t.deadline + 'T12:00:00');
+    if (!isNaN(dl.getTime()) && dl > base) {
+      base = dl;
+    }
+  }
+
+  let d = new Date(base.getTime());
+  const rec = t.recurrence;
+
+  if (rec === 'daily') {
+    d.setDate(d.getDate() + 1);
+  } else if (rec === 'weekdays') {
+    do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
+  } else if (rec === 'weekends') {
+    do { d.setDate(d.getDate() + 1); } while (d.getDay() !== 0 && d.getDay() !== 6);
+  } else if (rec === 'weekly') {
+    d.setDate(d.getDate() + 7);
+  } else if (rec === 'monthly') {
+    d.setMonth(d.getMonth() + 1);
+  } else {
+    return null; // не повторяется
+  }
+
+  const nextDateStr = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
+  const baseMins = Number(t.original_mins) || Number(t.mins) || 0;
+
+  return {
+    ...t,
+    id: String(nextId++),
+    deadline: nextDateStr,
+    mins: baseMins,
+    original_mins: baseMins,
+    done: false,
+    status: 'new',
+    worked_mins: 0,
+    started_at: '',
+    paused_at: '',
+    paused_remaining: 0,
+    notified: false
+  };
 }
 
 // ---- API ----
@@ -608,9 +668,13 @@ function fmtMins(m){
   return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');
 }
 function fmtDate(dl){
-  if(!dl) return '';
-  try{ const d=new Date(dl+'T12:00:00'); return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'}); }
-  catch(e){ return ''; }
+  if(!dl || dl==='Invalid Date' || dl==='undefined') return '';
+  const m = String(dl).match(/^(\d{4}-\d{2}-\d{2})/);
+  if(!m) return '';
+  try {
+    const d = new Date(m[1]+'T12:00:00');
+    return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'});
+  } catch(e) { return ''; }
 }
 
 // ---- Filters ----
@@ -632,11 +696,9 @@ function getFiltered(){
     t=t.filter(x=>!x.done);
 
   t.sort((a,b)=>{
-    // Активные всегда сверху
     const aAct=a.status==='inprogress'||a.status==='paused';
     const bAct=b.status==='inprogress'||b.status==='paused';
     if(aAct&&!bAct) return -1; if(!aAct&&bAct) return 1;
-    // Просроченные
     const ao=getTaskOverdueType(a), bo=getTaskOverdueType(b);
     if(ao&&!bo) return -1; if(!ao&&bo) return 1;
     if(a.done&&!b.done) return 1; if(!a.done&&b.done) return -1;
@@ -649,7 +711,6 @@ function getFiltered(){
   return t;
 }
 
-// FIX 1: setCatFilter не вызывает autoSelectCat — выбор пользователя сохраняется
 function setCatFilter(v){
   filter.cat=v;
   const vals=['all','business','personal'];
@@ -698,7 +759,6 @@ function renderTiles(){
     </div>`).join('');
 }
 
-// FIX 7: Прогресс-бар считает штуки задач, время отдельно
 function renderProgress(){
   const list=getFiltered();
   const active=list.filter(t=>t.status!=='missed');
@@ -709,7 +769,6 @@ function renderProgress(){
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent=`${doneCount} / ${total} (${pct}%)`;
 
-  // Время по фильтру
   const totalMins=active.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
   const doneMins=active.filter(t=>t.done).reduce((s,t)=>s+(t.worked_mins>0?Number(t.worked_mins):Number(t.mins)||0),0);
   const remainMins=active.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
@@ -806,7 +865,6 @@ function updateFocusBadge(){
   document.getElementById('focus-badge')?.classList.toggle('show',!!active);
 }
 
-// FIX 4: showPage('tasks') вызывает render()
 function render(){ renderTiles(); renderProgress(); renderTasks(); syncDateButtons(); }
 
 // ---- Event delegation ----
@@ -853,7 +911,7 @@ function showCtxMenu(x, y, id){
 function hideCtxMenu(){ document.getElementById('ctx-menu').style.display='none'; }
 document.addEventListener('click', e=>{ if(!e.target.closest('#ctx-menu')) hideCtxMenu(); });
 
-// FIX 3: toggleDone сбрасывает status если была активная задача
+// ПРАВКА ПОВТОРЯЮЩИХСЯ ЗАДАЧ: создаём новую задачу на следующий день
 async function toggleDone(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
   haptic();
@@ -861,10 +919,27 @@ async function toggleDone(id){
     if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
     t.started_at=''; t.paused_remaining=0; t.paused_at='';
   }
-  t.done=!t.done; t.status=t.done?'done':'new';
+  
+  t.done = !t.done; 
+  t.status = t.done ? 'done' : 'new';
+  
+  let newRecurTask = null;
+  // Если задачу ВЫПОЛНИЛИ и она ПОВТОРЯЮЩАЯСЯ -> генерируем копию на следующий раз
+  if(t.done && t.recurrence && t.recurrence !== 'none') {
+    newRecurTask = generateNextRecurringTask(t);
+    if(newRecurTask) tasks.push(newRecurTask);
+  }
+
   render(); if(currentPage==='kanban') renderKanban();
+  
   await apiFetch('POST',{action:t.done?'doneTask':'updateTask', id,
     fields:{done:t.done, status:t.status, started_at:'', paused_remaining:0, paused_at:''}, workedMins:0});
+    
+  // Сохраняем новую задачу в базу (таблицу) без задержек
+  if(newRecurTask) {
+    await apiFetch('POST', {action:'addTask', task: newRecurTask});
+  }
+
   if(t.done) showToast('Выполнено ✅');
 }
 
@@ -943,7 +1018,6 @@ document.getElementById('modal').addEventListener('click',function(e){ if(e.targ
   const el=document.getElementById(id); if(el) el.addEventListener('change',updateNotifInfo);
 });
 
-// FIX 6: saveTask использует render() вместо loadTasks()
 async function saveTask(){
   const title=document.getElementById('f-title').value.trim();
   if(!title){ showToast('Введите название'); return; }
@@ -1004,7 +1078,7 @@ function renderKanban(){
   const pct=totalSec?Math.min(100,Math.round((totalSec-remainSec)/totalSec*100)):0;
   const mm=Math.floor(remainSec/60).toString().padStart(2,'0');
   const ss=(remainSec%60).toString().padStart(2,'0');
-  const isWarning=!isPaused&&remainSec>0&&remainSec<=180; // < 3 мин — предупреждение
+  const isWarning=!isPaused&&remainSec>0&&remainSec<=180;
 
   const pc=Number(active.postpone_count)||0;
   const fire=pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
@@ -1055,7 +1129,6 @@ function renderKanban(){
   startTimerTick(active, remainSec, totalSec, isPaused);
 }
 
-// FIX 2: Таймер использует paused_remaining без изменения original_mins
 function startTimerTick(task, initRemain, totalSec, isPaused){
   if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
   if(isPaused) return;
@@ -1076,7 +1149,6 @@ function startTimerTick(task, initRemain, totalSec, isPaused){
     val.className='timer-val'+(isWarning?' warning-val':'');
     if(fill) fill.className='timer-fill'+(isWarning?' warning-fill':'');
 
-    // 00:00 — вибрация и уведомление
     if(remain===0&&!warned){
       warned=true;
       hapticNotif('warning');
@@ -1099,7 +1171,6 @@ async function kanbanStart(id){
   haptic();
   render(); showPage('kanban');
   await apiFetch('POST',{action:'startTask',id});
-  // Сохраняем original_mins если ещё нет
   if(!t.original_mins) await apiFetch('POST',{action:'updateTask',id,fields:{original_mins:t.mins}});
 }
 
@@ -1121,7 +1192,6 @@ async function kanbanPause(id){
   showToast('Пауза ⏸');
 }
 
-// FIX 2: Resume не меняет mins — берём paused_remaining напрямую для таймера
 async function kanbanResume(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
   const remainSec=Number(t.paused_remaining)||0;
@@ -1140,7 +1210,6 @@ async function kanbanResume(id){
 
 async function kanbanCancel(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
-  // Восстанавливаем original_mins
   t.status='new'; t.started_at=''; t.paused_remaining=0; t.paused_at='';
   if(t.original_mins) t.mins=t.original_mins;
   if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
@@ -1152,16 +1221,30 @@ async function kanbanCancel(id){
   showToast('Возвращено ↩');
 }
 
+// ПРАВКА ПОВТОРЯЮЩИХСЯ ЗАДАЧ В КАНБАНЕ
 async function kanbanDone(id){
   const t=tasks.find(x=>x.id===id); if(!t) return;
   const diff=getElapsedMinutes(t);
   t.done=true; t.status='done';
   t.worked_mins=(Number(t.worked_mins)||0)+diff;
   t.started_at=''; t.paused_remaining=0; t.paused_at='';
+
+  let newRecurTask = null;
+  if(t.recurrence && t.recurrence !== 'none') {
+    newRecurTask = generateNextRecurringTask(t);
+    if(newRecurTask) tasks.push(newRecurTask);
+  }
+
   if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
   hapticNotif('success');
   renderKanban(); render(); showPage('tasks');
+  
   await apiFetch('POST',{action:'doneTask',id,workedMins:diff});
+
+  if(newRecurTask) {
+    await apiFetch('POST', {action:'addTask', task: newRecurTask});
+  }
+
   showToast('Выполнено! 🎉');
 }
 
@@ -1196,7 +1279,6 @@ function buildDigest(){
   const el=document.getElementById('digest-text'); if(el) el.textContent=lines.join('\n');
 }
 
-// FIX 4: showPage вызывает render() при переходе на tasks
 function showPage(p){
   currentPage=p;
   ['tasks','kanban','digest','settings'].forEach(x=>{
