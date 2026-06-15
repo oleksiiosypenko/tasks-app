@@ -24,29 +24,32 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .topbar-right{display:flex;gap:4px;align-items:center}
 .icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 16px 6px}
-.tile{background:var(--bg2);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .2s;border:1.5px solid transparent}
-.tile.active{border-color:var(--accent);background:#252528}
-.tile:active{transform:scale(.97)}
-.tile-n{font-size:24px;font-weight:700;line-height:1;margin-bottom:2px}
-.tile-sub{font-size:11px;color:#ffb340;font-weight:600;margin-bottom:2px}
-.tile-l{font-size:11px;color:var(--text2);font-weight:500}
-.tile-n.red{color:var(--danger)}
-.prog-wrap{margin:8px 16px;background:var(--bg2);padding:12px;border-radius:var(--radius)}
+
+/* Календарная лента */
+.calendar-tape{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none}
+.calendar-tape::-webkit-scrollbar{display:none}
+.cal-day{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg2);border-radius:var(--radius);min-width:54px;padding:10px 4px;cursor:pointer;border:1.5px solid transparent;transition:all .2s;flex-shrink:0}
+.cal-day.active{border-color:var(--accent);background:#252528}
+.cal-day-dow{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;margin-bottom:2px}
+.cal-day-dom{font-size:17px;font-weight:700;color:#fff}
+
+.prog-wrap{margin:0 16px 8px;background:var(--bg2);padding:12px;border-radius:var(--radius)}
 .prog-bar{background:var(--bg3);border-radius:6px;height:8px;overflow:hidden}
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
 .prog-label{display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-top:6px;font-weight:500}
-.time-stats{display:flex;justify-content:space-between;align-items:stretch;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
-.time-stats.future-mode{opacity: 0.4; pointer-events: none;}
+.time-stats{display:flex;justify-content:space-between;align-items:stretch;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);transition:opacity 0.2s}
+.time-stats.future-mode{opacity:0.4;pointer-events:none}
 .time-stat{text-align:center;flex:1}
 .time-stat-val{font-size:15px;font-weight:700;color:#ffb340}
 .time-stat-label{font-size:11px;color:var(--text2);margin-top:2px}
 .time-stat-divider{width:1px;background:var(--border)}
-.filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none;justify-content:space-between;align-items:center}
+
+.filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none;align-items:center}
 .filters::-webkit-scrollbar{display:none}
 .seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0}
 .seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;font-weight:600}
 .seg button.on{background:var(--accent);color:#fff;font-weight:700}
+
 .add-btn{margin:8px 16px;padding:12px;border:1.5px dashed var(--accent);border-radius:var(--radius);background:rgba(107,105,255,.05);cursor:pointer;color:#a3a1ff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px)}
 .add-btn:active{background:rgba(107,105,255,.15)}
 .task-list{padding:4px 16px;display:flex;flex-direction:column;gap:8px}
@@ -183,13 +186,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v1.4.0</span></h1>
+    <h1>Задачи <span class="v-tag">v1.5.0</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
       <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     </div>
   </div>
-  <div class="tiles" id="tiles"></div>
+  
+  <div class="calendar-tape" id="calendar-tape"></div>
+  
   <div class="prog-wrap">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label"><span>Выполнено задач</span><span id="prog-label">0 / 0</span></div>
@@ -206,9 +211,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <button class="on" onclick="setCatFilter('all')">Все</button>
       <button onclick="setCatFilter('business')">Бизнес</button>
       <button onclick="setCatFilter('personal')">Личное</button>
-    </div>
-    <div class="seg" id="seg-date">
-      <button id="btn-future" onclick="toggleFuture()">🔮 Будущее</button>
     </div>
   </div>
   <button class="add-btn" onclick="openModal()">+ Добавить задачу</button>
@@ -310,10 +312,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 const tg=window.Telegram?.WebApp; if(tg)tg.expand();
 const API='https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
 let tasks=[],virtTasks=[],nextId=Date.now();
-let filter={cat:'all',date:'today',tile:null};
+let filter={cat:'all'};
 let selectedQ=1,timerInterval=null,currentPage='tasks',ctxTaskId=null,longPressTimer=null;
 let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'09:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant'};
 const Q_LABELS=['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
+
+function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
+function todayStr(){return localDate(new Date());}
+filter.targetDate = todayStr();
 
 function initTimeMask(id){
   const el=document.getElementById(id);if(!el)return;
@@ -324,9 +330,6 @@ function showToast(msg,dur=2500){const t=document.getElementById('toast');t.text
 function haptic(t='light'){try{tg?.HapticFeedback?.impactOccurred(t);}catch(e){}}
 function hapticNotif(t='warning'){try{tg?.HapticFeedback?.notificationOccurred(t);}catch(e){}}
 
-function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
-function todayStr(){return localDate(new Date());}
-function tomorrowStr(){return localDate(new Date(Date.now()+86400000));}
 function timeToMin(s){if(!s)return 0;const[h,m]=(s+'').split(':').map(Number);return(h||0)*60+(m||0);}
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 
@@ -353,84 +356,78 @@ function normalizeTask(t){
     notified:t.notified===true||t.notified==='TRUE'};
 }
 
-function getTaskOverdueType(t){
-  if(t.done) return null;
-  if(t.status==='missed') return 'missed';
-  
-  if(t.recurrence && t.recurrence !== 'none') {
-    if(Number(t.postpone_count) > 0) return 'deadline';
-    return null;
-  }
-  
-  if(t.deadline && t.deadline < todayStr()) return 'deadline';
-  if(t.time_to){
-    const n=new Date(),[h,m]=t.time_to.split(':').map(Number),e=new Date();
-    e.setHours(h,m,0,0);if(n>e)return 'window';
+function getTaskOverdueType(t, target) {
+  if (t.done) return null;
+  if (t.status === 'missed') return 'missed';
+  if (t.deadline && t.deadline < target) return 'deadline';
+  if (t.time_to && t.deadline === target && target === todayStr()) {
+    const n = new Date(), [h,m] = t.time_to.split(':').map(Number), e = new Date();
+    e.setHours(h,m,0,0);
+    if (n > e) return 'window';
   }
   return null;
 }
 
-function buildVirtTasks(){
-  const td=todayStr(), tm=tomorrowStr();
-  const now=new Date(), dow=now.getDay(), dom=now.getDate();
-  virtTasks=[];
-
-  tasks.forEach(base=>{
-    const rec=base.recurrence;
-    if(!rec||rec==='none')return;
-
-    if(base.done && base.deadline === td) return;
-    if(base.status === 'missed' && base.deadline === td) return;
-
-    const targetDate = (filter.date === 'future') ? tm : td;
-    const targetNow = (filter.date === 'future') ? new Date(Date.now() + 86400000) : now;
-    const tDow = targetNow.getDay();
-    const tDom = targetNow.getDate();
-
-    let fits=false;
+function getNextOccurrence(base, afterDateStr) {
+  let d = new Date(afterDateStr + 'T12:00:00');
+  for(let i=1; i<=60; i++) {
+    d.setDate(d.getDate() + 1);
+    const tDow = d.getDay();
+    const tDom = d.getDate();
+    let fits = false;
+    const rec = base.recurrence;
     if(rec==='daily') fits=true;
     else if(rec==='weekdays') fits=tDow>=1&&tDow<=5;
     else if(rec==='weekends') fits=tDow===0||tDow===6;
-    else if(rec==='weekly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDay()===tDow;}
-    else if(rec==='monthly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDate()===tDom;}
+    else if(rec==='weekly'){const ref=base.deadline||todayStr();const o=new Date(ref+'T12:00:00');fits=o.getDay()===tDow;}
+    else if(rec==='monthly'){const ref=base.deadline||todayStr();const o=new Date(ref+'T12:00:00');fits=o.getDate()===tDom;}
 
     if(fits && base.day_from && base.day_to){
       const df=parseInt(base.day_from),dt=parseInt(base.day_to);
       if(tDom<df||tDom>dt) fits=false;
     }
-    if(!fits)return;
+    if(fits) return localDate(d);
+  }
+  return null;
+}
 
-    // Сверхточная проверка дубликатов на базе связей parent_id
-    const alreadyReal=tasks.some(t=>t.id!==base.id && (t.parent_id===base.id || (t.title===base.title && t.recurrence===rec)) && t.deadline===targetDate && !t._virt);
-    if(alreadyReal)return;
+function buildVirtTasks(){
+  virtTasks=[];
+  const target = filter.targetDate;
 
-    if(base.status==='inprogress'||base.status==='paused') return;
+  tasks.forEach(base=>{
+    const rec = base.recurrence;
+    if (!rec || rec === 'none') return;
+    if (base.parent_id) return; // Проецируем только от корневой мастер-задачи
 
-    const pc=Number(base.postpone_count)||0;
-    const baseMins=base.original_mins||base.mins||0;
-    
-    // В режиме "Будущего" штрафы и огни рассчитываются превентивно (+1)
-    const futurePenalty = (filter.date === 'future') ? pc + 1 : pc;
-    const penaltyMins = futurePenalty > 0 ? baseMins * (futurePenalty + 1) : baseMins;
+    const related = tasks.filter(t => t.id === base.id || t.parent_id === base.id);
+    const hasUncompleted = related.some(t => !t.done);
+    // Если любой реальный инстанс этого цикла не выполнен, он перекатится сам. Копию не создаем.
+    if (hasUncompleted) return;
+
+    let latestDone = '';
+    related.forEach(t => { if (t.deadline && t.deadline > latestDone) latestDone = t.deadline; });
+    if (!latestDone) latestDone = todayStr();
+
+    const nextOccDate = getNextOccurrence(base, latestDone);
+    if (!nextOccDate || nextOccDate > target) return;
 
     virtTasks.push({
-      ...base,_virt:true,_baseId:base.id,id:'virt_'+base.id,
-      deadline:targetDate,mins:penaltyMins,original_mins:baseMins,
-      done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,
-      _penalty:futurePenalty
+      ...base,
+      _virt: true,
+      _baseId: base.id,
+      id: 'virt_' + base.id,
+      deadline: nextOccDate,
+      done: false,
+      status: 'new',
+      worked_mins: 0,
+      _penalty: 0
     });
   });
 }
 
 function getAllTasks(){
-  const td=todayStr();
-  const virtBaseIds=new Set(virtTasks.map(v=>v._baseId));
-  const real=tasks.filter(t=>{
-    if(!t.recurrence||t.recurrence==='none')return true;
-    if(virtBaseIds.has(t.id)&&(!t.deadline||t.deadline<=td)) return false;
-    return true;
-  });
-  return [...real,...virtTasks];
+  return [...tasks, ...virtTasks];
 }
 
 async function apiFetch(method,data){
@@ -480,21 +477,26 @@ function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return 
 function fmtDate(dl){if(!dl)return '';try{const m=String(dl).match(/^(\d{4}-\d{2}-\d{2})/);if(!m)return '';const d=new Date(m[1]+'T12:00:00');return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'});}catch(e){return '';}}
 
 function getFiltered(){
-  const all=getAllTasks();const td=todayStr(),tm=tomorrowStr();let t=[...all];
-  if(shouldHideBiz())t=t.filter(x=>x.cat!=='business'||x.done);
-  if(filter.cat!=='all')t=t.filter(x=>x.cat===filter.cat);
+  const all=getAllTasks();
+  const target = filter.targetDate;
+  let t=[...all];
   
-  if(filter.tile=='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-  else if(filter.tile=='tomorrow')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
-  else if(filter.tile=='overdue')t=t.filter(x=>getTaskOverdueType(x)!==null&&!x.done);
-  else if(filter.date=='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-  else if(filter.date=='future')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
+  if(shouldHideBiz()) t=t.filter(x=>x.cat!=='business'||x.done);
+  if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
+  
+  t = t.filter(x => {
+    // Выполненные задачи показываем строго в тот день, когда они были закрыты
+    if (x.done) return x.deadline === target;
+    // Невыполненные задачи перетекают: показываем, если дедлайн <= выбранной даты или отсутствует
+    if (!x.deadline) return true;
+    return x.deadline <= target;
+  });
   
   t.sort((a,b)=>{
     const aA=a.status==='inprogress'||a.status==='paused',bA=b.status==='inprogress'||b.status==='paused';
     if(aA&&!bA)return -1;if(!aA&&bA)return 1;
     if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;
-    const ao=getTaskOverdueType(a),bo=getTaskOverdueType(b);
+    const ao=getTaskOverdueType(a, target),bo=getTaskOverdueType(b, target);
     if(ao&&!bo)return -1;if(!ao&&bo)return 1;
     if(appSettings.sortBy==='deadline'){if(a.deadline&&b.deadline)return a.deadline.localeCompare(b.deadline);if(a.deadline)return -1;if(b.deadline)return 1;}
     return Number(a.quadrant)-Number(b.quadrant);
@@ -504,36 +506,31 @@ function getFiltered(){
 
 function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
 
-function toggleFuture(){
-  filter.tile = null;
-  filter.date = filter.date === 'future' ? 'today' : 'future';
+function renderCalendarTape() {
+  const tape = document.getElementById('calendar-tape');
+  if(!tape) return;
+  const td = new Date();
+  const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  let html = '';
+  for(let i=0; i<14; i++) {
+    const d = new Date(td.getTime() + i * 86400000);
+    const dStr = localDate(d);
+    const isSelected = filter.targetDate === dStr;
+    const dow = days[d.getDay()];
+    const dom = d.getDate();
+    html += `<div class="cal-day ${isSelected ? 'active' : ''}" onclick="setTargetDate('${dStr}')">
+      <div class="cal-day-dow">${i===0 ? 'СЕГ' : dow}</div>
+      <div class="cal-day-dom">${dom}</div>
+    </div>`;
+  }
+  tape.innerHTML = html;
+}
+
+function setTargetDate(dStr) {
+  filter.targetDate = dStr;
+  haptic('light');
   buildVirtTasks();
   render();
-}
-
-function setTileFilter(k){filter.tile=filter.tile===k?null:k;if(filter.tile)filter.date='all';buildVirtTasks();render();}
-
-function syncDateButtons(){
-  const btn = document.getElementById('btn-future');
-  if(btn) btn.classList.toggle('on', filter.date === 'future' && !filter.tile);
-  
-  const statBlock = document.getElementById('time-stats-block');
-  if(filter.date === 'future') statBlock.classList.add('future-mode');
-  else statBlock.classList.remove('future-mode');
-}
-
-function renderTiles(){
-  const td=todayStr(),tm=tomorrowStr(),all=getAllTasks();
-  let base=[...all];if(filter.cat!=='all')base=base.filter(x=>x.cat===filter.cat);if(shouldHideBiz())base=base.filter(x=>x.cat!=='business'||x.done);
-  const todayAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&(!t.deadline||t.deadline<=td));
-  const tmAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&t.deadline===tm);
-  const ovAll=base.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
-  const tiles=[
-    {k:'today',n:todayAll.length,sub:fmtMins(todayAll.reduce((s,t)=>s+(Number(t.mins)||0),0)),l:'📅 Сегодня'},
-    {k:'tomorrow',n:tmAll.length,sub:fmtMins(tmAll.reduce((s,t)=>s+(Number(t.mins)||0),0)),l:'📅 Завтра'},
-    {k:'overdue',n:ovAll.length,sub:'',l:'⚠️ Просрочено',cls:ovAll.length>0?'red':''},
-  ];
-  document.getElementById('tiles').innerHTML=tiles.map(t=>`<div class="tile${filter.tile===t.k?' active':''}" onclick="setTileFilter('${t.k}')"><div class="tile-n ${t.cls||''}">${t.n}</div>${t.sub?`<div class="tile-sub">${t.sub}</div>`:'<div class="tile-sub" style="visibility:hidden">-</div>'}<div class="tile-l">${t.l}</div></div>`).join('');
 }
 
 function renderProgress(){
@@ -557,15 +554,24 @@ function renderTasks(){
   const qN=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет','','✅ Выполненные'];
   const qD=['','#ff453a','#5e5ce6','#ff9f0a','#636366','','#30d158'];
   let html='';
+  
+  const target = filter.targetDate;
+
   [1,2,3,4,6].forEach(q=>{
     if(!groups[q]?.length)return;
     html+=`<div class="q-label"><span class="q-dot" style="background:${qD[q]}"></span>${qN[q]}</div>`;
     html+=groups[q].map(t=>{
-      const pc=Number(t._penalty!==undefined?t._penalty:t.postpone_count)||0;
-      const fire=pc>0?` 🔥x${pc+1}`:'';
+      // Расчет накопленных штрафов в зависимости от просмотренной даты
+      const daysOverdue = (!t.done && t.deadline && t.deadline < target) 
+        ? Math.floor((new Date(target) - new Date(t.deadline)) / 86400000) 
+        : 0;
+      const basePc = Number(t.postpone_count) || 0;
+      const pc = basePc + daysOverdue;
+      const fire = pc > 0 ? ` 🔥x${pc + 1}` : '';
+
       const rec=t.recurrence&&t.recurrence!=='none'?' 🔁':'';
       const notifIcon=(t.time_from||t.time_to)&&appSettings.notifyOn?' 🔔':'';
-      const ot=getTaskOverdueType(t);
+      const ot=getTaskOverdueType(t, target);
       const fDate=fmtDate(t.deadline);
       let extra='';
       if(t.time_from&&t.time_to)extra+=` 🕒 ${t.time_from}–${t.time_to}`;
@@ -617,7 +623,15 @@ function renderTasks(){
 }
 
 function updateFocusBadge(){const a=getAllTasks().find(t=>t.status==='inprogress'||t.status==='paused');document.getElementById('focus-badge')?.classList.toggle('show',!!a);}
-function render(){renderTiles();renderProgress();renderTasks();syncDateButtons();}
+
+function render(){
+  renderCalendarTape();
+  renderProgress();
+  renderTasks();
+  const statBlock = document.getElementById('time-stats-block');
+  if(filter.targetDate !== todayStr()) statBlock.classList.add('future-mode');
+  else statBlock.classList.remove('future-mode');
+}
 
 document.getElementById('task-list').addEventListener('click',function(e){
   const ae=e.target.closest('[data-action]');if(!ae)return;
@@ -657,16 +671,25 @@ async function toggleDone(id){
   const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
   haptic();
   if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+  
   if(t._virt){
     const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
-    const td=todayStr();base.done=true;base.status='done';base.deadline=td;
+    // При клике на чекбокс генерируем реальную выполненную запись
+    const nt={...base,id:String(nextId++),parent_id:base.id,deadline:t.deadline,mins:t.mins,original_mins:base.original_mins||base.mins,
+      done:true,status:'done',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
+    tasks.push(nt);
     virtTasks=virtTasks.filter(v=>v.id!==id);
     buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
-    await apiFetch('POST',{action:'updateTask',id:base.id,fields:{done:true,status:'done',deadline:td}});
-    showToast('Выполнено ✅ (завтра появится снова)');return;
+    await apiFetch('POST',{action:'addTask',task:nt});
+    showToast('Выполнено ✅');
+    return;
   }
-  t.done=!t.done;t.status=t.done?'done':'new';
-  if(!t.done){t.started_at='';t.paused_remaining=0;t.paused_at='';}
+  
+  t.done=!t.done;
+  t.status=t.done?'done':'new';
+  if(!t.done){
+    t.started_at='';t.paused_remaining=0;t.paused_at='';
+  }
   buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
   await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status,started_at:'',paused_remaining:0,paused_at:''},workedMins:0});
   if(t.done)showToast('Выполнено ✅');
@@ -675,7 +698,11 @@ async function toggleDone(id){
 async function delTask(id){
   if(!confirm('Удалить задачу?'))return;
   const all=getAllTasks(),t=all.find(x=>x.id===id);
-  if(t?._virt){const bid=t._baseId;tasks=tasks.filter(x=>x.id!==bid);virtTasks=virtTasks.filter(v=>v.id!==id);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'deleteTask',id:bid});return;}
+  if(t?._virt){
+    // Удаляем корневой шаблон
+    const bid=t._baseId;tasks=tasks.filter(x=>x.id!==bid);virtTasks=virtTasks.filter(v=>v.id!==id);
+    buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'deleteTask',id:bid});return;
+  }
   if(t&&(t.status==='inprogress'||t.status==='paused')){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
   tasks=tasks.filter(x=>x.id!==id);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
   await apiFetch('POST',{action:'deleteTask',id});
@@ -793,14 +820,12 @@ async function kanbanStart(id){
   const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
   if(t._virt){
     const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
-    const td=todayStr();
-    // При нарезке реальной задачи железно привязываем её по parent_id к мастер-шаблону
-    const nt={...base,id:String(nextId++),parent_id:base.id,deadline:td,mins:t.mins,original_mins:base.original_mins||base.mins,
-      done:false,status:'inprogress',worked_mins:0,started_at:new Date().toISOString(),paused_at:'',paused_remaining:0,notified:false};
-    base.deadline=td;tasks.push(nt);virtTasks=virtTasks.filter(v=>v.id!==id);
+    const nt={...base,id:String(nextId++),parent_id:base.id,deadline:t.deadline,mins:t.mins,original_mins:base.original_mins||base.mins,
+      done:false,status:'inprogress',worked_mins:0,started_at:new Date().toISOString(),paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
+    tasks.push(nt);
+    virtTasks=virtTasks.filter(v=>v.id!==id);
     haptic();buildVirtTasks();render();showPage('kanban');
     await apiFetch('POST',{action:'addTask',task:nt});
-    await apiFetch('POST',{action:'updateTask',id:base.id,fields:{deadline:td}});
     return;
   }
   const real=tasks.find(x=>x.id===id);if(!real)return;
@@ -849,7 +874,7 @@ async function kanbanDone(id){
   real.done=true;real.status='done';real.worked_mins=(Number(real.worked_mins)||0)+dM;real.started_at='';real.paused_remaining=0;real.paused_at='';
   if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
   hapticNotif('success');buildVirtTasks();renderKanban();render();showPage('tasks');
-  await apiFetch('POST',{action:'doneTask',id:real.id,workedMins:dM});
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{done:true,status:'done',started_at:'',paused_remaining:0,paused_at:'',worked_mins:real.worked_mins}});
   showToast('Выполнено! 🎉');
 }
 
@@ -860,9 +885,9 @@ async function kanbanExtend(id,add){
 }
 
 function buildDigest(){
-  const td=todayStr(),all=getAllTasks();
-  const active=all.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
-  const overdue=all.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
+  const target = todayStr(),all=getAllTasks();
+  const active=all.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline<=target));
+  const overdue=all.filter(t=>getTaskOverdueType(t, target)!==null&&!t.done);
   const q1=active.filter(t=>Number(t.quadrant)===1),q2=active.filter(t=>Number(t.quadrant)===2),q3=active.filter(t=>Number(t.quadrant)===3);
   const list=getFiltered(),total=list.length,doneC=list.filter(t=>t.done).length;
   const tM=list.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
