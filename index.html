@@ -391,39 +391,195 @@ function getNextOccurrence(base, afterDateStr) {
   return null;
 }
 
-function buildVirtTasks(){
-  virtTasks=[];
+// ============================================================
+// ПАТЧ — замени эти две функции в своём index.html
+// ============================================================
+
+// FIX 1: buildVirtTasks
+// Логика: группируем повторяемые задачи по "сигнатуре" (title+recurrence+cat+quadrant).
+// Внутри группы находим самую позднюю запись с дедлайном.
+// Если она выполнена — создаём виртуальный экземпляр на следующее вхождение.
+// Записи без дедлайна игнорируем если есть записи с дедлайном в группе.
+function buildVirtTasks() {
+  virtTasks = [];
   const target = filter.targetDate;
 
-  tasks.forEach(base=>{
-    const rec = base.recurrence;
-    if (!rec || rec === 'none') return;
-    if (base.parent_id) return; // Проецируем только от корневой мастер-задачи
+  // Группируем по сигнатуре повторяемых задач
+  const groups = {};
+  tasks.forEach(t => {
+    if (!t.recurrence || t.recurrence === 'none') return;
+    // Ключ группы — title + recurrence + cat (не берём id, т.к. каждый экземпляр отдельная строка)
+    const key = t.title + '|' + t.recurrence + '|' + t.cat + '|' + t.quadrant;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(t);
+  });
 
-    const related = tasks.filter(t => t.id === base.id || t.parent_id === base.id);
-    const hasUncompleted = related.some(t => !t.done);
-    // Если любой реальный инстанс этого цикла не выполнен, он перекатится сам. Копию не создаем.
-    if (hasUncompleted) return;
+  Object.values(groups).forEach(group => {
+    // Берём все записи с дедлайном
+    const withDeadline = group.filter(t => t.deadline);
+    // Если нет записей с дедлайном — берём без дедлайна как шаблон
+    const refRecords = withDeadline.length > 0 ? withDeadline : group;
 
-    let latestDone = '';
-    related.forEach(t => { if (t.deadline && t.deadline > latestDone) latestDone = t.deadline; });
-    if (!latestDone) latestDone = todayStr();
+    // Самая поздняя запись в группе
+    const latest = refRecords.reduce((a, b) => {
+      if (!a.deadline) return b;
+      if (!b.deadline) return a;
+      return a.deadline >= b.deadline ? a : b;
+    });
 
-    const nextOccDate = getNextOccurrence(base, latestDone);
-    if (!nextOccDate || nextOccDate > target) return;
+    // Есть ли невыполненная запись в этой группе с дедлайном <= target?
+    const hasUndone = group.some(t =>
+      !t.done && t.deadline && t.deadline <= target
+    );
+    if (hasUndone) return; // Уже есть активный экземпляр — не дублируем
+
+    // Есть ли уже запись именно на target дату?
+    const hasOnTarget = group.some(t => t.deadline === target);
+    if (hasOnTarget) return; // Запись на эту дату уже существует
+
+    // Если последняя запись не выполнена и без дедлайна — показываем её виртуально
+    if (!latest.done && !latest.deadline) {
+      // Проверяем подходит ли target для этой повторяемости
+      if (!fitsDate(latest, target)) return;
+      virtTasks.push({
+        ...latest,
+        _virt: true,
+        _baseId: latest.id,
+        id: 'virt_' + latest.id,
+        deadline: target,
+        done: false,
+        status: 'new',
+        worked_mins: 0,
+        _penalty: Number(latest.postpone_count) || 0
+      });
+      return;
+    }
+
+    // Последняя выполнена — ищем следующее вхождение после неё
+    if (!latest.done) return; // Последняя не выполнена, но у неё есть дедлайн > target
+
+    const afterDate = latest.deadline || todayStr();
+    const nextDate = getNextOccurrence(latest, afterDate);
+    if (!nextDate || nextDate > target) return;
+
+    // Считаем сколько дней пропущено между nextDate и target
+    const nextD = new Date(nextDate + 'T12:00:00');
+    const targetD = new Date(target + 'T12:00:00');
+    const daysMissed = Math.max(0, Math.floor((targetD - nextD) / 86400000));
+    const baseMins = latest.original_mins || latest.mins || 0;
+    const penaltyMins = daysMissed > 0 ? baseMins * (daysMissed + 1) : baseMins;
 
     virtTasks.push({
-      ...base,
+      ...latest,
       _virt: true,
-      _baseId: base.id,
-      id: 'virt_' + base.id,
-      deadline: nextOccDate,
+      _baseId: latest.id,
+      id: 'virt_' + latest.id,
+      deadline: target,  // показываем на выбранную дату
+      mins: penaltyMins,
+      original_mins: baseMins,
       done: false,
       status: 'new',
       worked_mins: 0,
-      _penalty: 0
+      _penalty: daysMissed
     });
   });
+}
+
+// Вспомогательная: подходит ли конкретная дата для данной повторяемости задачи
+function fitsDate(task, dateStr) {
+  const d = new Date(dateStr + 'T12:00:00');
+  const dow = d.getDay();
+  const dom = d.getDate();
+  const rec = task.recurrence;
+  let fits = false;
+  if (rec === 'daily') fits = true;
+  else if (rec === 'weekdays') fits = dow >= 1 && dow <= 5;
+  else if (rec === 'weekends') fits = dow === 0 || dow === 6;
+  else if (rec === 'weekly') {
+    const ref = task.deadline || todayStr();
+    fits = new Date(ref + 'T12:00:00').getDay() === dow;
+  }
+  else if (rec === 'monthly') {
+    const ref = task.deadline || todayStr();
+    fits = new Date(ref + 'T12:00:00').getDate() === dom;
+  }
+  if (fits && task.day_from && task.day_to) {
+    const df = parseInt(task.day_from), dt = parseInt(task.day_to);
+    if (dom < df || dom > dt) fits = false;
+  }
+  return fits;
+}
+
+
+// FIX 2: toggleDone
+// При отметке выполнения обновляем deadline на текущую дату (target),
+// чтобы выполненная задача отображалась в правильный день.
+// При снятии галочки — возвращаем как есть.
+async function toggleDone(id) {
+  const all = getAllTasks(), t = all.find(x => x.id === id);
+  if (!t) return;
+  haptic();
+  if (t.status === 'inprogress' || t.status === 'paused') {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  }
+
+  if (t._virt) {
+    // Виртуальная задача — создаём реальную выполненную запись на target дату
+    const base = tasks.find(x => x.id === t._baseId);
+    if (!base) return;
+    const td = filter.targetDate;
+    const nt = {
+      ...base,
+      id: String(nextId++),
+      deadline: td,      // дедлайн = дата на которой отметили
+      mins: t.mins,
+      original_mins: base.original_mins || base.mins,
+      done: true,
+      status: 'done',
+      worked_mins: 0,
+      started_at: '',
+      paused_at: '',
+      paused_remaining: 0,
+      notified: false,
+      postpone_count: 0
+    };
+    tasks.push(nt);
+    virtTasks = virtTasks.filter(v => v.id !== id);
+    buildVirtTasks();
+    render();
+    if (currentPage === 'kanban') renderKanban();
+    await apiFetch('POST', { action: 'addTask', task: nt });
+    showToast('Выполнено ✅');
+    return;
+  }
+
+  // Реальная задача
+  t.done = !t.done;
+  t.status = t.done ? 'done' : 'new';
+
+  // FIX: при выполнении обновляем deadline на текущую выбранную дату
+  // чтобы задача отображалась в правильный день
+  if (t.done) {
+    t.deadline = filter.targetDate;
+  }
+
+  if (!t.done) {
+    t.started_at = '';
+    t.paused_remaining = 0;
+    t.paused_at = '';
+  }
+
+  buildVirtTasks();
+  render();
+  if (currentPage === 'kanban') renderKanban();
+
+  await apiFetch('POST', {
+    action: t.done ? 'doneTask' : 'updateTask',
+    id,
+    fields: { done: t.done, status: t.status, deadline: t.deadline, started_at: '', paused_remaining: 0, paused_at: '' },
+    workedMins: 0
+  });
+  if (t.done) showToast('Выполнено ✅');
 }
 
 function getAllTasks(){
@@ -666,34 +822,6 @@ function showCtxMenu(x,y,id){
 }
 function hideCtxMenu(){document.getElementById('ctx-menu').style.display='none';}
 document.addEventListener('click',e=>{if(!e.target.closest('#ctx-menu'))hideCtxMenu();});
-
-async function toggleDone(id){
-  const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
-  haptic();
-  if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
-  
-  if(t._virt){
-    const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
-    // При клике на чекбокс генерируем реальную выполненную запись
-    const nt={...base,id:String(nextId++),parent_id:base.id,deadline:t.deadline,mins:t.mins,original_mins:base.original_mins||base.mins,
-      done:true,status:'done',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
-    tasks.push(nt);
-    virtTasks=virtTasks.filter(v=>v.id!==id);
-    buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
-    await apiFetch('POST',{action:'addTask',task:nt});
-    showToast('Выполнено ✅');
-    return;
-  }
-  
-  t.done=!t.done;
-  t.status=t.done?'done':'new';
-  if(!t.done){
-    t.started_at='';t.paused_remaining=0;t.paused_at='';
-  }
-  buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
-  await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status,started_at:'',paused_remaining:0,paused_at:''},workedMins:0});
-  if(t.done)showToast('Выполнено ✅');
-}
 
 async function delTask(id){
   if(!confirm('Удалить задачу?'))return;
