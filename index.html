@@ -41,7 +41,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .time-stat-val{font-size:15px;font-weight:700;color:#ffb340}
 .time-stat-label{font-size:11px;color:var(--text2);margin-top:2px}
 .time-stat-divider{width:1px;background:var(--border)}
-.filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
+.filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none;justify-content:space-between;}
 .filters::-webkit-scrollbar{display:none}
 .seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0}
 .seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;font-weight:600}
@@ -207,9 +207,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <button onclick="setCatFilter('personal')">Личное</button>
     </div>
     <div class="seg" id="seg-date">
-      <button id="btn-today" class="on" onclick="setDateFilter('today')">Сегодня</button>
-      <button id="btn-future" onclick="setDateFilter('future')">🔮 Будущее</button>
-      <button id="btn-all" onclick="setDateFilter('all')">Все</button>
+      <button id="btn-future" onclick="toggleFuture()">🔮 Будущее</button>
     </div>
   </div>
   <button class="add-btn" onclick="openModal()">+ Добавить задачу</button>
@@ -383,7 +381,6 @@ function buildVirtTasks(){
     if(!rec||rec==='none')return;
 
     // Четкая проверка: была ли базовая циклическая задача выполнена сегодня?
-    // Для этого проверяем, равен ли её дедлайн сегодняшней дате и стоит ли статус done
     if(base.done && base.deadline === td) return;
     if(base.status === 'missed' && base.deadline === td) return;
 
@@ -511,13 +508,19 @@ function getFiltered(){
 }
 
 function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
-function setDateFilter(v){filter.tile=null;filter.date=v;buildVirtTasks();render();}
+
+function toggleFuture(){
+  filter.tile = null;
+  filter.date = filter.date === 'future' ? 'today' : 'future';
+  buildVirtTasks();
+  render();
+}
+
 function setTileFilter(k){filter.tile=filter.tile===k?null:k;if(filter.tile)filter.date='all';buildVirtTasks();render();}
 
 function syncDateButtons(){
-  document.getElementById('btn-today').classList.toggle('on',filter.date==='today'&&!filter.tile);
-  document.getElementById('btn-future').classList.toggle('on',filter.date==='future'&&!filter.tile);
-  document.getElementById('btn-all').classList.toggle('on',filter.date==='all'&&!filter.tile);
+  const btn = document.getElementById('btn-future');
+  if(btn) btn.classList.toggle('on', filter.date === 'future' && !filter.tile);
   
   // Визуально отключаем счетчики статистики в режиме "Будущее", чтобы не путать пользователя
   const statBlock = document.getElementById('time-stats-block');
