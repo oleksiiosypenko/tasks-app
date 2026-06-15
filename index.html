@@ -23,8 +23,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .topbar-right{display:flex;gap:4px;align-items:center}
 .icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
-
-/* Tiles */
 .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 16px 6px}
 .tile{background:var(--bg2);border-radius:var(--radius);padding:12px;cursor:pointer;transition:all .2s;border:1.5px solid transparent}
 .tile.active{border-color:var(--accent);background:#252528}
@@ -33,42 +31,31 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .tile-sub{font-size:11px;color:#ffb340;font-weight:600;margin-bottom:2px}
 .tile-l{font-size:11px;color:var(--text2);font-weight:500}
 .tile-n.red{color:var(--danger)}
-
-/* Progress */
 .prog-wrap{margin:8px 16px;background:var(--bg2);padding:12px;border-radius:var(--radius)}
 .prog-bar{background:var(--bg3);border-radius:6px;height:8px;overflow:hidden}
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
 .prog-label{display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-top:6px;font-weight:500}
-.time-stats{display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.time-stats{display:flex;justify-content:space-between;align-items:stretch;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
 .time-stat{text-align:center;flex:1}
 .time-stat-val{font-size:15px;font-weight:700;color:#ffb340}
 .time-stat-label{font-size:11px;color:var(--text2);margin-top:2px}
-.time-stat-divider{width:1px;background:var(--border);align-self:stretch}
-
-/* Filters */
+.time-stat-divider{width:1px;background:var(--border)}
 .filters{display:flex;gap:8px;padding:8px 16px;overflow-x:auto;scrollbar-width:none}
 .filters::-webkit-scrollbar{display:none}
 .seg{display:flex;background:var(--bg2);border-radius:var(--radius-sm);padding:3px;flex-shrink:0}
 .seg button{background:none;border:none;padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;color:var(--text2);white-space:nowrap;font-weight:600}
 .seg button.on{background:var(--accent);color:#fff;font-weight:700}
-
-/* Add btn */
 .add-btn{margin:8px 16px;padding:12px;border:1.5px dashed var(--accent);border-radius:var(--radius);background:rgba(107,105,255,.05);cursor:pointer;color:#a3a1ff;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 32px)}
 .add-btn:active{background:rgba(107,105,255,.15)}
-
-/* Task list */
 .task-list{padding:4px 16px;display:flex;flex-direction:column;gap:8px}
 .q-label{font-size:11px;font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.05em;margin:10px 0 2px;display:flex;align-items:center;gap:6px}
 .q-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-
-/* Task */
-.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:12px;display:flex;gap:10px;align-items:flex-start;border-left:4px solid var(--border);transition:transform .1s}
-.task:active{transform:scale(.99)}
+.task{background:var(--bg2);border-radius:0 var(--radius) var(--radius) 0;padding:12px;display:flex;gap:10px;align-items:flex-start;border-left:4px solid var(--border)}
 .task.q1{border-left-color:var(--q1);background:linear-gradient(90deg,#241616 0%,var(--bg2) 15%)}
 .task.q2{border-left-color:var(--q2);background:linear-gradient(90deg,#16162a 0%,var(--bg2) 15%)}
 .task.q3{border-left-color:var(--q3);background:linear-gradient(90deg,#241f16 0%,var(--bg2) 15%)}
 .task.q4{border-left-color:var(--q4);opacity:.6}
-.task.done-task{opacity:.45}
+.task.done-task{opacity:.4}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
 .task.overdue-task{border-left-color:var(--danger)!important;background:linear-gradient(90deg,#3a1515 0%,var(--bg2) 18%)!important}
 .task.window-task{border-left-color:#ff6b00!important;background:linear-gradient(90deg,#2a1800 0%,var(--bg2) 18%)!important}
@@ -100,8 +87,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .tab-del:active{color:var(--danger)}
 .notes-text{font-size:12px;color:var(--text2);margin-top:4px;font-style:italic;line-height:1.4;word-break:break-word}
 .empty{text-align:center;padding:50px 20px;color:var(--text2);font-size:15px}
-
-/* Kanban */
 .kanban-wrap{padding:0 16px}
 .k-empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:15px;line-height:1.6}
 .k-empty-icon{font-size:48px;display:block;margin-bottom:12px}
@@ -136,12 +121,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .kbtn-pause{background:var(--warning);color:#000}
 .kbtn-cancel{background:var(--bg3);color:#fff}
 .kbtn-extend{background:#1a1a3a;color:#a3a3ff;border:1px solid #3a3a6a}
-
-/* Digest */
 .digest-wrap{padding:0 16px}
 .digest-box{background:var(--bg2);border-radius:var(--radius);padding:16px;font-size:14px;line-height:1.7;white-space:pre-wrap;font-family:monospace;color:#fff;border:1px solid var(--border)}
-
-/* Settings */
 .settings-wrap{padding:0 16px}
 .settings-section{margin-bottom:20px}
 .settings-section-title{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
@@ -157,19 +138,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .toggle::after{content:'';position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:left .2s}
 .toggle.on::after{left:25px}
 .settings-save-btn{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:15px;font-weight:700;cursor:pointer;margin-top:4px}
-
-/* Nav badge */
 .nav-wrap{position:relative;display:inline-flex;flex-direction:column;align-items:center}
 .nav-badge{position:absolute;top:-2px;right:-4px;width:8px;height:8px;background:var(--accent);border-radius:50%;border:2px solid #121214;display:none}
 .nav-badge.show{display:block}
-
-/* Nav */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#121214;border-top:1px solid var(--border);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom)}
 .nav-btn{flex:1;padding:10px 0;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text2);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;gap:3px}
 .nav-btn svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .nav-btn.on{color:var(--accent);border-top:2px solid var(--accent);padding-top:8px}
-
-/* Toast & Modal */
 .toast{position:fixed;bottom:95px;left:50%;transform:translateX(-50%);background:#222;color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;z-index:300;opacity:0;transition:opacity .25s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:flex-end;justify-content:center;z-index:200}
@@ -197,8 +172,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .time-wrap{position:relative}
 .time-wrap::after{content:'🕒';position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
 .time-wrap input{padding-right:36px}
-
-/* Long press menu */
 .ctx-menu{position:fixed;background:#252528;border:1px solid var(--border);border-radius:var(--radius);padding:6px;z-index:400;box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:180px}
 .ctx-item{padding:10px 14px;font-size:14px;font-weight:600;cursor:pointer;border-radius:var(--radius-sm);display:flex;align-items:center;gap:8px}
 .ctx-item:hover{background:var(--bg3)}
@@ -206,17 +179,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </style>
 </head>
 <body>
-
 <div id="page-tasks">
   <div class="topbar">
     <h1>Задачи</h1>
     <div class="topbar-right">
-      <button class="icon-btn" onclick="loadTasks()">
-        <svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
-      </button>
-      <button class="icon-btn" onclick="showPage('settings')">
-        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1-2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-      </button>
+      <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
+      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     </div>
   </div>
   <div class="tiles" id="tiles"></div>
@@ -224,20 +192,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label"><span>Выполнено задач</span><span id="prog-label">0 / 0</span></div>
     <div class="time-stats">
-      <div class="time-stat">
-        <div class="time-stat-val" id="stat-total">0м</div>
-        <div class="time-stat-label">Всего времени</div>
-      </div>
+      <div class="time-stat"><div class="time-stat-val" id="stat-total">—</div><div class="time-stat-label">Всего</div></div>
       <div class="time-stat-divider"></div>
-      <div class="time-stat">
-        <div class="time-stat-val" id="stat-remain">0м</div>
-        <div class="time-stat-label">Осталось</div>
-      </div>
+      <div class="time-stat"><div class="time-stat-val" id="stat-remain">—</div><div class="time-stat-label">Осталось</div></div>
       <div class="time-stat-divider"></div>
-      <div class="time-stat">
-        <div class="time-stat-val" id="stat-done">0м</div>
-        <div class="time-stat-label">Сделано</div>
-      </div>
+      <div class="time-stat"><div class="time-stat-val" id="stat-done">—</div><div class="time-stat-label">Сделано</div></div>
     </div>
   </div>
   <div class="filters">
@@ -256,12 +215,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-kanban" style="display:none">
-  <div class="topbar">
-    <h1>Фокус</h1>
-    <button class="icon-btn" onclick="renderKanban()">
-      <svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
-    </button>
-  </div>
+  <div class="topbar"><h1>Фокус</h1><button class="icon-btn" onclick="renderKanban()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button></div>
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
@@ -271,56 +225,25 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-settings" style="display:none">
-  <div class="topbar">
-    <h1>Настройки</h1>
-    <button class="icon-btn" onclick="showPage('tasks')">
-      <svg width="22" height="22" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
+  <div class="topbar"><h1>Настройки</h1><button class="icon-btn" onclick="showPage('tasks')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
   <div class="settings-wrap">
     <div class="settings-section">
       <div class="settings-section-title">🔔 Уведомления</div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Время дайджеста</div><div class="settings-row-sub">Утреннее сообщение</div></div>
-        <input type="text" id="s-digest-time" value="08:00" maxlength="5" inputmode="numeric" style="width:75px"/>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Напомнить за N мин</div><div class="settings-row-sub">До конца задачи</div></div>
-        <input type="number" id="s-notify-before" value="10" min="0" max="60" style="width:65px"/>
-      </div>
-      <div class="settings-full">
-        <label>Текст уведомления ({task} = название)</label>
-        <input type="text" id="s-notify-text" placeholder="⏰ До конца «{task}» осталось 10 мин"/>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Уведомления включены</div></div>
-        <button class="toggle on" id="s-notify-on" onclick="this.classList.toggle('on')"></button>
-      </div>
+      <div class="settings-row"><div><div class="settings-row-label">Время дайджеста</div><div class="settings-row-sub">Утреннее сообщение</div></div><input type="text" id="s-digest-time" value="08:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Напомнить за N мин</div><div class="settings-row-sub">До конца задачи</div></div><input type="number" id="s-notify-before" value="10" min="0" max="60" style="width:65px"/></div>
+      <div class="settings-full"><label>Текст уведомления ({task} = название)</label><input type="text" id="s-notify-text" placeholder="⏰ До конца «{task}» осталось 10 мин"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Уведомления включены</div></div><button class="toggle on" id="s-notify-on" onclick="this.classList.toggle('on')"></button></div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">⏰ Рабочие часы</div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Начало дня</div></div>
-        <input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Конец дня</div></div>
-        <input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/>
-      </div>
+      <div class="settings-row"><div><div class="settings-row-label">Начало рабочего дня</div></div><input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Конец рабочего дня</div></div><input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Скрывать Бизнес вне рабочих часов</div><div class="settings-row-sub">Выходные и вечер</div></div><button class="toggle" id="s-hide-biz" onclick="this.classList.toggle('on')"></button></div>
+      <div class="settings-row"><div><div class="settings-row-label">Планирование с воскресенья</div><div class="settings-row-sub">Показывать Бизнес с этого времени</div></div><input type="text" id="s-plan-from" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
     </div>
     <div class="settings-section">
       <div class="settings-section-title">👁 Отображение</div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Показывать выполненные</div></div>
-        <button class="toggle on" id="s-show-done" onclick="this.classList.toggle('on')"></button>
-      </div>
-      <div class="settings-row">
-        <div><div class="settings-row-label">Сортировка</div></div>
-        <select id="s-sort" style="width:130px">
-          <option value="quadrant">По квадранту</option>
-          <option value="deadline">По дедлайну</option>
-        </select>
-      </div>
+      <div class="settings-row"><div><div class="settings-row-label">Сортировка</div></div><select id="s-sort" style="width:130px"><option value="quadrant">По квадранту</option><option value="deadline">По дедлайну</option></select></div>
     </div>
     <button class="settings-save-btn" onclick="saveSettings()">💾 Сохранить</button>
   </div>
@@ -331,90 +254,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     <div class="modal-handle"></div>
     <h2 id="modal-title">Новая задача</h2>
     <input type="hidden" id="f-id"/>
-    <div class="form-group">
-      <label>Название</label>
-      <input type="text" id="f-title" placeholder="Что нужно сделать?"/>
-    </div>
+    <div class="form-group"><label>Название</label><input type="text" id="f-title" placeholder="Что нужно сделать?"/></div>
     <div class="form-group">
       <label>Квадрант</label>
       <div class="q-grid">
-        <div class="q-option selected" data-q="1" onclick="selectQ(1)">
-          <div class="q-option-title" style="color:var(--q1t)">Важное + Срочное</div>
-          <div class="q-option-sub">Кризисы, дедлайны</div>
-        </div>
-        <div class="q-option" data-q="2" onclick="selectQ(2)">
-          <div class="q-option-title" style="color:var(--q2t)">Важное, не срочное</div>
-          <div class="q-option-sub">Стратегия, развитие</div>
-        </div>
-        <div class="q-option" data-q="3" onclick="selectQ(3)">
-          <div class="q-option-title" style="color:var(--q3t)">Срочное, не важное</div>
-          <div class="q-option-sub">Рутина, мелочи</div>
-        </div>
-        <div class="q-option" data-q="4" onclick="selectQ(4)">
-          <div class="q-option-title" style="color:var(--q4t)">Низкий приоритет</div>
-          <div class="q-option-sub">Отложить</div>
-        </div>
+        <div class="q-option selected" data-q="1" onclick="selectQ(1)"><div class="q-option-title" style="color:var(--q1t)">Важное + Срочное</div><div class="q-option-sub">Кризисы, дедлайны</div></div>
+        <div class="q-option" data-q="2" onclick="selectQ(2)"><div class="q-option-title" style="color:var(--q2t)">Важное, не срочное</div><div class="q-option-sub">Стратегия, развитие</div></div>
+        <div class="q-option" data-q="3" onclick="selectQ(3)"><div class="q-option-title" style="color:var(--q3t)">Срочное, не важное</div><div class="q-option-sub">Рутина, мелочи</div></div>
+        <div class="q-option" data-q="4" onclick="selectQ(4)"><div class="q-option-title" style="color:var(--q4t)">Низкий приоритет</div><div class="q-option-sub">Отложить</div></div>
       </div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Категория</label>
-        <select id="f-cat">
-          <option value="business">Бизнес</option>
-          <option value="personal">Личное</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Повторяемость</label>
-        <select id="f-recurrence">
-          <option value="none">Один раз</option>
-          <option value="daily">Каждый день</option>
-          <option value="weekdays">По будням</option>
-          <option value="weekends">По выходным</option>
-          <option value="weekly">Раз в неделю</option>
-          <option value="monthly">Раз в месяц</option>
-        </select>
-      </div>
+      <div class="form-group"><label>Категория</label><select id="f-cat"><option value="business">Бизнес</option><option value="personal">Личное</option></select></div>
+      <div class="form-group"><label>Повторяемость</label><select id="f-recurrence"><option value="none">Один раз</option><option value="daily">Каждый день</option><option value="weekdays">По будням</option><option value="weekends">По выходным</option><option value="weekly">Раз в неделю</option><option value="monthly">Раз в месяц</option></select></div>
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Дедлайн <span>(необяз.)</span></label>
-        <input type="date" id="f-deadline"/>
-      </div>
-      <div class="form-group">
-        <label>Длительность (мин)</label>
-        <input type="number" id="f-mins" placeholder="30" min="5" max="480"/>
-      </div>
+      <div class="form-group"><label>Дедлайн <span>(необяз.)</span></label><input type="date" id="f-deadline"/></div>
+      <div class="form-group"><label>Длительность (мин)</label><input type="number" id="f-mins" placeholder="30" min="5" max="480"/></div>
     </div>
-    <div class="form-group">
-      <label>Заметки <span>(необяз.)</span></label>
-      <textarea id="f-notes" placeholder="Детали, ссылки, контекст..."></textarea>
-    </div>
+    <div class="form-group"><label>Заметки <span>(необяз.)</span></label><textarea id="f-notes" placeholder="Детали, ссылки, контекст..."></textarea></div>
     <div class="form-section">
       <div class="form-section-title">🕒 Временное окно <span style="font-weight:400;text-transform:none;font-size:10px">(необязательно)</span></div>
       <div class="form-row">
-        <div class="form-group" style="margin-bottom:0">
-          <label>С</label>
-          <div class="time-wrap"><input type="text" id="f-time-from" placeholder="09:00" maxlength="5" inputmode="numeric"/></div>
-        </div>
-        <div class="form-group" style="margin-bottom:0">
-          <label>До</label>
-          <div class="time-wrap"><input type="text" id="f-time-to" placeholder="10:00" maxlength="5" inputmode="numeric"/></div>
-        </div>
+        <div class="form-group" style="margin-bottom:0"><label>С</label><div class="time-wrap"><input type="text" id="f-time-from" placeholder="09:00" maxlength="5" inputmode="numeric"/></div></div>
+        <div class="form-group" style="margin-bottom:0"><label>До</label><div class="time-wrap"><input type="text" id="f-time-to" placeholder="10:00" maxlength="5" inputmode="numeric"/></div></div>
       </div>
       <div class="notif-info" id="notif-info" style="display:none"></div>
     </div>
     <div class="form-section">
       <div class="form-section-title">📅 Дни месяца <span style="font-weight:400;text-transform:none;font-size:10px">(для повторяемых)</span></div>
       <div class="form-row">
-        <div class="form-group" style="margin-bottom:0">
-          <label>С числа</label>
-          <input type="number" id="f-day-from" placeholder="1" min="1" max="31" inputmode="numeric"/>
-        </div>
-        <div class="form-group" style="margin-bottom:0">
-          <label>По число</label>
-          <input type="number" id="f-day-to" placeholder="31" min="1" max="31" inputmode="numeric"/>
-        </div>
+        <div class="form-group" style="margin-bottom:0"><label>С числа</label><input type="number" id="f-day-from" placeholder="1" min="1" max="31" inputmode="numeric"/></div>
+        <div class="form-group" style="margin-bottom:0"><label>По число</label><input type="number" id="f-day-to" placeholder="31" min="1" max="31" inputmode="numeric"/></div>
       </div>
     </div>
     <button class="btn-primary" id="save-btn" onclick="saveTask()">Сохранить задачу</button>
@@ -427,211 +298,139 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="ctx-item" id="ctx-done">✅ Выполнено</div>
   <div class="ctx-item danger" id="ctx-delete">❌ Удалить</div>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <nav class="bottom-nav">
-  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')">
-    <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-    Задачи
-  </button>
-  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')">
-    <div class="nav-wrap">
-      <svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg>
-      <div class="nav-badge" id="focus-badge"></div>
-    </div>
-    Фокус
-  </button>
-  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')">
-    <svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>
-    Дайджест
-  </button>
+  <button class="nav-btn on" id="nav-tasks" onclick="showPage('tasks')"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Задачи</button>
+  <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')"><div class="nav-wrap"><svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg><div class="nav-badge" id="focus-badge"></div></div>Фокус</button>
+  <button class="nav-btn" id="nav-digest" onclick="showPage('digest')"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Дайджест</button>
 </nav>
-
 <script>
-const tg = window.Telegram?.WebApp;
-if(tg) tg.expand();
+const tg=window.Telegram?.WebApp; if(tg)tg.expand();
+const API='https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
+let tasks=[],virtTasks=[],nextId=Date.now();
+let filter={cat:'all',date:'today',tile:null};
+let selectedQ=1,timerInterval=null,currentPage='tasks',ctxTaskId=null,longPressTimer=null;
+let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'09:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant'};
+const Q_LABELS=['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
-const API = 'https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
+function initTimeMask(id){
+  const el=document.getElementById(id);if(!el)return;
+  el.addEventListener('input',function(){let v=this.value.replace(/\D/g,'');if(v.length>4)v=v.slice(0,4);if(v.length>=3)v=v.slice(0,2)+':'+v.slice(2);this.value=v;});
+  el.addEventListener('blur',function(){const v=this.value;if(!v)return;const m=v.match(/^(\d{1,2}):?(\d{0,2})$/);if(m)this.value=Math.min(23,parseInt(m[1]||0)).toString().padStart(2,'0')+':'+Math.min(59,parseInt(m[2]||0)).toString().padStart(2,'0');else this.value='';});
+}
+function showToast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function haptic(t='light'){try{tg?.HapticFeedback?.impactOccurred(t);}catch(e){}}
+function hapticNotif(t='warning'){try{tg?.HapticFeedback?.notificationOccurred(t);}catch(e){}}
 
-let tasks = [];
-let nextId = Date.now();
-let filter = {cat:'all', date:'today', tile:null};
-let selectedQ = 1;
-let timerInterval = null;
-let currentPage = 'tasks';
-let ctxTaskId = null;
-let longPressTimer = null;
-let appSettings = {
-  digestTime:'08:00', notifyBefore:10,
-  notifyText:'⏰ До конца «{task}» осталось 10 мин',
-  notifyOn:true, workFrom:'09:00', workTo:'18:00',
-  showDone:true, sortBy:'quadrant'
-};
+function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
+function todayStr(){return localDate(new Date());}
+function tomorrowStr(){return localDate(new Date(Date.now()+86400000));}
+function timeToMin(s){if(!s)return 0;const[h,m]=(s+'').split(':').map(Number);return(h||0)*60+(m||0);}
+function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 
-const Q_LABELS = ['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
-
-// ---- Time mask ----
-function initTimeMask(id) {
-  const el = document.getElementById(id); if(!el) return;
-  el.addEventListener('input', function(){
-    let v=this.value.replace(/\D/g,''); if(v.length>4) v=v.slice(0,4);
-    if(v.length>=3) v=v.slice(0,2)+':'+v.slice(2); this.value=v;
-  });
-  el.addEventListener('blur', function(){
-    const v=this.value; if(!v) return;
-    const m=v.match(/^(\d{1,2}):?(\d{0,2})$/);
-    if(m){ this.value=Math.min(23,parseInt(m[1]||0)).toString().padStart(2,'0')+':'+Math.min(59,parseInt(m[2]||0)).toString().padStart(2,'0'); }
-    else this.value='';
-  });
+function shouldHideBiz(){
+  if(!appSettings.hideBiz)return false;
+  const dow=new Date().getDay(),nm=nowMin();
+  const wf=timeToMin(appSettings.workFrom),wt=timeToMin(appSettings.workTo),pf=timeToMin(appSettings.planFrom);
+  if(dow===6)return true;
+  if(dow===0)return nm<pf;
+  return nm<wf||nm>=wt;
 }
 
-function showToast(msg, duration=2500){
-  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), duration);
-}
-
-function haptic(type='light'){
-  try{ tg?.HapticFeedback?.impactOccurred(type); }catch(e){}
-}
-function hapticNotif(type='warning'){
-  try{ tg?.HapticFeedback?.notificationOccurred(type); }catch(e){}
-}
-
-// ПРАВКА ДАТ: жесткий фильтр от 1899 года и Invalid Date
 function normalizeTask(t){
   let deadline='';
-  if(t.deadline && t.deadline !== 'Invalid Date' && t.deadline !== 'undefined'){ 
-    const s = String(t.deadline); 
-    const m = s.match(/^(\d{4}-\d{2}-\d{2})/); 
-    if(m && parseInt(m[1]) > 2000) deadline = m[1]; 
-  }
-
-  function cleanTime(v){ 
-    if(!v || v==='Invalid Date' || v==='undefined') return ''; 
-    const s=String(v); 
-    // Ловим время из строки типа "1899-12-30T06:36:00.000Z"
-    let m = s.match(/T(\d{2}):(\d{2})/); 
-    if(m) return m[1]+':'+m[2]; 
-    // Ловим обычное "06:36"
-    m = s.match(/(\d{2}):(\d{2})/); 
-    if(m) return m[1]+':'+m[2]; 
-    return ''; 
-  }
-
-  return {
-    ...t, id:String(t.id), deadline,
-    time_from:cleanTime(t.time_from), time_to:cleanTime(t.time_to),
-    quadrant:Number(t.quadrant)||1, mins:Number(t.mins)||0,
-    worked_mins:Number(t.worked_mins)||0, postpone_count:Number(t.postpone_count)||0,
-    original_mins:Number(t.original_mins)||Number(t.mins)||0,
-    day_from:t.day_from?String(t.day_from):'', day_to:t.day_to?String(t.day_to):'',
-    notes:t.notes||'',
+  if(t.deadline){const s=String(t.deadline),m=s.match(/^(\d{4}-\d{2}-\d{2})/);if(m&&parseInt(m[1])>2000)deadline=m[1];}
+  function ct(v){if(!v)return '';const s=String(v),i=s.match(/T(\d{2}):(\d{2})/);if(i)return i[1]+':'+i[2];const h=s.match(/^(\d{2}):(\d{2})/);if(h)return h[0];return '';}
+  return{...t,id:String(t.id),deadline,time_from:ct(t.time_from),time_to:ct(t.time_to),
+    quadrant:Number(t.quadrant)||1,mins:Number(t.mins)||0,original_mins:Number(t.original_mins)||Number(t.mins)||0,
+    worked_mins:Number(t.worked_mins)||0,postpone_count:Number(t.postpone_count)||0,
+    day_from:t.day_from?String(t.day_from):'',day_to:t.day_to?String(t.day_to):'',notes:t.notes||'',
     done:String(t.done).toLowerCase()==='true'||t.done===1||t.done===true,
-    status:t.status||'new', recurrence:t.recurrence||'none',
-    started_at:t.started_at||'', paused_at:t.paused_at||'',
-    paused_remaining:Number(t.paused_remaining)||0,
-    notified:t.notified===true||t.notified==='TRUE'
-  };
-}
-
-function todayStr(){
-  const d=new Date();
-  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
-}
-function tomorrowStr(){
-  const d=new Date(Date.now()+86400000);
-  return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];
+    status:t.status||'new',recurrence:t.recurrence||'none',
+    started_at:t.started_at||'',paused_at:t.paused_at||'',paused_remaining:Number(t.paused_remaining)||0,
+    notified:t.notified===true||t.notified==='TRUE'};
 }
 
 function getTaskOverdueType(t){
-  if(t.done) return null;
-  if(t.status==='missed') return 'missed';
-  if(t.deadline && t.deadline<todayStr()) return 'deadline';
-  if(t.time_to){
-    const now=new Date();
-    const [h,m]=t.time_to.split(':').map(Number);
-    const end=new Date(); end.setHours(h,m,0,0);
-    if(now>end) return 'window';
-  }
+  if(t.done)return null;
+  if(t.status==='missed')return 'missed';
+  if(t.deadline&&t.deadline<todayStr())return 'deadline';
+  if(t.time_to){const n=new Date(),[h,m]=t.time_to.split(':').map(Number),e=new Date();e.setHours(h,m,0,0);if(n>e)return 'window';}
   return null;
 }
 
-// НОВАЯ ФУНКЦИЯ: генератор повторяющихся задач
-function generateNextRecurringTask(t) {
-  let base = new Date();
-  if (t.deadline) {
-    const dl = new Date(t.deadline + 'T12:00:00');
-    if (!isNaN(dl.getTime()) && dl > base) {
-      base = dl;
-    }
-  }
+// Виртуальные экземпляры повторяемых задач
+function buildVirtTasks(){
+  const td=todayStr(),now=new Date(),dow=now.getDay(),dom=now.getDate();
+  virtTasks=[];
+  tasks.forEach(base=>{
+    const rec=base.recurrence;
+    if(!rec||rec==='none')return;
+    // Если уже выполнена или пропущена сегодня — пропускаем
+    if(base.done&&base.deadline===td)return;
+    if(base.status==='missed'&&base.deadline===td)return;
+    // Если дедлайн в будущем — это конкретная дата, не виртуальная
+    if(base.deadline&&base.deadline>td)return;
 
-  let d = new Date(base.getTime());
-  const rec = t.recurrence;
+    // Проверяем подходит ли сегодня
+    let fits=false;
+    if(rec==='daily')fits=true;
+    else if(rec==='weekdays')fits=dow>=1&&dow<=5;
+    else if(rec==='weekends')fits=dow===0||dow===6;
+    else if(rec==='weekly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDay()===dow;}
+    else if(rec==='monthly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDate()===dom;}
 
-  if (rec === 'daily') {
-    d.setDate(d.getDate() + 1);
-  } else if (rec === 'weekdays') {
-    do { d.setDate(d.getDate() + 1); } while (d.getDay() === 0 || d.getDay() === 6);
-  } else if (rec === 'weekends') {
-    do { d.setDate(d.getDate() + 1); } while (d.getDay() !== 0 && d.getDay() !== 6);
-  } else if (rec === 'weekly') {
-    d.setDate(d.getDate() + 7);
-  } else if (rec === 'monthly') {
-    d.setMonth(d.getMonth() + 1);
-  } else {
-    return null; // не повторяется
-  }
+    // Проверяем ограничение по дням месяца
+    if(fits&&base.day_from&&base.day_to){const df=parseInt(base.day_from),dt=parseInt(base.day_to);if(dom<df||dom>dt)fits=false;}
+    if(!fits)return;
 
-  const nextDateStr = new Date(d.getTime() - (d.getTimezoneOffset() * 60000)).toISOString().split('T')[0];
-  const baseMins = Number(t.original_mins) || Number(t.mins) || 0;
+    // Проверяем нет ли уже реальной записи на сегодня
+    const alreadyReal=tasks.some(t=>t.id!==base.id&&t.title===base.title&&t.recurrence===rec&&t.deadline===td&&!t._virt);
+    if(alreadyReal)return;
 
-  return {
-    ...t,
-    id: String(nextId++),
-    deadline: nextDateStr,
-    mins: baseMins,
-    original_mins: baseMins,
-    done: false,
-    status: 'new',
-    worked_mins: 0,
-    started_at: '',
-    paused_at: '',
-    paused_remaining: 0,
-    notified: false
-  };
+    // Проверяем нет ли уже активной версии (inprogress/paused)
+    if(base.status==='inprogress'||base.status==='paused')return;
+
+    const pc=Number(base.postpone_count)||0;
+    const baseMins=base.original_mins||base.mins||0;
+    const penaltyMins=pc>0?baseMins*(pc+1):baseMins;
+
+    virtTasks.push({...base,_virt:true,_baseId:base.id,id:'virt_'+base.id,
+      deadline:td,mins:penaltyMins,original_mins:baseMins,
+      done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,
+      _penalty:pc});
+  });
 }
 
-// ---- API ----
-async function apiFetch(method, data){
-  try{
-    const r = method==='GET'
-      ? await fetch(API+'?action=getTasks&t='+Date.now())
-      : await fetch(API,{method:'POST',body:JSON.stringify(data)});
-    return await r.json();
-  } catch(e){ showToast('Ошибка соединения'); return null; }
+function getAllTasks(){
+  // Убираем базовые задачи для которых есть виртуальный экземпляр (без дедлайна или дедлайн в прошлом)
+  const virtBaseIds=new Set(virtTasks.map(v=>v._baseId));
+  const real=tasks.filter(t=>{
+    if(!t.recurrence||t.recurrence==='none')return true;
+    if(virtBaseIds.has(t.id)&&(!t.deadline||t.deadline<todayStr()))return false;
+    return true;
+  });
+  return [...real,...virtTasks];
 }
 
-// ---- Settings ----
+async function apiFetch(method,data){
+  try{const r=method==='GET'?await fetch(API+'?action=getTasks&t='+Date.now()):await fetch(API,{method:'POST',body:JSON.stringify(data)});return await r.json();}
+  catch(e){showToast('Ошибка соединения');return null;}
+}
+
 async function loadSettings(){
-  try{
-    const r=await fetch(API+'?action=getSettings&t='+Date.now());
-    const d=await r.json(); if(d&&!d.error) appSettings={...appSettings,...d};
-  }catch(e){}
+  try{const r=await fetch(API+'?action=getSettings&t='+Date.now());const d=await r.json();if(d&&!d.error)appSettings={...appSettings,...d};if(typeof appSettings.notifyBefore==='string')appSettings.notifyBefore=parseInt(appSettings.notifyBefore)||10;}catch(e){}
   applySettingsUI();
 }
-
 function applySettingsUI(){
   const s=appSettings;
   const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
-  sv('s-digest-time',s.digestTime); sv('s-notify-before',s.notifyBefore);
-  sv('s-notify-text',s.notifyText); sv('s-work-from',s.workFrom);
-  sv('s-work-to',s.workTo); sv('s-sort',s.sortBy);
+  sv('s-digest-time',s.digestTime);sv('s-notify-before',s.notifyBefore);sv('s-notify-text',s.notifyText);
+  sv('s-work-from',s.workFrom);sv('s-work-to',s.workTo);sv('s-plan-from',s.planFrom);sv('s-sort',s.sortBy);
   document.getElementById('s-notify-on')?.classList.toggle('on',!!s.notifyOn);
-  document.getElementById('s-show-done')?.classList.toggle('on',!!s.showDone);
+  document.getElementById('s-hide-biz')?.classList.toggle('on',!!s.hideBiz);
 }
-
 async function saveSettings(){
   appSettings={
     digestTime:document.getElementById('s-digest-time')?.value||'08:00',
@@ -640,209 +439,127 @@ async function saveSettings(){
     notifyOn:!!document.getElementById('s-notify-on')?.classList.contains('on'),
     workFrom:document.getElementById('s-work-from')?.value||'09:00',
     workTo:document.getElementById('s-work-to')?.value||'18:00',
-    showDone:!!document.getElementById('s-show-done')?.classList.contains('on'),
+    hideBiz:!!document.getElementById('s-hide-biz')?.classList.contains('on'),
+    planFrom:document.getElementById('s-plan-from')?.value||'18:00',
     sortBy:document.getElementById('s-sort')?.value||'quadrant',
   };
   showToast('Сохраняю...');
   const res=await apiFetch('POST',{action:'saveSettings',settings:appSettings});
-  showToast(res?.ok?'Сохранено ✅':'Ошибка');
-  render();
+  showToast(res?.ok?'Сохранено ✅':'Ошибка');render();
 }
 
-// ---- Load ----
 async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
   const data=await apiFetch('GET');
-  if(data&&Array.isArray(data)){
-    tasks=data.map(normalizeTask);
-    nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;
-  }
-  render();
-  if(currentPage==='kanban') renderKanban();
-  if(currentPage==='digest') buildDigest();
+  if(data&&Array.isArray(data)){tasks=data.map(normalizeTask);nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;}
+  buildVirtTasks();render();
+  if(currentPage==='kanban')renderKanban();
+  if(currentPage==='digest')buildDigest();
 }
 
-function fmtMins(m){
-  m=Number(m); if(!m) return '0м';
-  if(m<60) return m+'м';
-  return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');
-}
-function fmtDate(dl){
-  if(!dl || dl==='Invalid Date' || dl==='undefined') return '';
-  const m = String(dl).match(/^(\d{4}-\d{2}-\d{2})/);
-  if(!m) return '';
-  try {
-    const d = new Date(m[1]+'T12:00:00');
-    return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'});
-  } catch(e) { return ''; }
-}
+function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');}
+function fmtDate(dl){if(!dl)return '';try{const m=String(dl).match(/^(\d{4}-\d{2}-\d{2})/);if(!m)return '';const d=new Date(m[1]+'T12:00:00');return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'});}catch(e){return '';}}
 
-// ---- Filters ----
 function getFiltered(){
-  let t=[...tasks];
-  const td=todayStr(), tm=tomorrowStr();
-  if(filter.cat!=='all') t=t.filter(x=>x.cat===filter.cat);
-
-  if(filter.tile==='today')
-    t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-  else if(filter.tile==='tomorrow')
-    t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
-  else if(filter.tile==='overdue')
-    t=t.filter(x=>getTaskOverdueType(x)!==null);
-  else if(filter.date==='today')
-    t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-
-  if(!appSettings.showDone && filter.tile!=='overdue')
-    t=t.filter(x=>!x.done);
-
+  const all=getAllTasks();const td=todayStr(),tm=tomorrowStr();let t=[...all];
+  if(shouldHideBiz())t=t.filter(x=>x.cat!=='business'||x.done);
+  if(filter.cat!=='all')t=t.filter(x=>x.cat===filter.cat);
+  if(filter.tile==='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
+  else if(filter.tile==='tomorrow')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
+  else if(filter.tile==='overdue')t=t.filter(x=>getTaskOverdueType(x)!==null&&!x.done);
+  else if(filter.date==='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
+  // Выполненные всегда в конец, не скрываем
   t.sort((a,b)=>{
-    const aAct=a.status==='inprogress'||a.status==='paused';
-    const bAct=b.status==='inprogress'||b.status==='paused';
-    if(aAct&&!bAct) return -1; if(!aAct&&bAct) return 1;
-    const ao=getTaskOverdueType(a), bo=getTaskOverdueType(b);
-    if(ao&&!bo) return -1; if(!ao&&bo) return 1;
-    if(a.done&&!b.done) return 1; if(!a.done&&b.done) return -1;
-    if(appSettings.sortBy==='deadline'){
-      if(a.deadline&&b.deadline) return a.deadline.localeCompare(b.deadline);
-      if(a.deadline) return -1; if(b.deadline) return 1;
-    }
+    const aA=a.status==='inprogress'||a.status==='paused',bA=b.status==='inprogress'||b.status==='paused';
+    if(aA&&!bA)return -1;if(!aA&&bA)return 1;
+    if(a.done&&!b.done)return 1;if(!a.done&&b.done)return -1;
+    const ao=getTaskOverdueType(a),bo=getTaskOverdueType(b);
+    if(ao&&!bo)return -1;if(!ao&&bo)return 1;
+    if(appSettings.sortBy==='deadline'){if(a.deadline&&b.deadline)return a.deadline.localeCompare(b.deadline);if(a.deadline)return -1;if(b.deadline)return 1;}
     return Number(a.quadrant)-Number(b.quadrant);
   });
   return t;
 }
 
-function setCatFilter(v){
-  filter.cat=v;
-  const vals=['all','business','personal'];
-  document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));
-  render();
-}
+function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
+function setDateFilter(v){filter.tile=null;filter.date=v;render();}
+function setTileFilter(k){filter.tile=filter.tile===k?null:k;if(filter.tile)filter.date='all';render();}
+function syncDateButtons(){document.getElementById('btn-today').classList.toggle('on',filter.date==='today'&&!filter.tile);document.getElementById('btn-all').classList.toggle('on',filter.date==='all'&&!filter.tile);}
 
-function setDateFilter(v){
-  filter.tile=null; filter.date=v;
-  render();
-}
-
-function setTileFilter(key){
-  filter.tile=filter.tile===key?null:key;
-  if(filter.tile) filter.date='all';
-  render();
-}
-
-function syncDateButtons(){
-  document.getElementById('btn-today').classList.toggle('on',filter.date==='today'&&!filter.tile);
-  document.getElementById('btn-all').classList.toggle('on',filter.date==='all'&&!filter.tile);
-}
-
-// ---- Render Tiles ----
 function renderTiles(){
-  const td=todayStr(), tm=tomorrowStr();
-  let base=[...tasks]; if(filter.cat!=='all') base=base.filter(x=>x.cat===filter.cat);
+  const td=todayStr(),tm=tomorrowStr(),all=getAllTasks();
+  let base=[...all];if(filter.cat!=='all')base=base.filter(x=>x.cat===filter.cat);if(shouldHideBiz())base=base.filter(x=>x.cat!=='business'||x.done);
   const todayAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&(!t.deadline||t.deadline<=td));
   const tmAll=base.filter(t=>!t.done&&t.status!=='missed'&&Number(t.quadrant)!==4&&t.deadline===tm);
-  const overdueAll=base.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
-
-  const todayMins=todayAll.reduce((s,t)=>s+(Number(t.mins)||0),0);
-  const tmMins=tmAll.reduce((s,t)=>s+(Number(t.mins)||0),0);
-
+  const ovAll=base.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
   const tiles=[
-    {key:'today',   n:todayAll.length, sub:fmtMins(todayMins), label:'📅 Сегодня'},
-    {key:'tomorrow',n:tmAll.length,    sub:fmtMins(tmMins),    label:'📅 Завтра'},
-    {key:'overdue', n:overdueAll.length, sub:'', label:'⚠️ Просрочено', cls:overdueAll.length>0?'red':''},
+    {k:'today',n:todayAll.length,sub:fmtMins(todayAll.reduce((s,t)=>s+(Number(t.mins)||0),0)),l:'📅 Сегодня'},
+    {k:'tomorrow',n:tmAll.length,sub:fmtMins(tmAll.reduce((s,t)=>s+(Number(t.mins)||0),0)),l:'📅 Завтра'},
+    {k:'overdue',n:ovAll.length,sub:'',l:'⚠️ Просрочено',cls:ovAll.length>0?'red':''},
   ];
-
-  document.getElementById('tiles').innerHTML=tiles.map(tile=>`
-    <div class="tile${filter.tile===tile.key?' active':''}" onclick="setTileFilter('${tile.key}')">
-      <div class="tile-n ${tile.cls||''}">${tile.n}</div>
-      ${tile.sub?`<div class="tile-sub">${tile.sub}</div>`:'<div class="tile-sub" style="visibility:hidden">-</div>'}
-      <div class="tile-l">${tile.label}</div>
-    </div>`).join('');
+  document.getElementById('tiles').innerHTML=tiles.map(t=>`<div class="tile${filter.tile===t.k?' active':''}" onclick="setTileFilter('${t.k}')"><div class="tile-n ${t.cls||''}">${t.n}</div>${t.sub?`<div class="tile-sub">${t.sub}</div>`:'<div class="tile-sub" style="visibility:hidden">-</div>'}<div class="tile-l">${t.l}</div></div>`).join('');
 }
 
 function renderProgress(){
-  const list=getFiltered();
-  const active=list.filter(t=>t.status!=='missed');
-  const total=active.length;
-  const doneCount=active.filter(t=>t.done).length;
-  const pct=total?Math.round(doneCount/total*100):0;
-
+  const list=getFiltered(),act=list.filter(t=>t.status!=='missed');
+  const total=act.length,doneC=act.filter(t=>t.done).length,pct=total?Math.round(doneC/total*100):0;
   document.getElementById('prog-fill').style.width=pct+'%';
-  document.getElementById('prog-label').textContent=`${doneCount} / ${total} (${pct}%)`;
-
-  const totalMins=active.reduce((s,t)=>s+(Number(t.mins)||0)+(Number(t.worked_mins)||0),0);
-  const doneMins=active.filter(t=>t.done).reduce((s,t)=>s+(t.worked_mins>0?Number(t.worked_mins):Number(t.mins)||0),0);
-  const remainMins=active.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
-
-  document.getElementById('stat-total').textContent=fmtMins(totalMins)||'—';
-  document.getElementById('stat-remain').textContent=fmtMins(remainMins)||'—';
-  document.getElementById('stat-done').textContent=fmtMins(doneMins)||'—';
+  document.getElementById('prog-label').textContent=doneC+' / '+total+' ('+pct+'%)';
+  const tM=act.reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const dM=act.filter(t=>t.done).reduce((s,t)=>s+(t.worked_mins>0?Number(t.worked_mins):Number(t.mins)||0),0);
+  const rM=act.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
+  document.getElementById('stat-total').textContent=fmtMins(tM)||'—';
+  document.getElementById('stat-remain').textContent=fmtMins(rM)||'—';
+  document.getElementById('stat-done').textContent=fmtMins(dM)||'—';
 }
 
-// ---- Render Tasks ----
 function renderTasks(){
-  const list=getFiltered();
-  const el=document.getElementById('task-list');
+  const list=getFiltered(),el=document.getElementById('task-list');
   if(!list.length){el.innerHTML='<div class="empty">Задач нет ✨</div>';return;}
-
   const groups={1:[],2:[],3:[],4:[],6:[]};
-  list.forEach(t=>{
-    if(t.done) groups[6].push(t);
-    else groups[Number(t.quadrant)||1].push(t);
-  });
-
-  const qNames=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет','','✅ Выполненные'];
-  const qDots=['','#ff453a','#5e5ce6','#ff9f0a','#636366','','#30d158'];
+  list.forEach(t=>{if(t.done)groups[6].push(t);else groups[Number(t.quadrant)||1].push(t);});
+  const qN=['','Важное и срочное','Важное, не срочное','Срочное, не важное','Низкий приоритет','','✅ Выполненные'];
+  const qD=['','#ff453a','#5e5ce6','#ff9f0a','#636366','','#30d158'];
   let html='';
-
   [1,2,3,4,6].forEach(q=>{
-    if(!groups[q]||!groups[q].length) return;
-    html+=`<div class="q-label"><span class="q-dot" style="background:${qDots[q]}"></span>${qNames[q]}</div>`;
+    if(!groups[q]?.length)return;
+    html+=`<div class="q-label"><span class="q-dot" style="background:${qD[q]}"></span>${qN[q]}</div>`;
     html+=groups[q].map(t=>{
-      const pc=Number(t.postpone_count)||0;
-      const fire=pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
+      const pc=Number(t._penalty!==undefined?t._penalty:t.postpone_count)||0;
+      const fire=pc>0?` 🔥x${pc+1}`:'';
       const rec=t.recurrence&&t.recurrence!=='none'?' 🔁':'';
       const notifIcon=(t.time_from||t.time_to)&&appSettings.notifyOn?' 🔔':'';
-      const overdueType=getTaskOverdueType(t);
+      const ot=getTaskOverdueType(t);
       const fDate=fmtDate(t.deadline);
       let extra='';
-      if(t.time_from&&t.time_to) extra+=` 🕒 ${t.time_from}–${t.time_to}`;
-      else if(t.time_from) extra+=` 🕒 с ${t.time_from}`;
-      if(t.day_from&&t.day_to) extra+=` 📅 ${t.day_from}–${t.day_to} ч.`;
-
+      if(t.time_from&&t.time_to)extra+=` 🕒 ${t.time_from}–${t.time_to}`;
+      else if(t.time_from)extra+=` 🕒 с ${t.time_from}`;
+      if(t.day_from&&t.day_to)extra+=` 📅 ${t.day_from}–${t.day_to} ч.`;
       let cls='q'+q;
-      if(t.status==='inprogress') cls='inprogress-task';
-      else if(t.status==='paused') cls='paused-task';
-      else if(overdueType==='missed'||overdueType==='deadline') cls='overdue-task';
-      else if(overdueType==='window') cls='window-task';
-      if(t.done) cls+=' done-task';
-
-      let statusBadge=`<span class="badge b-q${q}">${Q_LABELS[q]}</span>`;
-      if(t.status==='inprogress') statusBadge='<span class="badge b-inprogress">▶ В работе</span>';
-      else if(t.status==='paused') statusBadge='<span class="badge b-paused">⏸ Пауза</span>';
-      else if(overdueType==='missed'||overdueType==='deadline') statusBadge='<span class="badge b-overdue">⚠️ Просрочено</span>';
-      else if(overdueType==='window') statusBadge='<span class="badge b-window">⏰ Окно истекло</span>';
-      else if(t.done) statusBadge='';
-
-      const activeTask=tasks.find(x=>x.status==='inprogress'||x.status==='paused');
-      let actionBtn='';
+      if(t.status==='inprogress')cls='inprogress-task';
+      else if(t.status==='paused')cls='paused-task';
+      else if(ot==='missed'||ot==='deadline')cls='overdue-task';
+      else if(ot==='window')cls='window-task';
+      if(t.done)cls+=' done-task';
+      let sb=`<span class="badge b-q${q}">${Q_LABELS[q]}</span>`;
+      if(t.status==='inprogress')sb='<span class="badge b-inprogress">▶ В работе</span>';
+      else if(t.status==='paused')sb='<span class="badge b-paused">⏸ Пауза</span>';
+      else if(ot==='missed'||ot==='deadline')sb='<span class="badge b-overdue">⚠️ Просрочено</span>';
+      else if(ot==='window')sb='<span class="badge b-window">⏰ Окно истекло</span>';
+      else if(t.done)sb='';
+      const aT=getAllTasks().find(x=>x.status==='inprogress'||x.status==='paused');
+      let ab='';
       if(!t.done){
-        if(t.status==='inprogress'||t.status==='paused'){
-          actionBtn=`<button class="tab tab-resume" data-action="goto-kanban">⏱ Открыть таймер</button>`;
-        } else if(!activeTask){
-          actionBtn=`<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`;
-        } else {
-          actionBtn=`<button class="tab tab-start" style="opacity:.35;cursor:default" disabled>▶ Занят таймер</button>`;
-        }
+        if(t.status==='inprogress'||t.status==='paused')ab=`<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
+        else if(!aT)ab=`<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`;
+        else ab=`<button class="tab tab-start" style="opacity:.3;cursor:default" disabled>▶ Занят</button>`;
       }
-
-      return `<div class="task ${cls}" data-id="${t.id}">
+      const editId=t._virt?t._baseId:t.id;
+      return `<div class="task ${cls}" data-id="${t.id}" data-edit-id="${editId}">
         <div class="check${t.done?' on':''}" data-action="toggle" data-id="${t.id}">${t.done?'✔':''}</div>
         <div class="task-body" data-action="edit" data-id="${t.id}">
           <div class="task-title">${t.title}${fire}${rec}${notifIcon}</div>
-          <div class="badges">
-            <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
-            ${statusBadge}
-          </div>
+          <div class="badges"><span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>${sb}</div>
           <div class="task-meta">
             ${t.mins&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}
             ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 ${fmtMins(t.worked_mins)}</span>`:''}
@@ -850,7 +567,7 @@ function renderTasks(){
             ${extra?`<span class="tmeta" style="color:var(--warning)">${extra}</span>`:''}
           </div>
           ${t.notes?`<div class="notes-text">📝 ${t.notes}</div>`:''}
-          ${actionBtn?`<div class="task-actions">${actionBtn}</div>`:''}
+          ${ab?`<div class="task-actions">${ab}</div>`:''}
         </div>
         <button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>
       </div>`;
@@ -860,442 +577,266 @@ function renderTasks(){
   updateFocusBadge();
 }
 
-function updateFocusBadge(){
-  const active=tasks.find(t=>t.status==='inprogress'||t.status==='paused');
-  document.getElementById('focus-badge')?.classList.toggle('show',!!active);
-}
+function updateFocusBadge(){const a=getAllTasks().find(t=>t.status==='inprogress'||t.status==='paused');document.getElementById('focus-badge')?.classList.toggle('show',!!a);}
+function render(){renderTiles();renderProgress();renderTasks();syncDateButtons();}
 
-function render(){ renderTiles(); renderProgress(); renderTasks(); syncDateButtons(); }
-
-// ---- Event delegation ----
-document.getElementById('task-list').addEventListener('click', function(e){
-  const actionEl=e.target.closest('[data-action]'); if(!actionEl) return;
-  const action=actionEl.dataset.action, id=actionEl.dataset.id;
-  if(action==='toggle') toggleDone(id);
-  if(action==='edit') openEditModal(id);
-  if(action==='delete') delTask(id);
-  if(action==='start') kanbanStart(id);
-  if(action==='goto-kanban') showPage('kanban');
+document.getElementById('task-list').addEventListener('click',function(e){
+  const ae=e.target.closest('[data-action]');if(!ae)return;
+  const a=ae.dataset.action,id=ae.dataset.id,te=ae.closest('.task'),eid=te?.dataset.editId||id;
+  if(a==='toggle')toggleDone(id);
+  if(a==='edit')openEditModal(eid);
+  if(a==='delete')delTask(id);
+  if(a==='start')kanbanStart(id);
+  if(a==='goto-kanban')showPage('kanban');
 });
-
-// Long press context menu
-document.getElementById('task-list').addEventListener('pointerdown', function(e){
-  const taskEl=e.target.closest('.task'); if(!taskEl) return;
-  if(e.target.closest('[data-action="toggle"]')||e.target.closest('[data-action="delete"]')||e.target.closest('.task-actions')) return;
-  ctxTaskId=taskEl.dataset.id;
-  longPressTimer=setTimeout(()=>{ haptic('medium'); showCtxMenu(e.clientX, e.clientY, ctxTaskId); }, 500);
+document.getElementById('task-list').addEventListener('pointerdown',function(e){
+  const te=e.target.closest('.task');if(!te)return;
+  if(e.target.closest('[data-action="toggle"]')||e.target.closest('[data-action="delete"]')||e.target.closest('.task-actions'))return;
+  ctxTaskId=te.dataset.id;
+  longPressTimer=setTimeout(()=>{haptic('medium');showCtxMenu(e.clientX,e.clientY,ctxTaskId);},500);
 });
-document.getElementById('task-list').addEventListener('pointerup', ()=>clearTimeout(longPressTimer));
-document.getElementById('task-list').addEventListener('pointermove', ()=>clearTimeout(longPressTimer));
+document.getElementById('task-list').addEventListener('pointerup',()=>clearTimeout(longPressTimer));
+document.getElementById('task-list').addEventListener('pointermove',()=>clearTimeout(longPressTimer));
 
-function showCtxMenu(x, y, id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
+function showCtxMenu(x,y,id){
+  const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
   const menu=document.getElementById('ctx-menu');
-  const activeTask=tasks.find(x=>x.status==='inprogress'||x.status==='paused');
-
-  document.getElementById('ctx-start').style.display=(!t.done&&!activeTask&&t.status!=='inprogress'&&t.status!=='paused')?'flex':'none';
-  document.getElementById('ctx-done').textContent=t.done?'↩ Вернуть в активные':'✅ Выполнено';
-
-  const vw=window.innerWidth, vh=window.innerHeight;
-  const mw=200, mh=160;
-  menu.style.left=Math.min(x, vw-mw-10)+'px';
-  menu.style.top=Math.min(y, vh-mh-10)+'px';
-  menu.style.display='block';
-
-  document.getElementById('ctx-start').onclick=()=>{ hideCtxMenu(); kanbanStart(id); };
-  document.getElementById('ctx-edit').onclick=()=>{ hideCtxMenu(); openEditModal(id); };
-  document.getElementById('ctx-done').onclick=()=>{ hideCtxMenu(); toggleDone(id); };
-  document.getElementById('ctx-delete').onclick=()=>{ hideCtxMenu(); delTask(id); };
+  const aT=all.find(x=>x.status==='inprogress'||x.status==='paused');
+  document.getElementById('ctx-start').style.display=(!t.done&&!aT&&t.status!=='inprogress'&&t.status!=='paused')?'flex':'none';
+  document.getElementById('ctx-done').textContent=t.done?'↩ Вернуть':'✅ Выполнено';
+  menu.style.left=Math.min(x,window.innerWidth-210)+'px';menu.style.top=Math.min(y,window.innerHeight-170)+'px';menu.style.display='block';
+  const eid=t._virt?t._baseId:t.id;
+  document.getElementById('ctx-start').onclick=()=>{hideCtxMenu();kanbanStart(id);};
+  document.getElementById('ctx-edit').onclick=()=>{hideCtxMenu();openEditModal(eid);};
+  document.getElementById('ctx-done').onclick=()=>{hideCtxMenu();toggleDone(id);};
+  document.getElementById('ctx-delete').onclick=()=>{hideCtxMenu();delTask(id);};
 }
+function hideCtxMenu(){document.getElementById('ctx-menu').style.display='none';}
+document.addEventListener('click',e=>{if(!e.target.closest('#ctx-menu'))hideCtxMenu();});
 
-function hideCtxMenu(){ document.getElementById('ctx-menu').style.display='none'; }
-document.addEventListener('click', e=>{ if(!e.target.closest('#ctx-menu')) hideCtxMenu(); });
-
-// ПРАВКА ПОВТОРЯЮЩИХСЯ ЗАДАЧ: создаём новую задачу на следующий день
 async function toggleDone(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
+  const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
   haptic();
-  if(t.status==='inprogress'||t.status==='paused'){
-    if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-    t.started_at=''; t.paused_remaining=0; t.paused_at='';
+  if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+  if(t._virt){
+    // Виртуальная задача — помечаем базовую выполненной сегодня
+    const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
+    const td=todayStr();base.done=true;base.status='done';base.deadline=td;
+    virtTasks=virtTasks.filter(v=>v.id!==id);
+    buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
+    await apiFetch('POST',{action:'updateTask',id:base.id,fields:{done:true,status:'done',deadline:td}});
+    showToast('Выполнено ✅ (завтра появится снова)');return;
   }
-  
-  t.done = !t.done; 
-  t.status = t.done ? 'done' : 'new';
-  
-  let newRecurTask = null;
-  // Если задачу ВЫПОЛНИЛИ и она ПОВТОРЯЮЩАЯСЯ -> генерируем копию на следующий раз
-  if(t.done && t.recurrence && t.recurrence !== 'none') {
-    newRecurTask = generateNextRecurringTask(t);
-    if(newRecurTask) tasks.push(newRecurTask);
-  }
-
-  render(); if(currentPage==='kanban') renderKanban();
-  
-  await apiFetch('POST',{action:t.done?'doneTask':'updateTask', id,
-    fields:{done:t.done, status:t.status, started_at:'', paused_remaining:0, paused_at:''}, workedMins:0});
-    
-  // Сохраняем новую задачу в базу (таблицу) без задержек
-  if(newRecurTask) {
-    await apiFetch('POST', {action:'addTask', task: newRecurTask});
-  }
-
-  if(t.done) showToast('Выполнено ✅');
+  // Реальная задача
+  t.done=!t.done;t.status=t.done?'done':'new';
+  if(!t.done){t.started_at='';t.paused_remaining=0;t.paused_at='';}
+  buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
+  await apiFetch('POST',{action:t.done?'doneTask':'updateTask',id,fields:{done:t.done,status:t.status,started_at:'',paused_remaining:0,paused_at:''},workedMins:0});
+  if(t.done)showToast('Выполнено ✅');
 }
 
 async function delTask(id){
-  if(!confirm('Удалить задачу?')) return;
-  const t=tasks.find(x=>x.id===id);
-  if(t&&(t.status==='inprogress'||t.status==='paused')){
-    if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-  }
-  tasks=tasks.filter(x=>x.id!==id);
-  render(); if(currentPage==='kanban') renderKanban();
+  if(!confirm('Удалить задачу?'))return;
+  const all=getAllTasks(),t=all.find(x=>x.id===id);
+  if(t?._virt){const bid=t._baseId;tasks=tasks.filter(x=>x.id!==bid);virtTasks=virtTasks.filter(v=>v.id!==id);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'deleteTask',id:bid});return;}
+  if(t&&(t.status==='inprogress'||t.status==='paused')){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+  tasks=tasks.filter(x=>x.id!==id);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
   await apiFetch('POST',{action:'deleteTask',id});
 }
 
-// ---- Modal ----
-function selectQ(q){
-  selectedQ=q;
-  document.querySelectorAll('.q-option').forEach(el=>el.classList.toggle('selected',Number(el.dataset.q)===q));
-}
-
+function selectQ(q){selectedQ=q;document.querySelectorAll('.q-option').forEach(el=>el.classList.toggle('selected',Number(el.dataset.q)===q));}
 function updateNotifInfo(){
-  const tf=document.getElementById('f-time-from').value;
-  const tt=document.getElementById('f-time-to').value;
-  const mins=parseInt(document.getElementById('f-mins').value)||0;
-  const box=document.getElementById('notif-info'); if(!box) return;
-  if(!appSettings.notifyOn||(!tf&&!tt)){ box.style.display='none'; return; }
-  const before=appSettings.notifyBefore||10; let info='';
-  if(tt){
-    const [h,m]=tt.split(':').map(Number); const nm=h*60+m-before;
-    if(nm>=0) info=`🔔 Уведомление в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')} (за ${before} мин до конца)`;
-  } else if(tf&&mins){
-    const [h,m]=tf.split(':').map(Number); const nm=h*60+m+mins-before;
-    if(nm>=0&&nm<1440) info=`🔔 Уведомление в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')}`;
-  }
-  box.style.display=info?'block':'none';
-  if(info) box.textContent=info;
+  const tf=document.getElementById('f-time-from').value,tt=document.getElementById('f-time-to').value,mins=parseInt(document.getElementById('f-mins').value)||0;
+  const box=document.getElementById('notif-info');if(!box)return;
+  if(!appSettings.notifyOn||(!tf&&!tt)){box.style.display='none';return;}
+  const b=appSettings.notifyBefore||10;let info='';
+  if(tt){const[h,m]=tt.split(':').map(Number),nm=h*60+m-b;if(nm>=0)info=`🔔 Уведомление в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')} (за ${b} мин до конца)`;}
+  else if(tf&&mins){const[h,m]=tf.split(':').map(Number),nm=h*60+m+mins-b;if(nm>=0&&nm<1440)info=`🔔 Уведомление в ${Math.floor(nm/60).toString().padStart(2,'0')}:${(nm%60).toString().padStart(2,'0')}`;}
+  box.style.display=info?'block':'none';if(info)box.textContent=info;
 }
-
 function openModal(){
-  document.getElementById('modal-title').textContent='Новая задача';
-  document.getElementById('f-id').value='';
-  ['f-title','f-mins','f-time-from','f-time-to','f-day-from','f-day-to','f-notes'].forEach(id=>{
-    const el=document.getElementById(id); if(el) el.value='';
-  });
-  document.getElementById('f-deadline').value='';
-  document.getElementById('f-recurrence').value='none';
+  document.getElementById('modal-title').textContent='Новая задача';document.getElementById('f-id').value='';
+  ['f-title','f-mins','f-time-from','f-time-to','f-day-from','f-day-to','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('f-deadline').value='';document.getElementById('f-recurrence').value='none';
   document.getElementById('f-cat').value=filter.cat!=='all'?filter.cat:'business';
-  document.getElementById('notif-info').style.display='none';
-  selectQ(1);
-  document.getElementById('modal').style.display='flex';
-  setTimeout(()=>document.getElementById('f-title').focus(),100);
+  document.getElementById('notif-info').style.display='none';selectQ(1);
+  document.getElementById('modal').style.display='flex';setTimeout(()=>document.getElementById('f-title').focus(),100);
 }
-
 function openEditModal(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  document.getElementById('modal-title').textContent='Редактировать';
-  document.getElementById('f-id').value=t.id;
-  document.getElementById('f-title').value=t.title||'';
-  document.getElementById('f-mins').value=t.mins||'';
-  document.getElementById('f-recurrence').value=t.recurrence||'none';
-  document.getElementById('f-day-from').value=t.day_from||'';
-  document.getElementById('f-day-to').value=t.day_to||'';
-  document.getElementById('f-time-from').value=t.time_from||'';
-  document.getElementById('f-time-to').value=t.time_to||'';
-  document.getElementById('f-deadline').value=t.deadline||'';
-  document.getElementById('f-cat').value=t.cat||'business';
-  document.getElementById('f-notes').value=t.notes||'';
-  selectQ(Number(t.quadrant)||1);
-  document.getElementById('modal').style.display='flex';
-  updateNotifInfo();
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  document.getElementById('modal-title').textContent='Редактировать';document.getElementById('f-id').value=t.id;
+  document.getElementById('f-title').value=t.title||'';document.getElementById('f-mins').value=t.original_mins||t.mins||'';
+  document.getElementById('f-recurrence').value=t.recurrence||'none';document.getElementById('f-day-from').value=t.day_from||'';
+  document.getElementById('f-day-to').value=t.day_to||'';document.getElementById('f-time-from').value=t.time_from||'';
+  document.getElementById('f-time-to').value=t.time_to||'';document.getElementById('f-deadline').value=t.deadline||'';
+  document.getElementById('f-cat').value=t.cat||'business';document.getElementById('f-notes').value=t.notes||'';
+  selectQ(Number(t.quadrant)||1);document.getElementById('modal').style.display='flex';updateNotifInfo();
 }
-
-function closeModal(){ document.getElementById('modal').style.display='none'; }
-document.getElementById('modal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
-['f-time-from','f-time-to','f-mins','f-deadline'].forEach(id=>{
-  const el=document.getElementById(id); if(el) el.addEventListener('change',updateNotifInfo);
-});
+function closeModal(){document.getElementById('modal').style.display='none';}
+document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+['f-time-from','f-time-to','f-mins','f-deadline'].forEach(id=>{const el=document.getElementById(id);if(el)el.addEventListener('change',updateNotifInfo);});
 
 async function saveTask(){
-  const title=document.getElementById('f-title').value.trim();
-  if(!title){ showToast('Введите название'); return; }
-  const id=document.getElementById('f-id').value;
-  const btn=document.getElementById('save-btn'); btn.disabled=true; btn.textContent='Сохранение...';
-
-  const taskData={
-    title, cat:document.getElementById('f-cat').value, quadrant:selectedQ,
-    mins:parseInt(document.getElementById('f-mins').value)||0,
-    deadline:document.getElementById('f-deadline').value||'',
-    recurrence:document.getElementById('f-recurrence').value,
-    day_from:document.getElementById('f-day-from').value||'',
-    day_to:document.getElementById('f-day-to').value||'',
-    time_from:document.getElementById('f-time-from').value||'',
-    time_to:document.getElementById('f-time-to').value||'',
-    notes:document.getElementById('f-notes').value||'',
-  };
-
-  closeModal(); btn.disabled=false; btn.textContent='Сохранить задачу';
-
-  if(id){
-    const t=tasks.find(x=>x.id===id); if(t) Object.assign(t,taskData);
-    render(); if(currentPage==='kanban') renderKanban();
-    await apiFetch('POST',{action:'updateTask',id,fields:taskData});
-    showToast('Сохранено 🔄');
-  } else {
-    const newTask={
-      id:String(nextId++),...taskData,
-      done:false,status:'new',worked_mins:0,
-      started_at:'',paused_at:'',paused_remaining:0,
-      notified:false,postpone_count:0,
-      original_mins:taskData.mins
-    };
-    tasks.push(newTask);
-    render(); if(currentPage==='kanban') renderKanban();
-    await apiFetch('POST',{action:'addTask',task:newTask});
-    showToast('Добавлено ✅');
-  }
+  const title=document.getElementById('f-title').value.trim();if(!title){showToast('Введите название');return;}
+  const id=document.getElementById('f-id').value,btn=document.getElementById('save-btn');
+  btn.disabled=true;btn.textContent='Сохранение...';
+  const mv=parseInt(document.getElementById('f-mins').value)||0;
+  const taskData={title,cat:document.getElementById('f-cat').value,quadrant:selectedQ,mins:mv,original_mins:mv,
+    deadline:document.getElementById('f-deadline').value||'',recurrence:document.getElementById('f-recurrence').value,
+    day_from:document.getElementById('f-day-from').value||'',day_to:document.getElementById('f-day-to').value||'',
+    time_from:document.getElementById('f-time-from').value||'',time_to:document.getElementById('f-time-to').value||'',
+    notes:document.getElementById('f-notes').value||''};
+  closeModal();btn.disabled=false;btn.textContent='Сохранить задачу';
+  if(id){const t=tasks.find(x=>x.id===id);if(t)Object.assign(t,taskData);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'updateTask',id,fields:taskData});showToast('Сохранено 🔄');}
+  else{const nt={id:String(nextId++),...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};tasks.push(nt);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'addTask',task:nt});showToast('Добавлено ✅');}
 }
 
-// ---- KANBAN ----
+function getActive(){return getAllTasks().find(t=>t.status==='inprogress'||t.status==='paused');}
+function getRealById(id){const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return null;if(t._virt)return tasks.find(x=>x.id===t._baseId)||null;return tasks.find(x=>x.id===id)||null;}
+
 function renderKanban(){
-  const wrap=document.getElementById('kanban-wrap');
-  const active=tasks.find(t=>t.status==='inprogress'||t.status==='paused');
-  updateFocusBadge();
-
-  if(!active){
-    wrap.innerHTML=`<div class="k-empty"><span class="k-empty-icon">⏱</span>Нет активной задачи<br><span style="font-size:13px">Выбери задачу из списка<br>и нажми «▶ В работу»</span></div>`;
-    if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-    return;
-  }
-
-  const isPaused=active.status==='paused';
-  let remainSec=isPaused
-    ? Number(active.paused_remaining)||0
-    : Math.max(0,(Number(active.mins)||30)*60-Math.floor((new Date()-new Date(active.started_at))/1000));
-  const totalSec=(Number(active.original_mins)||Number(active.mins)||30)*60;
-  const pct=totalSec?Math.min(100,Math.round((totalSec-remainSec)/totalSec*100)):0;
-  const mm=Math.floor(remainSec/60).toString().padStart(2,'0');
-  const ss=(remainSec%60).toString().padStart(2,'0');
-  const isWarning=!isPaused&&remainSec>0&&remainSec<=180;
-
-  const pc=Number(active.postpone_count)||0;
-  const fire=pc>=3?` 🔥${pc}х`:pc>=1?` 🔄${pc}х`:'';
-  const rec=active.recurrence&&active.recurrence!=='none'?' 🔁':'';
-
-  wrap.innerHTML=`
-    <div class="k-card ${isPaused?'paused':'inprogress'}">
-      <div class="k-card-head">
-        <div class="k-status-dot ${isPaused?'paused':'inprogress'}"></div>
-        <div class="k-status-label ${isPaused?'paused':'inprogress'}">${isPaused?'На паузе':'В работе'}</div>
-      </div>
-      <div class="k-title">${active.title}${fire}${rec}</div>
-      <div class="k-badges">
-        <span class="badge ${active.cat==='business'?'b-business':'b-personal'}">${active.cat==='business'?'Бизнес':'Личное'}</span>
-        <span class="badge b-q${active.quadrant||1}">${Q_LABELS[active.quadrant||1]}</span>
-        ${active.time_from?`<span class="badge" style="background:#1a1a2a;color:#888">🕒 ${active.time_from}${active.time_to?'–'+active.time_to:''}</span>`:''}
-      </div>
-      <div class="timer-block">
-        <div class="timer-val ${isPaused?'paused-val':isWarning?'warning-val':''}" id="timer-val">${mm}:${ss}</div>
-        <div class="timer-sub">Исходно: ${fmtMins(active.original_mins||active.mins)}${active.worked_mins?' · Набрано: '+fmtMins(active.worked_mins):''}</div>
-        <div class="timer-prog"><div class="timer-fill ${isPaused?'paused-fill':isWarning?'warning-fill':''}" id="timer-fill" style="width:${pct}%"></div></div>
-      </div>
-      ${isPaused?`
-      <div class="k-actions">
-        <button class="kbtn kbtn-done" onclick="kanbanDone('${active.id}')">✅ Готово</button>
-        <button class="kbtn kbtn-resume" onclick="kanbanResume('${active.id}')">▶ Продолжить</button>
-      </div>
-      <div class="k-actions2">
-        <button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть в список</button>
-      </div>
-      `:`
-      <div class="k-actions">
-        <button class="kbtn kbtn-done" onclick="kanbanDone('${active.id}')">✅ Готово</button>
-        <button class="kbtn kbtn-pause" onclick="kanbanPause('${active.id}')">⏸ Пауза</button>
-      </div>
-      <div class="k-actions2">
-        <button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',10)">+10 мин</button>
-        <button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',20)">+20 мин</button>
-        <button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',30)">+30 мин</button>
-      </div>
-      <div class="k-actions2" style="margin-top:8px">
-        <button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть в список</button>
-      </div>
-      `}
-      ${active.notes?`<div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;font-size:13px;color:var(--text2)">📝 ${active.notes}</div>`:''}
-    </div>`;
-
-  startTimerTick(active, remainSec, totalSec, isPaused);
+  const wrap=document.getElementById('kanban-wrap'),active=getActive();updateFocusBadge();
+  if(!active){wrap.innerHTML=`<div class="k-empty"><span class="k-empty-icon">⏱</span>Нет активной задачи<br><span style="font-size:13px">Выбери задачу из списка<br>и нажми «▶ В работу»</span></div>`;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}return;}
+  const ip=active.status==='paused';
+  const rS=ip?Number(active.paused_remaining)||0:Math.max(0,(Number(active.mins)||30)*60-Math.floor((new Date()-new Date(active.started_at))/1000));
+  const tS=(Number(active.original_mins)||Number(active.mins)||30)*60;
+  const pct=tS?Math.min(100,Math.round((tS-rS)/tS*100)):0;
+  const mm=Math.floor(rS/60).toString().padStart(2,'0'),ss=(rS%60).toString().padStart(2,'0');
+  const isW=!ip&&rS>0&&rS<=180;
+  const pc=Number(active._penalty!==undefined?active._penalty:active.postpone_count)||0;
+  const fire=pc>0?` 🔥x${pc+1}`:'',rec=active.recurrence&&active.recurrence!=='none'?' 🔁':'';
+  wrap.innerHTML=`<div class="k-card ${ip?'paused':'inprogress'}">
+    <div class="k-card-head"><div class="k-status-dot ${ip?'paused':'inprogress'}"></div><div class="k-status-label ${ip?'paused':'inprogress'}">${ip?'На паузе':'В работе'}</div></div>
+    <div class="k-title">${active.title}${fire}${rec}</div>
+    <div class="k-badges">
+      <span class="badge ${active.cat==='business'?'b-business':'b-personal'}">${active.cat==='business'?'Бизнес':'Личное'}</span>
+      <span class="badge b-q${active.quadrant||1}">${Q_LABELS[active.quadrant||1]}</span>
+      ${active.time_from?`<span class="badge" style="background:#1a1a2a;color:#888">🕒 ${active.time_from}${active.time_to?'–'+active.time_to:''}</span>`:''}
+    </div>
+    <div class="timer-block">
+      <div class="timer-val ${ip?'paused-val':isW?'warning-val':''}" id="timer-val">${mm}:${ss}</div>
+      <div class="timer-sub">Исходно: ${fmtMins(active.original_mins||active.mins)}${active.worked_mins?' · Набрано: '+fmtMins(active.worked_mins):''}</div>
+      <div class="timer-prog"><div class="timer-fill ${ip?'paused-fill':isW?'warning-fill':''}" id="timer-fill" style="width:${pct}%"></div></div>
+    </div>
+    ${ip?`<div class="k-actions"><button class="kbtn kbtn-done" onclick="kanbanDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-resume" onclick="kanbanResume('${active.id}')">▶ Продолжить</button></div><div class="k-actions2"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`
+    :`<div class="k-actions"><button class="kbtn kbtn-done" onclick="kanbanDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-pause" onclick="kanbanPause('${active.id}')">⏸ Пауза</button></div><div class="k-actions2"><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',10)">+10 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',20)">+20 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',30)">+30 мин</button></div><div class="k-actions2" style="margin-top:4px"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`}
+    ${active.notes?`<div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;font-size:13px;color:var(--text2)">📝 ${active.notes}</div>`:''}
+  </div>`;
+  startTimerTick(active,rS,tS,ip);
 }
 
-function startTimerTick(task, initRemain, totalSec, isPaused){
-  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-  if(isPaused) return;
-  let remain=initRemain;
-  let warned=false;
+function startTimerTick(task,init,total,ip){
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  if(ip)return;
+  let r=init,warned=false;
   timerInterval=setInterval(()=>{
-    const val=document.getElementById('timer-val');
-    const fill=document.getElementById('timer-fill');
-    if(!val){ clearInterval(timerInterval); return; }
-    remain=Math.max(0,remain-1);
-    const pct=totalSec?Math.min(100,Math.round((totalSec-remain)/totalSec*100)):0;
-    const mm=Math.floor(remain/60).toString().padStart(2,'0');
-    const ss=(remain%60).toString().padStart(2,'0');
-    val.textContent=mm+':'+ss;
-    if(fill) fill.style.width=pct+'%';
-
-    const isWarning=remain>0&&remain<=180;
-    val.className='timer-val'+(isWarning?' warning-val':'');
-    if(fill) fill.className='timer-fill'+(isWarning?' warning-fill':'');
-
-    if(remain===0&&!warned){
-      warned=true;
-      hapticNotif('warning');
-      showToast('⏰ Время вышло! '+task.title, 4000);
-    }
+    const v=document.getElementById('timer-val'),f=document.getElementById('timer-fill');
+    if(!v){clearInterval(timerInterval);return;}
+    r=Math.max(0,r-1);
+    const p=total?Math.min(100,Math.round((total-r)/total*100)):0;
+    v.textContent=Math.floor(r/60).toString().padStart(2,'0')+':'+(r%60).toString().padStart(2,'0');
+    if(f)f.style.width=p+'%';
+    const w=r>0&&r<=180;v.className='timer-val'+(w?' warning-val':'');if(f)f.className='timer-fill'+(w?' warning-fill':'');
+    if(r===0&&!warned){warned=true;hapticNotif('warning');showToast('⏰ Время вышло! '+task.title,4000);}
   },1000);
 }
-
-function getElapsedMinutes(task){
-  return task?.started_at?Math.floor((new Date()-new Date(task.started_at))/60000):0;
-}
+function getElapsedMins(t){return t?.started_at?Math.floor((new Date()-new Date(t.started_at))/60000):0;}
 
 async function kanbanStart(id){
-  const active=tasks.find(t=>t.status==='inprogress'||t.status==='paused');
-  if(active){ showToast('Сначала заверши текущую задачу!'); haptic('heavy'); return; }
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  if(!t.original_mins) t.original_mins=t.mins;
-  t.status='inprogress'; t.started_at=new Date().toISOString();
-  t.paused_remaining=0; t.paused_at='';
-  haptic();
-  render(); showPage('kanban');
+  const active=getActive();if(active){showToast('Сначала заверши текущую!');haptic('heavy');return;}
+  const all=getAllTasks(),t=all.find(x=>x.id===id);if(!t)return;
+  if(t._virt){
+    const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
+    const td=todayStr();
+    const nt={...base,id:String(nextId++),deadline:td,mins:t.mins,original_mins:base.original_mins||base.mins,
+      done:false,status:'inprogress',worked_mins:0,started_at:new Date().toISOString(),paused_at:'',paused_remaining:0,notified:false};
+    base.deadline=td;tasks.push(nt);virtTasks=virtTasks.filter(v=>v.id!==id);
+    haptic();buildVirtTasks();render();showPage('kanban');
+    await apiFetch('POST',{action:'addTask',task:nt});
+    await apiFetch('POST',{action:'updateTask',id:base.id,fields:{deadline:td}});
+    return;
+  }
+  const real=tasks.find(x=>x.id===id);if(!real)return;
+  if(!real.original_mins)real.original_mins=real.mins;
+  real.status='inprogress';real.started_at=new Date().toISOString();real.paused_remaining=0;real.paused_at='';
+  haptic();buildVirtTasks();render();showPage('kanban');
   await apiFetch('POST',{action:'startTask',id});
-  if(!t.original_mins) await apiFetch('POST',{action:'updateTask',id,fields:{original_mins:t.mins}});
 }
 
 async function kanbanPause(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  const elapsed=t.started_at?Math.floor((new Date()-new Date(t.started_at))/1000):0;
-  const remainSec=Math.max(0,(Number(t.mins)||30)*60-elapsed);
-  const diffMins=getElapsedMinutes(t);
-  t.status='paused'; t.paused_remaining=remainSec;
-  t.worked_mins=(Number(t.worked_mins)||0)+diffMins;
-  t.paused_at=new Date().toISOString();
-  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-  haptic();
-  renderKanban(); render();
-  await apiFetch('POST',{action:'updateTask',id,fields:{
-    status:'paused',paused_remaining:remainSec,
-    paused_at:t.paused_at,worked_mins:t.worked_mins
-  }});
+  const all=getAllTasks(),t=all.find(x=>x.id===id);
+  const real=t?._virt?tasks.find(x=>x.id===t._baseId):tasks.find(x=>x.id===id);if(!real)return;
+  const el=real.started_at?Math.floor((new Date()-new Date(real.started_at))/1000):0;
+  const rS=Math.max(0,(Number(real.mins)||30)*60-el);
+  const dM=getElapsedMins(real);
+  real.status='paused';real.paused_remaining=rS;real.worked_mins=(Number(real.worked_mins)||0)+dM;real.paused_at=new Date().toISOString();
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  haptic();buildVirtTasks();renderKanban();render();
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{status:'paused',paused_remaining:rS,paused_at:real.paused_at,worked_mins:real.worked_mins}});
   showToast('Пауза ⏸');
 }
 
 async function kanbanResume(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  const remainSec=Number(t.paused_remaining)||0;
-  const remainMins=Math.max(1,Math.ceil(remainSec/60));
-  t.status='inprogress'; t.mins=remainMins;
-  t.started_at=new Date().toISOString();
-  t.paused_remaining=0; t.paused_at='';
-  haptic();
-  renderKanban(); render();
-  await apiFetch('POST',{action:'updateTask',id,fields:{
-    status:'inprogress',mins:remainMins,
-    started_at:t.started_at,paused_remaining:0,paused_at:''
-  }});
+  const real=getRealById(id);if(!real)return;
+  const rS=Number(real.paused_remaining)||0,rM=Math.max(1,Math.ceil(rS/60));
+  real.status='inprogress';real.mins=rM;real.started_at=new Date().toISOString();real.paused_remaining=0;real.paused_at='';
+  haptic();buildVirtTasks();renderKanban();render();
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{status:'inprogress',mins:rM,started_at:real.started_at,paused_remaining:0,paused_at:''}});
   showToast('Продолжаем ▶');
 }
 
 async function kanbanCancel(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  t.status='new'; t.started_at=''; t.paused_remaining=0; t.paused_at='';
-  if(t.original_mins) t.mins=t.original_mins;
-  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-  renderKanban(); render(); showPage('tasks');
-  await apiFetch('POST',{action:'updateTask',id,fields:{
-    status:'new',started_at:'',paused_remaining:0,paused_at:'',
-    mins:t.original_mins||t.mins
-  }});
+  const real=getRealById(id);if(!real)return;
+  real.status='new';real.started_at='';real.paused_remaining=0;real.paused_at='';
+  if(real.original_mins)real.mins=real.original_mins;
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  buildVirtTasks();renderKanban();render();showPage('tasks');
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{status:'new',started_at:'',paused_remaining:0,paused_at:'',mins:real.original_mins||real.mins}});
   showToast('Возвращено ↩');
 }
 
-// ПРАВКА ПОВТОРЯЮЩИХСЯ ЗАДАЧ В КАНБАНЕ
 async function kanbanDone(id){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  const diff=getElapsedMinutes(t);
-  t.done=true; t.status='done';
-  t.worked_mins=(Number(t.worked_mins)||0)+diff;
-  t.started_at=''; t.paused_remaining=0; t.paused_at='';
-
-  let newRecurTask = null;
-  if(t.recurrence && t.recurrence !== 'none') {
-    newRecurTask = generateNextRecurringTask(t);
-    if(newRecurTask) tasks.push(newRecurTask);
-  }
-
-  if(timerInterval){ clearInterval(timerInterval); timerInterval=null; }
-  hapticNotif('success');
-  renderKanban(); render(); showPage('tasks');
-  
-  await apiFetch('POST',{action:'doneTask',id,workedMins:diff});
-
-  if(newRecurTask) {
-    await apiFetch('POST', {action:'addTask', task: newRecurTask});
-  }
-
+  const all=getAllTasks(),t=all.find(x=>x.id===id);
+  const real=t?._virt?tasks.find(x=>x.id===t._baseId):tasks.find(x=>x.id===id);if(!real)return;
+  const dM=getElapsedMins(real);
+  real.done=true;real.status='done';real.worked_mins=(Number(real.worked_mins)||0)+dM;real.started_at='';real.paused_remaining=0;real.paused_at='';
+  if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+  hapticNotif('success');buildVirtTasks();renderKanban();render();showPage('tasks');
+  await apiFetch('POST',{action:'doneTask',id:real.id,workedMins:dM});
   showToast('Выполнено! 🎉');
 }
 
-async function kanbanExtend(id, addMins){
-  const t=tasks.find(x=>x.id===id); if(!t) return;
-  t.mins=(Number(t.mins)||0)+addMins;
-  haptic();
-  renderKanban(); render();
-  await apiFetch('POST',{action:'updateTask',id,fields:{mins:t.mins}});
-  showToast(`+${addMins} мин ⏱`);
+async function kanbanExtend(id,add){
+  const real=getRealById(id);if(!real)return;
+  real.mins=(Number(real.mins)||0)+add;haptic();buildVirtTasks();renderKanban();render();
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{mins:real.mins}});showToast(`+${add} мин ⏱`);
 }
 
-// ---- Digest ----
 function buildDigest(){
-  const td=todayStr();
-  const active=tasks.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
-  const overdue=tasks.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
-  const q1=active.filter(t=>Number(t.quadrant)===1);
-  const q2=active.filter(t=>Number(t.quadrant)===2);
-  const q3=active.filter(t=>Number(t.quadrant)===3);
-  const list=getFiltered();
-  const total=list.length, doneC=list.filter(t=>t.done).length;
-  const totalMins=list.reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const td=todayStr(),all=getAllTasks();
+  const active=all.filter(t=>!t.done&&t.status!=='missed'&&(!t.deadline||t.deadline>=td));
+  const overdue=all.filter(t=>getTaskOverdueType(t)!==null&&!t.done);
+  const q1=active.filter(t=>Number(t.quadrant)===1),q2=active.filter(t=>Number(t.quadrant)===2),q3=active.filter(t=>Number(t.quadrant)===3);
+  const list=getFiltered(),total=list.length,doneC=list.filter(t=>t.done).length;
+  const tM=list.filter(t=>!t.done).reduce((s,t)=>s+(Number(t.mins)||0),0);
   let lines=['📋 Утренний дайджест','─────────────────────',''];
-  if(overdue.length){ lines.push(`⚠️ Просрочено (${overdue.length}):`); overdue.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
-  if(q1.length){ lines.push(`🔴 Важное+Срочное (${q1.length}):`); q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`)); lines.push(''); }
-  if(q3.length){ lines.push(`🟡 Срочное (${q3.length}):`); q3.forEach(t=>lines.push(`  • ${t.title}`)); lines.push(''); }
-  if(q2.length){ lines.push(`🔵 Важное (${q2.length}):`); q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`)); lines.push(''); }
-  lines.push('─────────────────────');
-  lines.push(`Выполнено: ${doneC} / ${total}`);
-  if(totalMins) lines.push(`Плановое время: ${fmtMins(totalMins)}`);
-  const el=document.getElementById('digest-text'); if(el) el.textContent=lines.join('\n');
+  if(overdue.length){lines.push(`⚠️ Просрочено (${overdue.length}):`);overdue.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
+  if(q3.length){lines.push(`🟡 Срочное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
+  if(q2.length){lines.push(`🔵 Важное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
+  lines.push('─────────────────────');lines.push(`Выполнено: ${doneC} / ${total}`);if(tM)lines.push(`Осталось: ${fmtMins(tM)}`);
+  const el=document.getElementById('digest-text');if(el)el.textContent=lines.join('\n');
 }
 
 function showPage(p){
   currentPage=p;
-  ['tasks','kanban','digest','settings'].forEach(x=>{
-    const pg=document.getElementById('page-'+x); if(pg) pg.style.display=x===p?'block':'none';
-    const b=document.getElementById('nav-'+x); if(b) b.classList.toggle('on',x===p);
-  });
-  if(p==='tasks') render();
-  if(p==='kanban') renderKanban();
-  if(p==='digest') buildDigest();
-  if(p==='settings') applySettingsUI();
-  if(p!=='kanban'&&timerInterval){ clearInterval(timerInterval); timerInterval=null; }
+  ['tasks','kanban','digest','settings'].forEach(x=>{const pg=document.getElementById('page-'+x);if(pg)pg.style.display=x===p?'block':'none';const b=document.getElementById('nav-'+x);if(b)b.classList.toggle('on',x===p);});
+  if(p==='tasks')render();if(p==='kanban')renderKanban();if(p==='digest')buildDigest();if(p==='settings')applySettingsUI();
+  if(p!=='kanban'&&timerInterval){clearInterval(timerInterval);timerInterval=null;}
 }
 
-// ---- Init ----
-['f-time-from','f-time-to','s-digest-time','s-work-from','s-work-to'].forEach(initTimeMask);
-loadSettings();
-loadTasks();
+['f-time-from','f-time-to','s-digest-time','s-work-from','s-work-to','s-plan-from'].forEach(initTimeMask);
+loadSettings();loadTasks();
 </script>
 </body>
 </html>
