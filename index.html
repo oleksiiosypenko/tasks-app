@@ -36,6 +36,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .prog-fill{background:var(--accent);height:100%;border-radius:6px;transition:width .3s}
 .prog-label{display:flex;justify-content:space-between;font-size:12px;color:#fff;margin-top:6px;font-weight:500}
 .time-stats{display:flex;justify-content:space-between;align-items:stretch;margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+.time-stats.future-mode{opacity: 0.5;}
 .time-stat{text-align:center;flex:1}
 .time-stat-val{font-size:15px;font-weight:700;color:#ffb340}
 .time-stat-label{font-size:11px;color:var(--text2);margin-top:2px}
@@ -191,7 +192,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <div class="prog-wrap">
     <div class="prog-bar"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
     <div class="prog-label"><span>Выполнено задач</span><span id="prog-label">0 / 0</span></div>
-    <div class="time-stats">
+    <div class="time-stats" id="time-stats-block">
       <div class="time-stat"><div class="time-stat-val" id="stat-total">—</div><div class="time-stat-label">Всего</div></div>
       <div class="time-stat-divider"></div>
       <div class="time-stat"><div class="time-stat-val" id="stat-remain">—</div><div class="time-stat-label">Осталось</div></div>
@@ -207,6 +208,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     </div>
     <div class="seg" id="seg-date">
       <button id="btn-today" class="on" onclick="setDateFilter('today')">Сегодня</button>
+      <button id="btn-future" onclick="setDateFilter('future')">🔮 Будущее</button>
       <button id="btn-all" onclick="setDateFilter('all')">Все</button>
     </div>
   </div>
@@ -353,62 +355,87 @@ function normalizeTask(t){
 }
 
 function getTaskOverdueType(t){
-  if(t.done)return null;
-  if(t.status==='missed')return 'missed';
-  if(t.deadline&&t.deadline<todayStr())return 'deadline';
-  if(t.time_to){const n=new Date(),[h,m]=t.time_to.split(':').map(Number),e=new Date();e.setHours(h,m,0,0);if(n>e)return 'window';}
+  if(t.done) return null;
+  if(t.status==='missed') return 'missed';
+  
+  // Для циклических задач без дедлайна или с прошлым дедлайном
+  if(t.recurrence && t.recurrence !== 'none') {
+    if(Number(t.postpone_count) > 0) return 'deadline'; // Считается просроченной
+    return null;
+  }
+  
+  if(t.deadline && t.deadline < todayStr()) return 'deadline';
+  if(t.time_to){
+    const n=new Date(),[h,m]=t.time_to.split(':').map(Number),e=new Date();
+    e.setHours(h,m,0,0);if(n>e)return 'window';
+  }
   return null;
 }
 
-// Виртуальные экземпляры повторяемых задач
+// Построение виртуальных/повторяющихся задач
 function buildVirtTasks(){
-  const td=todayStr(),now=new Date(),dow=now.getDay(),dom=now.getDate();
+  const td=todayStr(), tm=tomorrowStr();
+  const now=new Date(), dow=now.getDay(), dom=now.getDate();
   virtTasks=[];
+
   tasks.forEach(base=>{
     const rec=base.recurrence;
     if(!rec||rec==='none')return;
-    // Если уже выполнена или пропущена сегодня — пропускаем
-    if(base.done&&base.deadline===td)return;
-    if(base.status==='missed'&&base.deadline===td)return;
-    // Если дедлайн в будущем — это конкретная дата, не виртуальная
-    if(base.deadline&&base.deadline>td)return;
 
-    // Проверяем подходит ли сегодня
+    // Четкая проверка: была ли базовая циклическая задача выполнена сегодня?
+    // Для этого проверяем, равен ли её дедлайн сегодняшней дате и стоит ли статус done
+    if(base.done && base.deadline === td) return;
+    if(base.status === 'missed' && base.deadline === td) return;
+
+    // Рассчитываем день, для которого строим проекцию (Сегодня или Будущее)
+    const targetDate = (filter.date === 'future') ? tm : td;
+    const targetNow = (filter.date === 'future') ? new Date(Date.now() + 86400000) : now;
+    const tDow = targetNow.getDay();
+    const tDom = targetNow.getDate();
+
     let fits=false;
-    if(rec==='daily')fits=true;
-    else if(rec==='weekdays')fits=dow>=1&&dow<=5;
-    else if(rec==='weekends')fits=dow===0||dow===6;
-    else if(rec==='weekly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDay()===dow;}
-    else if(rec==='monthly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDate()===dom;}
+    if(rec==='daily') fits=true;
+    else if(rec==='weekdays') fits=tDow>=1&&tDow<=5;
+    else if(rec==='weekends') fits=tDow===0||tDow===6;
+    else if(rec==='weekly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDay()===tDow;}
+    else if(rec==='monthly'&&base.deadline){const o=new Date(base.deadline+'T12:00:00');fits=o.getDate()===tDom;}
 
-    // Проверяем ограничение по дням месяца
-    if(fits&&base.day_from&&base.day_to){const df=parseInt(base.day_from),dt=parseInt(base.day_to);if(dom<df||dom>dt)fits=false;}
+    if(fits && base.day_from && base.day_to){
+      const df=parseInt(base.day_from),dt=parseInt(base.day_to);
+      if(tDom<df||tDom>dt) fits=false;
+    }
     if(!fits)return;
 
-    // Проверяем нет ли уже реальной записи на сегодня
-    const alreadyReal=tasks.some(t=>t.id!==base.id&&t.title===base.title&&t.recurrence===rec&&t.deadline===td&&!t._virt);
+    // Исключаем дубликаты, если в массиве задач уже есть реальная копия на этот день
+    const alreadyReal=tasks.some(t=>t.id!==base.id&&t.title===base.title&&t.recurrence===rec&&t.deadline===targetDate&&!t._virt);
     if(alreadyReal)return;
 
-    // Проверяем нет ли уже активной версии (inprogress/paused)
-    if(base.status==='inprogress'||base.status==='paused')return;
+    // Если задача сейчас в активной работе (таймер крутится), виртуальную копию не выводим
+    if(base.status==='inprogress'||base.status==='paused') return;
 
     const pc=Number(base.postpone_count)||0;
     const baseMins=base.original_mins||base.mins||0;
-    const penaltyMins=pc>0?baseMins*(pc+1):baseMins;
+    
+    // В режиме просмотра будущего огонь и штраф рассчитываются инкрементально
+    const futurePenalty = (filter.date === 'future') ? pc + 1 : pc;
+    const penaltyMins = futurePenalty > 0 ? baseMins * (futurePenalty + 1) : baseMins;
 
-    virtTasks.push({...base,_virt:true,_baseId:base.id,id:'virt_'+base.id,
-      deadline:td,mins:penaltyMins,original_mins:baseMins,
+    virtTasks.push({
+      ...base,_virt:true,_baseId:base.id,id:'virt_'+base.id,
+      deadline:targetDate,mins:penaltyMins,original_mins:baseMins,
       done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,
-      _penalty:pc});
+      _penalty:futurePenalty
+    });
   });
 }
 
 function getAllTasks(){
-  // Убираем базовые задачи для которых есть виртуальный экземпляр (без дедлайна или дедлайн в прошлом)
+  const td=todayStr();
   const virtBaseIds=new Set(virtTasks.map(v=>v._baseId));
   const real=tasks.filter(t=>{
     if(!t.recurrence||t.recurrence==='none')return true;
-    if(virtBaseIds.has(t.id)&&(!t.deadline||t.deadline<todayStr()))return false;
+    // Скрываем мастер-задачу, если на целевую дату (сегодня/будущее) сгенерирована виртуальная копия
+    if(virtBaseIds.has(t.id)&&(!t.deadline||t.deadline<=td)) return false;
     return true;
   });
   return [...real,...virtTasks];
@@ -464,11 +491,13 @@ function getFiltered(){
   const all=getAllTasks();const td=todayStr(),tm=tomorrowStr();let t=[...all];
   if(shouldHideBiz())t=t.filter(x=>x.cat!=='business'||x.done);
   if(filter.cat!=='all')t=t.filter(x=>x.cat===filter.cat);
+  
   if(filter.tile==='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
   else if(filter.tile==='tomorrow')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
   else if(filter.tile==='overdue')t=t.filter(x=>getTaskOverdueType(x)!==null&&!x.done);
   else if(filter.date==='today')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&(!x.deadline||x.deadline<=td));
-  // Выполненные всегда в конец, не скрываем
+  else if(filter.date==='future')t=t.filter(x=>x.status!=='missed'&&Number(x.quadrant)!==4&&x.deadline===tm);
+  
   t.sort((a,b)=>{
     const aA=a.status==='inprogress'||a.status==='paused',bA=b.status==='inprogress'||b.status==='paused';
     if(aA&&!bA)return -1;if(!aA&&bA)return 1;
@@ -482,9 +511,19 @@ function getFiltered(){
 }
 
 function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
-function setDateFilter(v){filter.tile=null;filter.date=v;render();}
-function setTileFilter(k){filter.tile=filter.tile===k?null:k;if(filter.tile)filter.date='all';render();}
-function syncDateButtons(){document.getElementById('btn-today').classList.toggle('on',filter.date==='today'&&!filter.tile);document.getElementById('btn-all').classList.toggle('on',filter.date==='all'&&!filter.tile);}
+function setDateFilter(v){filter.tile=null;filter.date=v;buildVirtTasks();render();}
+function setTileFilter(k){filter.tile=filter.tile===k?null:k;if(filter.tile)filter.date='all';buildVirtTasks();render();}
+
+function syncDateButtons(){
+  document.getElementById('btn-today').classList.toggle('on',filter.date==='today'&&!filter.tile);
+  document.getElementById('btn-future').classList.toggle('on',filter.date==='future'&&!filter.tile);
+  document.getElementById('btn-all').classList.toggle('on',filter.date==='all'&&!filter.tile);
+  
+  // Визуально отключаем счетчики статистики в режиме "Будущее", чтобы не путать пользователя
+  const statBlock = document.getElementById('time-stats-block');
+  if(filter.date === 'future') statBlock.classList.add('future-mode');
+  else statBlock.classList.remove('future-mode');
+}
 
 function renderTiles(){
   const td=todayStr(),tm=tomorrowStr(),all=getAllTasks();
@@ -535,18 +574,21 @@ function renderTasks(){
       if(t.time_from&&t.time_to)extra+=` 🕒 ${t.time_from}–${t.time_to}`;
       else if(t.time_from)extra+=` 🕒 с ${t.time_from}`;
       if(t.day_from&&t.day_to)extra+=` 📅 ${t.day_from}–${t.day_to} ч.`;
+      
       let cls='q'+q;
       if(t.status==='inprogress')cls='inprogress-task';
       else if(t.status==='paused')cls='paused-task';
       else if(ot==='missed'||ot==='deadline')cls='overdue-task';
       else if(ot==='window')cls='window-task';
       if(t.done)cls+=' done-task';
+      
       let sb=`<span class="badge b-q${q}">${Q_LABELS[q]}</span>`;
       if(t.status==='inprogress')sb='<span class="badge b-inprogress">▶ В работе</span>';
       else if(t.status==='paused')sb='<span class="badge b-paused">⏸ Пауза</span>';
       else if(ot==='missed'||ot==='deadline')sb='<span class="badge b-overdue">⚠️ Просрочено</span>';
       else if(ot==='window')sb='<span class="badge b-window">⏰ Окно истекло</span>';
       else if(t.done)sb='';
+      
       const aT=getAllTasks().find(x=>x.status==='inprogress'||x.status==='paused');
       let ab='';
       if(!t.done){
@@ -619,7 +661,6 @@ async function toggleDone(id){
   haptic();
   if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
   if(t._virt){
-    // Виртуальная задача — помечаем базовую выполненной сегодня
     const base=tasks.find(x=>x.id===t._baseId);if(!base)return;
     const td=todayStr();base.done=true;base.status='done';base.deadline=td;
     virtTasks=virtTasks.filter(v=>v.id!==id);
@@ -627,7 +668,6 @@ async function toggleDone(id){
     await apiFetch('POST',{action:'updateTask',id:base.id,fields:{done:true,status:'done',deadline:td}});
     showToast('Выполнено ✅ (завтра появится снова)');return;
   }
-  // Реальная задача
   t.done=!t.done;t.status=t.done?'done':'new';
   if(!t.done){t.started_at='';t.paused_remaining=0;t.paused_at='';}
   buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
@@ -687,8 +727,17 @@ async function saveTask(){
     time_from:document.getElementById('f-time-from').value||'',time_to:document.getElementById('f-time-to').value||'',
     notes:document.getElementById('f-notes').value||''};
   closeModal();btn.disabled=false;btn.textContent='Сохранить задачу';
-  if(id){const t=tasks.find(x=>x.id===id);if(t)Object.assign(t,taskData);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'updateTask',id,fields:taskData});showToast('Сохранено 🔄');}
-  else{const nt={id:String(nextId++),...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};tasks.push(nt);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();await apiFetch('POST',{action:'addTask',task:nt});showToast('Добавлено ✅');}
+  if(id){
+    const t=tasks.find(x=>x.id===id);if(t)Object.assign(t,taskData);
+    buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
+    await apiFetch('POST',{action:'updateTask',id,fields:taskData});
+    showToast('Сохранено 🔄');
+  }else{
+    const nt={id:String(nextId++),...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
+    tasks.push(nt);buildVirtTasks();render();if(currentPage==='kanban')renderKanban();
+    await apiFetch('POST',{action:'addTask',task:nt});
+    showToast('Добавлено ✅');
+  }
 }
 
 function getActive(){return getAllTasks().find(t=>t.status==='inprogress'||t.status==='paused');}
