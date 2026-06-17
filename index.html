@@ -61,6 +61,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .tl-end{font-size:11px;color:var(--text2);margin-top:4px}
 .tl-time.overtime .tl-start{color:var(--danger)}
 .tl-time.overtime .tl-end{color:rgba(255,69,58,0.7)}
+.tl-time.fixed .tl-start{color:var(--warning);font-family:monospace;background:rgba(255,159,10,0.1);padding:2px 4px;border-radius:4px;display:inline-block;font-size:12px;}
+.tl-time.fixed .tl-end{color:rgba(255,159,10,0.6);font-family:monospace;font-size:11px;margin-top:2px}
+
 .tl-track-wrap{display:flex;flex-direction:column;align-items:center;width:12px;flex-shrink:0;margin-right:8px}
 .tl-dot{width:8px;height:8px;border-radius:50%;background:var(--text2);margin-top:13px;box-shadow:0 0 0 3px var(--bg);position:relative;z-index:2;transition:all 0.3s}
 .tl-dot.q1{background:var(--q1)}
@@ -69,21 +72,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .tl-dot.q4{background:var(--q4)}
 .tl-dot.done{background:var(--success)}
 .tl-dot.overtime{background:var(--danger)}
+.tl-dot.fixed{background:var(--warning);border-radius:2px;}
 .tl-line{width:2px;background:var(--border);flex:1;margin-top:-2px;margin-bottom:-15px;border-radius:2px;z-index:1}
 .tl-content{flex:1;min-width:0;padding-bottom:12px}
 
-/* Буфер строка */
-.buffer-row{display:flex;align-items:center;margin-bottom:4px;opacity:0.5}
-.buffer-row .tl-track-wrap{opacity:0.4}
-.buffer-card{flex:1;background:rgba(255,255,255,0.02);border:1px dashed #2a2a2c;border-radius:var(--radius-sm);padding:5px 10px;display:flex;justify-content:space-between;align-items:center}
-.buffer-label{font-size:11px;color:#555;font-style:italic}
-.buffer-time-label{font-size:11px;color:#444}
+/* Буфер (перерывы) */
+.buffer-row{display:flex;align-items:stretch;min-height:24px;opacity:0.7}
+.buffer-time{width:56px;flex-shrink:0;text-align:right;padding-right:8px;font-size:10px;color:#666;display:flex;flex-direction:column;justify-content:center;font-weight:600;}
+.buffer-track{width:12px;flex-shrink:0;margin-right:8px;display:flex;flex-direction:column;align-items:center}
+.buffer-line{width:2px;flex:1;background:repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 4px, transparent 4px, transparent 8px);}
+.buffer-content{flex:1;font-size:11px;color:#666;display:flex;align-items:center;font-style:italic}
 
 /* Сейчас-линия */
-.now-indicator{display:flex;align-items:center;gap:6px;margin:4px 0 4px 64px}
-.now-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);flex-shrink:0;animation:pulse-now 2s infinite}
-@keyframes pulse-now{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
-.now-label{font-size:11px;color:var(--danger);font-weight:700}
+.now-indicator{display:flex;align-items:center;gap:8px;margin:8px 0 8px 64px;position:relative;z-index:5}
+.now-dot-wrap{position:absolute;left:-15px;display:flex;justify-content:center;align-items:center}
+.now-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);animation:pulse-now 2s infinite}
+@keyframes pulse-now{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+.now-line{flex:1;height:1.5px;background:var(--danger);border-radius:2px;opacity:0.5}
+.now-label{font-size:11px;color:var(--danger);font-weight:700;background:var(--bg);padding:2px 8px;border-radius:10px;border:1px solid rgba(255,69,58,0.4)}
 
 /* Разделители */
 .ot-divider{display:flex;align-items:center;gap:8px;margin:8px 0 8px 64px}
@@ -133,6 +139,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .divider{margin-top:16px;margin-bottom:16px;border-top:1px dashed var(--border);position:relative}
 .divider-label{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
 
+/* Rest of UI */
 .kanban-wrap{padding:0 16px}
 .k-empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:15px;line-height:1.6}
 .k-empty-icon{font-size:48px;display:block;margin-bottom:12px}
@@ -227,7 +234,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v2.1.0</span></h1>
+    <h1>Задачи <span class="v-tag">v2.2.0</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
       <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
@@ -309,10 +316,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <div class="form-group"><label>Категория</label><select id="f-cat"><option value="business">Бизнес</option><option value="personal">Личное</option></select></div>
       <div class="form-group"><label>Повторяемость</label><select id="f-recurrence"><option value="none">Один раз</option><option value="daily">Каждый день</option><option value="weekdays">По будням</option><option value="weekends">По выходным</option><option value="weekly">Раз в неделю</option><option value="monthly">Раз в месяц</option></select></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label>Дедлайн <span>(необяз.)</span></label><input type="date" id="f-deadline"/></div>
-      <div class="form-group"><label>Длительность (мин)</label><input type="number" id="f-mins" placeholder="30" min="5" max="480"/></div>
-    </div>
+    <div class="form-group"><label>Длительность (мин)</label><input type="number" id="f-mins" placeholder="30" min="5" max="480"/></div>
     <div class="form-group"><label>Заметки <span>(необяз.)</span></label><textarea id="f-notes" placeholder="Детали, ссылки, контекст..."></textarea></div>
     <div class="form-section">
       <div class="form-section-title">🕒 Жесткое время (встречи, блоки)</div>
@@ -320,7 +324,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
         <div class="form-group" style="margin-bottom:0"><label>С</label><div class="time-wrap"><input type="text" id="f-time-from" placeholder="14:00" maxlength="5" inputmode="numeric"/></div></div>
         <div class="form-group" style="margin-bottom:0"><label>До</label><div class="time-wrap"><input type="text" id="f-time-to" placeholder="15:00" maxlength="5" inputmode="numeric"/></div></div>
       </div>
-      <div style="font-size:11px;color:var(--text2);margin-top:6px">Если не указать — задача встанет автоматически по приоритету.</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:6px">Если не указать — задача встанет в свободный слот таймлайна.</div>
     </div>
     <div class="form-section">
       <div class="form-section-title">📅 Дни месяца <span style="font-weight:400;text-transform:none;font-size:10px">(для повторяемых)</span></div>
@@ -372,15 +376,12 @@ function haptic(t='light'){try{tg?.HapticFeedback?.impactOccurred(t);}catch(e){}
 function hapticNotif(t='warning'){try{tg?.HapticFeedback?.notificationOccurred(t);}catch(e){}}
 
 function timeToMin(s){if(!s)return 0;const[h,m]=(s+'').split(':').map(Number);return(h||0)*60+(m||0);}
-
-// ИСПРАВЛЕНИЕ: Форматирование времени, чтобы 25:00 превращалось в 01:00 (+1д)
 function minToTime(m){
   const h=Math.floor(m/60), mm=m%60;
   const realH=h%24;
   const nextDayText=h>=24?' <span style="font-size:9px;color:var(--text2)">(+1д)</span>':'';
   return String(realH).padStart(2,'0')+':'+String(mm).padStart(2,'0')+nextDayText;
 }
-
 function nowMin(){const n=new Date();return n.getHours()*60+n.getMinutes();}
 
 function shouldHideBiz(){
@@ -393,10 +394,12 @@ function shouldHideBiz(){
 }
 
 function normalizeTask(t){
-  let deadline='';
-  if(t.deadline){const s=String(t.deadline),m=s.match(/^(\d{4}-\d{2}-\d{2})/);if(m&&parseInt(m[1])>2000)deadline=m[1];}
   function ct(v){if(!v)return '';const s=String(v),i=s.match(/T(\d{2}):(\d{2})/);if(i)return i[1]+':'+i[2];const h=s.match(/^(\d{2}):(\d{2})/);if(h)return h[0];return '';}
-  return{...t,id:String(t.id),parent_id:t.parent_id?String(t.parent_id):'',deadline,time_from:ct(t.time_from),time_to:ct(t.time_to),
+  return{...t,id:String(t.id),parent_id:t.parent_id?String(t.parent_id):'',
+    target_date: t.target_date || t.deadline || todayStr(), // deadline is legacy fallback
+    created_date: t.created_date || todayStr(),
+    done_date: t.done_date || '',
+    time_from:ct(t.time_from),time_to:ct(t.time_to),
     quadrant:Number(t.quadrant)||1,mins:Number(t.mins)||0,original_mins:Number(t.original_mins)||Number(t.mins)||0,
     worked_mins:Number(t.worked_mins)||0,postpone_count:Number(t.postpone_count)||0,
     day_from:t.day_from?String(t.day_from):'',day_to:t.day_to?String(t.day_to):'',notes:t.notes||'',
@@ -416,8 +419,8 @@ function getNextOccurrence(base, afterDateStr) {
     if(rec==='daily') fits=true;
     else if(rec==='weekdays') fits=tDow>=1&&tDow<=5;
     else if(rec==='weekends') fits=tDow===0||tDow===6;
-    else if(rec==='weekly') fits=tDow===new Date((base.deadline||afterDateStr)+'T12:00:00').getDay();
-    else if(rec==='monthly') fits=tDom===new Date((base.deadline||afterDateStr)+'T12:00:00').getDate();
+    else if(rec==='weekly') fits=tDow===new Date((base.target_date||afterDateStr)+'T12:00:00').getDay();
+    else if(rec==='monthly') fits=tDom===new Date((base.target_date||afterDateStr)+'T12:00:00').getDate();
     if(fits && base.day_from && base.day_to){
       const df=parseInt(base.day_from),dt=parseInt(base.day_to);
       if(tDom<df||tDom>dt) fits=false;
@@ -475,18 +478,29 @@ async function loadTasks(){
 }
 
 function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');}
-function fmtDate(dl){if(!dl)return '';try{const m=String(dl).match(/^(\d{4}-\d{2}-\d{2})/);if(!m)return '';const d=new Date(m[1]+'T12:00:00');return isNaN(d.getTime())?'':d.toLocaleDateString('ru',{day:'numeric',month:'short'});}catch(e){return '';}}
 
+// ─── ЛОГИКА ОТОБРАЖЕНИЯ (БЕЗ ДЕДЛАЙНОВ, ТОЛЬКО DONE_DATE И TARGET_DATE) ───
 function getFiltered(){
   const target = filter.targetDate;
+  const today = todayStr();
   let t = [...tasks];
   if(shouldHideBiz()) t = t.filter(x => x.cat !== 'business' || x.done);
   if(filter.cat !== 'all') t = t.filter(x => x.cat === filter.cat);
+  
   const currentTasks = [];
   const doneTasks = [];
+  
   t.forEach(x => {
-    if (x.done) { if (x.deadline === target || !x.deadline) doneTasks.push(x); }
-    else currentTasks.push(x);
+    if (x.done) { 
+      if (x.done_date === target) doneTasks.push(x); // Показываем выполненные только в день их выполнения
+    } else {
+      if (target === today) {
+        if (!x.target_date || x.target_date <= today) currentTasks.push(x);
+      } else if (target > today) {
+        if (x.target_date === target) currentTasks.push(x);
+      }
+      // Если target < today (смотрим в прошлое), невыполненные задачи там не показываются, они ушли на сегодня.
+    }
   });
   doneTasks.sort((a,b) => Number(a.quadrant)-Number(b.quadrant));
   return { currentTasks, doneTasks };
@@ -500,7 +514,8 @@ function renderCalendarTape() {
   const td = new Date();
   const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   let html = '';
-  for(let i=0; i<14; i++) {
+  // Разрешим смотреть 3 дня назад и 11 вперед
+  for(let i=-3; i<11; i++) {
     const d = new Date(td.getTime() + i * 86400000);
     const dStr = localDate(d);
     const isSelected = filter.targetDate === dStr;
@@ -579,30 +594,31 @@ function buildSchedule(currentTasks) {
   return { scheduled: all, workToMin };
 }
 
-function buildTaskHTML(t, isFixed, isOvertime, nowShown) {
-  const target = filter.targetDate;
-  let daysOverdue = 0;
-  if (!t.done && t.deadline && t.deadline < target)
-    daysOverdue = Math.floor((new Date(target) - new Date(t.deadline)) / 86400000);
-  const pc = (Number(t.postpone_count) || 0) + daysOverdue;
-  const fire = pc > 0 ? ` 🔥x${pc}` : '';
+function buildTaskHTML(t, isFixed, isOvertime) {
+  const today = todayStr();
+  
+  // 🔥 Расчет "Огня"
+  let daysBurning = 0;
+  if (!t.done && t.target_date && t.target_date < today) {
+    daysBurning = Math.floor((new Date(today) - new Date(t.target_date)) / 86400000);
+  }
+  const pc = (Number(t.postpone_count) || 0) + daysBurning;
+  const fire = pc > 0 ? ` <span style="color:#ff827a">🔥x${pc}</span>` : '';
   const rec = t.recurrence && t.recurrence !== 'none' ? ' 🔁' : '';
-  const fDate = t.deadline ? `📅 ${fmtDate(t.deadline)}` : '';
 
   let cls = 'q' + (t.quadrant || 1);
   if (t.status === 'inprogress') cls = 'inprogress-task';
   else if (t.status === 'paused') cls = 'paused-task';
   else if (isOvertime) cls = 'overtime-task';
-  else if (daysOverdue > 0) cls = 'overdue-task';
+  else if (daysBurning > 0) cls = 'overdue-task';
   else if (isFixed) cls = 'fixed-task';
   if (t.done) cls += ' done-task';
 
   let sb = `<span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>`;
-  if (isFixed && !t.done) sb += `<span class="badge b-fixed">📌 Жёсткое</span>`;
   if (t.status === 'inprogress') sb = '<span class="badge b-inprogress">▶ В работе</span>';
   else if (t.status === 'paused') sb = '<span class="badge b-paused">⏸ Пауза</span>';
   else if (isOvertime && !t.done) sb += '<span class="badge b-overtime">⚠️ Овертайм</span>';
-  else if (daysOverdue > 0 && !t.done) sb = '<span class="badge b-overdue">⚠️ Просрочено</span>' + sb;
+  else if (daysBurning > 0 && !t.done) sb = '<span class="badge b-overdue">⚠️ Горит</span>' + sb;
   if (t.done) sb = '';
 
   const activeTask = tasks.find(x => x.status === 'inprogress' || x.status === 'paused');
@@ -616,17 +632,21 @@ function buildTaskHTML(t, isFixed, isOvertime, nowShown) {
       ab = `<button class="tab tab-start" style="opacity:.3;cursor:default" disabled>▶ Занят</button>`;
   }
 
-  const dotCls = t.done ? 'done' : isOvertime ? 'overtime' : 'q' + (t.quadrant || 1);
-  const timeCls = isOvertime ? ' overtime' : '';
-  const startStr = minToTime(t._start);
-  const endStr = minToTime(t._end);
+  const dotCls = t.done ? 'done' : isFixed ? 'fixed' : isOvertime ? 'overtime' : 'q' + (t.quadrant || 1);
+  const timeCls = isFixed ? ' fixed' : isOvertime ? ' overtime' : '';
+  
+  const startStr = t._start !== undefined ? minToTime(t._start) : '';
+  const endStr = t._end !== undefined ? minToTime(t._end) : '';
+
+  let timeColHTML = `<div class="tl-start">${startStr}</div><div class="tl-end">${endStr}</div>`;
+  if(t.done) timeColHTML = `<div class="tl-start" style="color:var(--text2)">✔</div>`;
+  else if (isFixed) {
+    timeColHTML = `<div class="tl-start">${t.time_from}</div><div class="tl-end">${t.time_to || endStr}</div>`;
+  }
 
   return `
   <div class="tl-row" data-id="${t.id}">
-    <div class="tl-time${timeCls}">
-      <div class="tl-start">${startStr}</div>
-      <div class="tl-end">${endStr}</div>
-    </div>
+    <div class="tl-time${timeCls}">${timeColHTML}</div>
     <div class="tl-track-wrap">
       <div class="tl-dot ${dotCls}"></div>
       <div class="tl-line"></div>
@@ -643,7 +663,6 @@ function buildTaskHTML(t, isFixed, isOvertime, nowShown) {
           <div class="task-meta">
             ${t.mins&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}
             ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 ${fmtMins(t.worked_mins)}</span>`:''}
-            ${fDate?`<span class="tmeta">${fDate}</span>`:''}
           </div>
           ${t.notes?`<div class="notes-text">📝 ${t.notes}</div>`:''}
           ${ab?`<div class="task-actions">${ab}</div>`:''}
@@ -654,20 +673,12 @@ function buildTaskHTML(t, isFixed, isOvertime, nowShown) {
   </div>`;
 }
 
-function buildBufferHTML(startMin, durationMin) {
+function buildBufferHTML(durationMin) {
   return `
   <div class="buffer-row">
-    <div style="width:56px;flex-shrink:0"></div>
-    <div class="tl-track-wrap" style="opacity:0.3">
-      <div class="tl-dot" style="background:var(--border);margin-top:8px"></div>
-      <div class="tl-line"></div>
-    </div>
-    <div class="tl-content" style="padding-bottom:6px">
-      <div class="buffer-card">
-        <span class="buffer-label">☕ перерыв</span>
-        <span class="buffer-time-label">${durationMin}м</span>
-      </div>
-    </div>
+    <div class="buffer-time">${durationMin}м</div>
+    <div class="buffer-track"><div class="buffer-line"></div></div>
+    <div class="buffer-content">☕ перерыв</div>
   </div>`;
 }
 
@@ -702,13 +713,11 @@ function renderTasks(){
       const isNextDay = t._start >= midnightMin;
       const prevTask = i > 0 ? scheduled[i - 1] : null;
 
-      // Овертайм 18:00
       if (isOvertime && !otDividerInserted && !isNextDay) {
         otDividerInserted = true;
         finalHtml += `<div class="ot-divider"><div class="ot-divider-line"></div><span class="ot-divider-label">18:00 — Овертайм</span><div class="ot-divider-line"></div></div>`;
       }
       
-      // Разделитель полуночи 00:00
       if (isNextDay && !midnightDividerInserted) {
         midnightDividerInserted = true;
         finalHtml += `<div class="ot-divider"><div class="ot-divider-line" style="border-top-color:#666"></div><span class="ot-divider-label" style="color:#888">00:00 — Следующий день</span><div class="ot-divider-line" style="border-top-color:#666"></div></div>`;
@@ -716,26 +725,25 @@ function renderTasks(){
 
       if (!nowInserted && isToday && currentNow >= 0 && t._start > currentNow) {
         nowInserted = true;
-        finalHtml += `<div class="now-indicator"><div class="now-dot"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span></div>`;
+        finalHtml += `<div class="now-indicator"><div class="now-dot-wrap"><div class="now-dot"></div></div><div class="now-line"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span><div class="now-line"></div></div>`;
       }
 
       if (prevTask && t._start > prevTask._end && (t._start - prevTask._end) <= BUFFER + 2) {
-        finalHtml += buildBufferHTML(prevTask._end, t._start - prevTask._end);
+        finalHtml += buildBufferHTML(t._start - prevTask._end);
       }
 
-      finalHtml += buildTaskHTML(t, !!t._fixed, isOvertime, nowInserted);
+      finalHtml += buildTaskHTML(t, !!t._fixed, isOvertime);
     });
 
     if (!nowInserted && isToday && currentNow >= 0) {
-      finalHtml += `<div class="now-indicator"><div class="now-dot"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span></div>`;
+      finalHtml += `<div class="now-indicator"><div class="now-dot-wrap"><div class="now-dot"></div></div><div class="now-line"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span><div class="now-line"></div></div>`;
     }
   }
 
   if (doneTasks.length > 0) {
     if (finalHtml) finalHtml += `<div class="divider"><div class="divider-label">Выполнено</div></div>`;
     doneTasks.forEach(t => {
-      t._start = 0; t._end = 0; t._fixed = false;
-      finalHtml += buildTaskHTML(t, false, false, true);
+      finalHtml += buildTaskHTML(t, false, false);
     });
   }
 
@@ -753,7 +761,11 @@ function render(){
   else statBlock.classList.remove('future-mode');
 }
 
-setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},60000);
+// РЕАЛ-ТАЙМ ОБНОВЛЕНИЯ БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ
+setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},30000); // Каждые 30 сек
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && currentPage==='tasks' && filter.targetDate===todayStr()) renderTasks(); // Мгновенно при разворачивании
+});
 
 document.getElementById('task-list').addEventListener('click',function(e){
   const ae=e.target.closest('[data-action]');if(!ae)return;
@@ -792,20 +804,19 @@ function showCtxMenu(x,y,id){
 function hideCtxMenu(){document.getElementById('ctx-menu').style.display='none';}
 document.addEventListener('click',e=>{if(!e.target.closest('#ctx-menu'))hideCtxMenu();});
 
-// НОВАЯ ФУНКЦИЯ: Перенос на завтра
+// ПЕРЕНОС НА ЗАВТРА
 async function postponeToTomorrow(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;
   haptic();
   if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
   
-  const tomorrow = getTomorrowStr(filter.targetDate || todayStr());
-  t.deadline = tomorrow;
+  t.target_date = getTomorrowStr(filter.targetDate || todayStr());
   t.postpone_count = (Number(t.postpone_count) || 0) + 1;
   t.status = 'new';
   t.started_at=''; t.paused_at=''; t.paused_remaining=0;
   
   render();if(currentPage==='kanban')renderKanban();
-  await apiFetch('POST',{action:'updateTask',id:t.id,fields:{deadline:t.deadline, postpone_count:t.postpone_count, status:'new', started_at:'', paused_remaining:0, paused_at:''}});
+  await apiFetch('POST',{action:'updateTask',id:t.id,fields:{target_date:t.target_date, postpone_count:t.postpone_count, status:'new', started_at:'', paused_remaining:0, paused_at:''}});
   showToast('Перенесено на завтра 📅');
 }
 
@@ -816,24 +827,25 @@ async function toggleDone(id){
   t.done=!t.done;t.status=t.done?'done':'new';
   let newNextTask=null;
   if(t.done){
-    t.deadline=todayStr();
+    t.done_date = todayStr(); // ФИКСИРУЕМ ДАТУ ВЫПОЛНЕНИЯ
     if(t.recurrence&&t.recurrence!=='none'){
       const nextDate=getNextOccurrence(t,todayStr());
       if(nextDate){
-        newNextTask={...t,id:String(nextId++),parent_id:t.parent_id||t.id,deadline:nextDate,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,postpone_count:0};
+        newNextTask={...t,id:String(nextId++),parent_id:t.parent_id||t.id,target_date:nextDate,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,postpone_count:0,done_date:''};
         tasks.push(newNextTask);
       }
     }
   } else {
+    t.done_date = '';
     t.started_at='';t.paused_remaining=0;t.paused_at='';
   }
   render();if(currentPage==='kanban')renderKanban();
   if(t.done){
-    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:true,status:'done',deadline:todayStr(),worked_mins:t.worked_mins}});
+    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:true,status:'done',done_date:t.done_date,worked_mins:t.worked_mins}});
     if(newNextTask)await apiFetch('POST',{action:'addTask',task:newNextTask});
     showToast('Выполнено ✅');
   } else {
-    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:false,status:'new',started_at:'',paused_remaining:0,paused_at:''}});
+    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:false,status:'new',done_date:'',started_at:'',paused_remaining:0,paused_at:''}});
   }
 }
 
@@ -852,7 +864,6 @@ function openModal(){
   document.getElementById('modal-title').textContent='Новая задача';
   document.getElementById('f-id').value='';
   ['f-title','f-mins','f-time-from','f-time-to','f-day-from','f-day-to','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('f-deadline').value='';
   document.getElementById('f-recurrence').value='none';
   document.getElementById('f-cat').value=filter.cat!=='all'?filter.cat:'business';
   selectQ(1);document.getElementById('modal').style.display='flex';
@@ -869,7 +880,6 @@ function openEditModal(id){
   document.getElementById('f-day-to').value=t.day_to||'';
   document.getElementById('f-time-from').value=t.time_from||'';
   document.getElementById('f-time-to').value=t.time_to||'';
-  document.getElementById('f-deadline').value=t.deadline||'';
   document.getElementById('f-cat').value=t.cat||'business';
   document.getElementById('f-notes').value=t.notes||'';
   selectQ(Number(t.quadrant)||1);
@@ -883,8 +893,12 @@ async function saveTask(){
   const id=document.getElementById('f-id').value,btn=document.getElementById('save-btn');
   btn.disabled=true;btn.textContent='Сохранение...';
   const mv=parseInt(document.getElementById('f-mins').value)||0;
+  
+  let targetDateToSave = filter.targetDate || todayStr();
+  if (id) { const ext = tasks.find(x=>x.id===id); if(ext) targetDateToSave = ext.target_date; }
+
   const taskData={title,cat:document.getElementById('f-cat').value,quadrant:selectedQ,mins:mv,original_mins:mv,
-    deadline:document.getElementById('f-deadline').value||'',recurrence:document.getElementById('f-recurrence').value,
+    target_date: targetDateToSave, recurrence:document.getElementById('f-recurrence').value,
     day_from:document.getElementById('f-day-from').value||'',day_to:document.getElementById('f-day-to').value||'',
     time_from:document.getElementById('f-time-from').value||'',time_to:document.getElementById('f-time-to').value||'',
     notes:document.getElementById('f-notes').value||''};
@@ -895,7 +909,7 @@ async function saveTask(){
     await apiFetch('POST',{action:'updateTask',id,fields:taskData});
     showToast('Сохранено 🔄');
   } else {
-    const nt={id:String(nextId++),parent_id:'',...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
+    const nt={id:String(nextId++),parent_id:'',...taskData,created_date:todayStr(),done_date:'',done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
     tasks.push(nt);render();if(currentPage==='kanban')renderKanban();
     await apiFetch('POST',{action:'addTask',task:nt});
     showToast('Добавлено ✅');
@@ -918,11 +932,13 @@ function renderKanban(){
   const pct=tS?Math.min(100,Math.round((tS-rS)/tS*100)):0;
   const mm=Math.floor(rS/60).toString().padStart(2,'0'),ss=(rS%60).toString().padStart(2,'0');
   const isW=!ip&&rS>0&&rS<=180;
-  let daysOverdue=0;
-  if(!active.done&&active.deadline&&active.deadline<todayStr())daysOverdue=Math.floor((new Date(todayStr())-new Date(active.deadline))/86400000);
-  const pc=(Number(active.postpone_count)||0)+daysOverdue;
-  const fire=pc>0?` 🔥x${pc}`:'';
+  
+  let daysBurning = 0;
+  if (!active.done && active.target_date && active.target_date < todayStr()) daysBurning = Math.floor((new Date(todayStr()) - new Date(active.target_date)) / 86400000);
+  const pc = (Number(active.postpone_count) || 0) + daysBurning;
+  const fire = pc > 0 ? ` <span style="color:#ff827a">🔥x${pc}</span>` : '';
   const rec=active.recurrence&&active.recurrence!=='none'?' 🔁':'';
+  
   wrap.innerHTML=`<div class="k-card ${ip?'paused':'inprogress'}">
     <div class="k-card-head"><div class="k-status-dot ${ip?'paused':'inprogress'}"></div><div class="k-status-label ${ip?'paused':'inprogress'}">${ip?'На паузе':'В работе'}</div></div>
     <div class="k-title">${active.title}${fire}${rec}</div>
