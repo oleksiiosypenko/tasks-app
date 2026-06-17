@@ -25,7 +25,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
 
-/* Календарная лента */
 .calendar-tape{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none}
 .calendar-tape::-webkit-scrollbar{display:none}
 .cal-day{display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--bg2);border-radius:var(--radius);min-width:54px;padding:10px 4px;cursor:pointer;border:1.5px solid transparent;transition:all .2s;flex-shrink:0}
@@ -55,33 +54,54 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 
 .task-list{padding:4px 16px;display:flex;flex-direction:column}
 
-/* Таймлайн стили */
-.tl-row { display: flex; align-items: stretch; margin-bottom: 4px; }
-.tl-time { width: 50px; flex-shrink: 0; text-align: right; padding-top: 10px; padding-right: 8px; transition: color 0.3s; }
-.tl-start { font-size: 14px; font-weight: 700; color: #fff; line-height: 1; }
-.tl-end { font-size: 11px; color: var(--text2); margin-top: 4px; }
-.tl-time.overtime .tl-start { color: var(--danger); }
-.tl-time.overtime .tl-end { color: rgba(255, 69, 58, 0.7); }
+/* Таймлайн */
+.tl-row{display:flex;align-items:stretch;margin-bottom:4px}
+.tl-time{width:50px;flex-shrink:0;text-align:right;padding-top:10px;padding-right:8px;transition:color 0.3s}
+.tl-start{font-size:14px;font-weight:700;color:#fff;line-height:1}
+.tl-end{font-size:11px;color:var(--text2);margin-top:4px}
+.tl-time.overtime .tl-start{color:var(--danger)}
+.tl-time.overtime .tl-end{color:rgba(255,69,58,0.7)}
+.tl-track-wrap{display:flex;flex-direction:column;align-items:center;width:12px;flex-shrink:0;margin-right:8px}
+.tl-dot{width:8px;height:8px;border-radius:50%;background:var(--text2);margin-top:13px;box-shadow:0 0 0 3px var(--bg);position:relative;z-index:2;transition:all 0.3s}
+.tl-dot.q1{background:var(--q1)}
+.tl-dot.q2{background:var(--q2)}
+.tl-dot.q3{background:var(--q3)}
+.tl-dot.q4{background:var(--q4)}
+.tl-dot.done{background:var(--success)}
+.tl-dot.overtime{background:var(--danger)}
+.tl-line{width:2px;background:var(--border);flex:1;margin-top:-2px;margin-bottom:-15px;border-radius:2px;z-index:1}
+.tl-content{flex:1;min-width:0;padding-bottom:12px}
 
-.tl-track-wrap { display: flex; flex-direction: column; align-items: center; width: 12px; flex-shrink: 0; margin-right: 8px; }
-.tl-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text2); margin-top: 13px; box-shadow: 0 0 0 3px var(--bg); position: relative; z-index: 2; transition: all 0.3s;}
-.tl-dot.q1 { background: var(--q1); }
-.tl-dot.q2 { background: var(--q2); }
-.tl-dot.q3 { background: var(--q3); }
-.tl-dot.q4 { background: var(--q4); }
-.tl-line { width: 2px; background: var(--border); flex: 1; margin-top: -2px; margin-bottom: -15px; border-radius: 2px; z-index: 1; }
-.tl-content { flex: 1; min-width: 0; padding-bottom: 12px; }
+/* Буфер строка */
+.buffer-row{display:flex;align-items:center;margin-bottom:4px;opacity:0.5}
+.buffer-row .tl-track-wrap{opacity:0.4}
+.buffer-card{flex:1;background:rgba(255,255,255,0.02);border:1px dashed #2a2a2c;border-radius:var(--radius-sm);padding:5px 10px;display:flex;justify-content:space-between;align-items:center}
+.buffer-label{font-size:11px;color:#555;font-style:italic}
+.buffer-time-label{font-size:11px;color:#444}
+
+/* Сейчас-линия */
+.now-indicator{display:flex;align-items:center;gap:6px;margin:4px 0 4px 58px}
+.now-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);flex-shrink:0;animation:pulse-now 2s infinite}
+@keyframes pulse-now{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+.now-label{font-size:11px;color:var(--danger);font-weight:700}
+
+/* Овертайм разделитель */
+.ot-divider{display:flex;align-items:center;gap:8px;margin:8px 0 8px 58px}
+.ot-divider-line{flex:1;border-top:1px dashed var(--danger)}
+.ot-divider-label{font-size:10px;color:var(--danger);font-weight:700;white-space:nowrap}
 
 .task{background:var(--bg2);border-radius:var(--radius);padding:12px;display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border)}
 .task.q1{border-color:rgba(255,69,58,0.3);background:linear-gradient(90deg,#1c1212 0%,var(--bg2) 30%)}
 .task.q2{border-color:rgba(94,92,230,0.3);background:linear-gradient(90deg,#151524 0%,var(--bg2) 30%)}
 .task.q3{border-color:rgba(255,159,10,0.3);background:linear-gradient(90deg,#1c170d 0%,var(--bg2) 30%)}
 .task.q4{opacity:.6}
-.task.done-task{opacity:.4; border-color:var(--border); background:var(--bg2)}
+.task.done-task{opacity:.4;border-color:var(--border);background:var(--bg2)}
 .task.done-task .task-title{text-decoration:line-through;color:var(--text2)}
 .task.overdue-task{border-color:var(--danger)!important;background:linear-gradient(90deg,#3a1515 0%,var(--bg2) 18%)!important}
 .task.inprogress-task{border-color:var(--accent)!important;background:linear-gradient(90deg,#1a1a3a 0%,var(--bg2) 18%)!important}
 .task.paused-task{border-color:#666!important;background:linear-gradient(90deg,#1a1a1a 0%,var(--bg2) 18%)!important}
+.task.overtime-task{border-color:var(--danger)!important;background:linear-gradient(90deg,#3a1515 0%,var(--bg2) 18%)!important}
+.task.fixed-task{border-color:rgba(255,159,10,0.6)!important;background:linear-gradient(90deg,#1c170a 0%,var(--bg2) 25%)!important}
 
 .check{width:24px;height:24px;border:2px solid #fff;border-radius:50%;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;margin-top:1px;background:rgba(255,255,255,.05);font-size:13px}
 .check.on{background:var(--success);border-color:var(--success)}
@@ -98,6 +118,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .b-overdue{background:#5a1818;color:#ff827a}
 .b-inprogress{background:#1a1a3a;color:#a3a3ff}
 .b-paused{background:#222;color:#888}
+.b-overtime{background:#5a1818;color:#ff827a}
+.b-fixed{background:#4d2a00;color:#ffb340}
 .task-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
 .tmeta{font-size:12px;color:var(--text2);display:flex;align-items:center;gap:3px;font-weight:500}
 .task-actions{display:flex;gap:6px;margin-top:8px}
@@ -111,7 +133,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .divider{margin-top:16px;margin-bottom:16px;border-top:1px dashed var(--border);position:relative}
 .divider-label{position:absolute;top:-9px;left:50%;transform:translateX(-50%);background:var(--bg);padding:0 10px;font-size:11px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:0.05em}
 
-/* Rest of standard UI */
 .kanban-wrap{padding:0 16px}
 .k-empty{text-align:center;padding:60px 20px;color:var(--text2);font-size:15px;line-height:1.6}
 .k-empty-icon{font-size:48px;display:block;margin-bottom:12px}
@@ -190,7 +211,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .q-option.selected{border-color:var(--accent);background:#252528}
 .q-option-title{font-size:13px;font-weight:700}
 .q-option-sub{font-size:10px;color:var(--text2);margin-top:2px}
-.notif-info{background:var(--q2bg);border:1px solid #3a3a6a;border-radius:var(--radius-sm);padding:10px;margin-top:8px;font-size:12px;color:var(--q2t);line-height:1.5}
 .btn-primary{width:100%;padding:14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius);font-size:16px;font-weight:700;cursor:pointer;margin-top:10px}
 .btn-primary:disabled{opacity:.5}
 .loading-wrap{text-align:center;padding:40px;color:var(--text2);font-size:14px;font-weight:600}
@@ -206,7 +226,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v1.9.0</span></h1>
+    <h1>Задачи <span class="v-tag">v2.0.0</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
       <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
@@ -258,9 +278,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
       <div class="settings-row"><div><div class="settings-row-label">Уведомления включены</div></div><button class="toggle on" id="s-notify-on" onclick="this.classList.toggle('on')"></button></div>
     </div>
     <div class="settings-section">
-      <div class="settings-section-title">⏰ Рабочие часы (Для расписания)</div>
-      <div class="settings-row"><div><div class="settings-row-label">Начало рабочего дня</div><div class="settings-row-sub">С этого времени стартует лента задач</div></div><input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
-      <div class="settings-row"><div><div class="settings-row-label">Конец рабочего дня</div><div class="settings-row-sub">Задачи после этого времени станут красными</div></div><input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-section-title">⏰ Рабочие часы</div>
+      <div class="settings-row"><div><div class="settings-row-label">Начало рабочего дня</div><div class="settings-row-sub">С этого времени стартует таймлайн</div></div><input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Конец рабочего дня</div><div class="settings-row-sub">После этого — овертайм зона</div></div><input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Буфер между задачами (мин)</div><div class="settings-row-sub">Перерыв после каждой задачи</div></div><input type="number" id="s-buffer" value="10" min="0" max="30" style="width:65px"/></div>
       <div class="settings-row"><div><div class="settings-row-label">Скрывать Бизнес вне рабочих часов</div></div><button class="toggle" id="s-hide-biz" onclick="this.classList.toggle('on')"></button></div>
       <div class="settings-row"><div><div class="settings-row-label">Планирование с воскресенья</div></div><input type="text" id="s-plan-from" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
     </div>
@@ -293,12 +314,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     </div>
     <div class="form-group"><label>Заметки <span>(необяз.)</span></label><textarea id="f-notes" placeholder="Детали, ссылки, контекст..."></textarea></div>
     <div class="form-section">
-      <div class="form-section-title">🕒 Жесткое время (Для встреч)</div>
+      <div class="form-section-title">🕒 Жесткое время (встречи, блоки)</div>
       <div class="form-row">
         <div class="form-group" style="margin-bottom:0"><label>С</label><div class="time-wrap"><input type="text" id="f-time-from" placeholder="14:00" maxlength="5" inputmode="numeric"/></div></div>
         <div class="form-group" style="margin-bottom:0"><label>До</label><div class="time-wrap"><input type="text" id="f-time-to" placeholder="15:00" maxlength="5" inputmode="numeric"/></div></div>
       </div>
-      <div style="font-size:11px;color:var(--text2);margin-top:6px">Если не указать время, задача автоматически встанет в общую очередь расписания.</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:6px">Если не указать — задача встанет автоматически по приоритету.</div>
     </div>
     <div class="form-section">
       <div class="form-section-title">📅 Дни месяца <span style="font-weight:400;text-transform:none;font-size:10px">(для повторяемых)</span></div>
@@ -324,13 +345,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
   <button class="nav-btn" id="nav-kanban" onclick="showPage('kanban')"><div class="nav-wrap"><svg viewBox="0 0 24 24"><path d="M12 2v10l4 4M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z"/></svg><div class="nav-badge" id="focus-badge"></div></div>Фокус</button>
   <button class="nav-btn" id="nav-digest" onclick="showPage('digest')"><svg viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></svg>Дайджест</button>
 </nav>
+
 <script>
 const tg=window.Telegram?.WebApp; if(tg)tg.expand();
 const API='https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
 let tasks=[], nextId=Date.now();
 let filter={cat:'all'};
 let selectedQ=1,timerInterval=null,currentPage='tasks',ctxTaskId=null,longPressTimer=null;
-let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'09:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant'};
+let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'08:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant',buffer:10};
 const Q_LABELS=['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
 function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
@@ -377,8 +399,7 @@ function getNextOccurrence(base, afterDateStr) {
   let d = new Date(afterDateStr + 'T12:00:00');
   for(let i=1; i<=60; i++) {
     d.setDate(d.getDate() + 1);
-    const tDow = d.getDay();
-    const tDom = d.getDate();
+    const tDow = d.getDay(), tDom = d.getDate();
     let fits = false;
     const rec = base.recurrence;
     if(rec==='daily') fits=true;
@@ -401,14 +422,18 @@ async function apiFetch(method,data){
 }
 
 async function loadSettings(){
-  try{const r=await fetch(API+'?action=getSettings&t='+Date.now());const d=await r.json();if(d&&!d.error)appSettings={...appSettings,...d};if(typeof appSettings.notifyBefore==='string')appSettings.notifyBefore=parseInt(appSettings.notifyBefore)||10;}catch(e){}
+  try{const r=await fetch(API+'?action=getSettings&t='+Date.now());const d=await r.json();if(d&&!d.error)appSettings={...appSettings,...d};
+    if(typeof appSettings.notifyBefore==='string')appSettings.notifyBefore=parseInt(appSettings.notifyBefore)||10;
+    if(typeof appSettings.buffer==='string')appSettings.buffer=parseInt(appSettings.buffer)||10;
+  }catch(e){}
   applySettingsUI();
 }
 function applySettingsUI(){
   const s=appSettings;
   const sv=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
   sv('s-digest-time',s.digestTime);sv('s-notify-before',s.notifyBefore);sv('s-notify-text',s.notifyText);
-  sv('s-work-from',s.workFrom);sv('s-work-to',s.workTo);sv('s-plan-from',s.planFrom);sv('s-sort',s.sortBy);
+  sv('s-work-from',s.workFrom);sv('s-work-to',s.workTo);sv('s-plan-from',s.planFrom);
+  sv('s-buffer',s.buffer!=null?s.buffer:10);
   document.getElementById('s-notify-on')?.classList.toggle('on',!!s.notifyOn);
   document.getElementById('s-hide-biz')?.classList.toggle('on',!!s.hideBiz);
 }
@@ -418,11 +443,11 @@ async function saveSettings(){
     notifyBefore:parseInt(document.getElementById('s-notify-before')?.value)||10,
     notifyText:document.getElementById('s-notify-text')?.value||'⏰ До конца «{task}» осталось 10 мин',
     notifyOn:!!document.getElementById('s-notify-on')?.classList.contains('on'),
-    workFrom:document.getElementById('s-work-from')?.value||'09:00',
+    workFrom:document.getElementById('s-work-from')?.value||'08:00',
     workTo:document.getElementById('s-work-to')?.value||'18:00',
     hideBiz:!!document.getElementById('s-hide-biz')?.classList.contains('on'),
     planFrom:document.getElementById('s-plan-from')?.value||'18:00',
-    sortBy:document.getElementById('s-sort')?.value||'quadrant',
+    buffer:parseInt(document.getElementById('s-buffer')?.value)||10,
   };
   showToast('Сохраняю...');
   const res=await apiFetch('POST',{action:'saveSettings',settings:appSettings});
@@ -449,7 +474,7 @@ function getFiltered(){
   const currentTasks = [];
   const doneTasks = [];
   t.forEach(x => {
-    if (x.done) { if (x.deadline === target) doneTasks.push(x); }
+    if (x.done) { if (x.deadline === target || !x.deadline) doneTasks.push(x); }
     else currentTasks.push(x);
   });
   doneTasks.sort((a,b) => Number(a.quadrant)-Number(b.quadrant));
@@ -468,20 +493,18 @@ function renderCalendarTape() {
     const d = new Date(td.getTime() + i * 86400000);
     const dStr = localDate(d);
     const isSelected = filter.targetDate === dStr;
-    const dow = days[d.getDay()];
-    const dom = d.getDate();
-    html += `<div class="cal-day ${isSelected ? 'active' : ''}" onclick="setTargetDate('${dStr}')">
-      <div class="cal-day-dow">${i===0 ? 'СЕГ' : dow}</div>
-      <div class="cal-day-dom">${dom}</div>
+    html += `<div class="cal-day ${isSelected?'active':''}" onclick="setTargetDate('${dStr}')">
+      <div class="cal-day-dow">${i===0?'СЕГ':days[d.getDay()]}</div>
+      <div class="cal-day-dom">${d.getDate()}</div>
     </div>`;
   }
   tape.innerHTML = html;
 }
 
-function setTargetDate(dStr) { filter.targetDate = dStr; haptic('light'); render(); }
+function setTargetDate(dStr){filter.targetDate=dStr;haptic('light');render();}
 
 function renderProgress(actList){
-  const total=actList.length, doneC=actList.filter(t=>t.done).length, pct=total?Math.round(doneC/total*100):0;
+  const total=actList.length,doneC=actList.filter(t=>t.done).length,pct=total?Math.round(doneC/total*100):0;
   document.getElementById('prog-fill').style.width=pct+'%';
   document.getElementById('prog-label').textContent=doneC+' / '+total+' ('+pct+'%)';
   const tM=actList.reduce((s,t)=>s+(Number(t.mins)||0),0);
@@ -492,152 +515,229 @@ function renderProgress(actList){
   document.getElementById('stat-done').textContent=fmtMins(dM)||'—';
 }
 
-function buildTaskHTML(t, isFixed, scheduledStart, scheduledEnd, isOvertime = false) {
-    const target = filter.targetDate;
-    let daysOverdue = 0;
-    if (!t.done && t.deadline && t.deadline < target) {
-        daysOverdue = Math.floor((new Date(target) - new Date(t.deadline)) / 86400000);
-    }
-    const pc = (Number(t.postpone_count) || 0) + daysOverdue;
-    const fire = pc > 0 ? ` 🔥x${pc}` : '';
+// ─── ПЛАНИРОВЩИК ──────────────────────────────────────────────
+function buildSchedule(currentTasks) {
+  const BUFFER = Number(appSettings.buffer) || 10;
+  const workFromMin = timeToMin(appSettings.workFrom || '08:00');
+  const workToMin = timeToMin(appSettings.workTo || '18:00');
+  const isToday = filter.targetDate === todayStr();
+  const currentNow = isToday ? nowMin() : 0;
 
-    const rec = t.recurrence && t.recurrence !== 'none' ? ' 🔁' : '';
-    const fDate = t.deadline ? `📅 ${fmtDate(t.deadline)}` : '';
-    
-    let cls = 'q' + (t.quadrant || 1);
-    if(t.status==='inprogress') cls='inprogress-task';
-    else if(t.status==='paused') cls='paused-task';
-    else if(daysOverdue > 0) cls='overdue-task';
-    if(t.done) cls+=' done-task';
-    
-    let sb=`<span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>`;
-    if(t.status==='inprogress') sb='<span class="badge b-inprogress">▶ В работе</span>';
-    else if(t.status==='paused') sb='<span class="badge b-paused">⏸ Пауза</span>';
-    else if(daysOverdue > 0) sb='<span class="badge b-overdue">⚠️ Просрочено</span>';
-    else if(t.done) sb='';
-    
-    let ab='';
-    const activeTask = tasks.find(x => x.status === 'inprogress' || x.status === 'paused');
-    if(!t.done){
-      if(t.status==='inprogress'||t.status==='paused') ab=`<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
-      else if(!activeTask) ab=`<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`;
-      else ab=`<button class="tab tab-start" style="opacity:.3;cursor:default" disabled>▶ Занят</button>`;
-    }
-    
-    const fixedIcon = isFixed ? `<div style="font-size:10px;color:var(--warning);margin-top:4px">📌 Жестко</div>` : '';
-    const overtimeIcon = isOvertime ? `<div style="font-size:10px;color:var(--danger);margin-top:4px;font-weight:700">⚠️ Овертайм</div>` : '';
-    const dotCls = t.done ? '' : 'q' + (t.quadrant || 1);
-    const timeCls = isOvertime ? ' overtime' : '';
+  // Разделяем на жёсткие (с time_from) и flex
+  const fixed = [];
+  const flex = [];
+  currentTasks.forEach(t => {
+    if (t.time_from) fixed.push(t);
+    else flex.push(t);
+  });
 
-    return `
-    <div class="tl-row" data-id="${t.id}">
-        <div class="tl-time${timeCls}">
-            <div class="tl-start">${scheduledStart}</div>
-            <div class="tl-end">${scheduledEnd}</div>
-            ${fixedIcon}
-            ${overtimeIcon}
+  // Расставляем жёсткие
+  fixed.forEach(t => {
+    t._start = timeToMin(t.time_from);
+    t._end = t.time_to ? timeToMin(t.time_to) : t._start + (Number(t.mins) || 30);
+    t._fixed = true;
+  });
+  fixed.sort((a, b) => a._start - b._start);
+
+  // Сортируем flex по приоритету: Q1 > Q2 > Q3 > Q4, внутри — по убыванию длины (сложные вперёд)
+  flex.sort((a, b) => {
+    if (a.quadrant !== b.quadrant) return Number(a.quadrant) - Number(b.quadrant);
+    return (Number(b.mins) || 30) - (Number(a.mins) || 30);
+  });
+
+  // Курсор — начало рабочего дня или текущее время (если сегодня)
+  let cursor = workFromMin;
+  if (isToday && currentNow > cursor) cursor = currentNow;
+
+  // Расставляем flex, огибая жёсткие
+  flex.forEach(t => {
+    const dur = Number(t.mins) || 30;
+    let start = cursor;
+    // Ищем свободное место, не пересекающееся с жёсткими
+    let safe = false;
+    while (!safe) {
+      safe = true;
+      for (const f of fixed) {
+        // Пересечение: [start, start+dur] ∩ [f._start, f._end]
+        if (start < f._end && start + dur > f._start) {
+          start = f._end + BUFFER;
+          safe = false;
+          break;
+        }
+      }
+    }
+    t._start = start;
+    t._end = start + dur;
+    t._fixed = false;
+    cursor = t._end + BUFFER;
+  });
+
+  // Объединяем и сортируем по времени старта
+  const all = [...fixed, ...flex].sort((a, b) => a._start - b._start);
+  return { scheduled: all, workToMin };
+}
+// ──────────────────────────────────────────────────────────────
+
+function buildTaskHTML(t, isFixed, isOvertime, nowShown) {
+  const target = filter.targetDate;
+  let daysOverdue = 0;
+  if (!t.done && t.deadline && t.deadline < target)
+    daysOverdue = Math.floor((new Date(target) - new Date(t.deadline)) / 86400000);
+  const pc = (Number(t.postpone_count) || 0) + daysOverdue;
+  const fire = pc > 0 ? ` 🔥x${pc}` : '';
+  const rec = t.recurrence && t.recurrence !== 'none' ? ' 🔁' : '';
+  const fDate = t.deadline ? `📅 ${fmtDate(t.deadline)}` : '';
+
+  let cls = 'q' + (t.quadrant || 1);
+  if (t.status === 'inprogress') cls = 'inprogress-task';
+  else if (t.status === 'paused') cls = 'paused-task';
+  else if (isOvertime) cls = 'overtime-task';
+  else if (daysOverdue > 0) cls = 'overdue-task';
+  else if (isFixed) cls = 'fixed-task';
+  if (t.done) cls += ' done-task';
+
+  let sb = `<span class="badge b-q${t.quadrant||1}">${Q_LABELS[t.quadrant||1]}</span>`;
+  if (isFixed && !t.done) sb += `<span class="badge b-fixed">📌 Жёсткое</span>`;
+  if (t.status === 'inprogress') sb = '<span class="badge b-inprogress">▶ В работе</span>';
+  else if (t.status === 'paused') sb = '<span class="badge b-paused">⏸ Пауза</span>';
+  else if (isOvertime && !t.done) sb += '<span class="badge b-overtime">⚠️ Овертайм</span>';
+  else if (daysOverdue > 0 && !t.done) sb = '<span class="badge b-overdue">⚠️ Просрочено</span>' + sb;
+  if (t.done) sb = '';
+
+  const activeTask = tasks.find(x => x.status === 'inprogress' || x.status === 'paused');
+  let ab = '';
+  if (!t.done) {
+    if (t.status === 'inprogress' || t.status === 'paused')
+      ab = `<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
+    else if (!activeTask)
+      ab = `<button class="tab tab-start" data-action="start" data-id="${t.id}">▶ В работу</button>`;
+    else
+      ab = `<button class="tab tab-start" style="opacity:.3;cursor:default" disabled>▶ Занят</button>`;
+  }
+
+  const dotCls = t.done ? 'done' : isOvertime ? 'overtime' : 'q' + (t.quadrant || 1);
+  const timeCls = isOvertime ? ' overtime' : '';
+  const startStr = minToTime(t._start);
+  const endStr = minToTime(t._end);
+
+  return `
+  <div class="tl-row" data-id="${t.id}">
+    <div class="tl-time${timeCls}">
+      <div class="tl-start">${startStr}</div>
+      <div class="tl-end">${endStr}</div>
+    </div>
+    <div class="tl-track-wrap">
+      <div class="tl-dot ${dotCls}"></div>
+      <div class="tl-line"></div>
+    </div>
+    <div class="tl-content">
+      <div class="task ${cls}">
+        <div class="check${t.done?' on':''}" data-action="toggle" data-id="${t.id}">${t.done?'✔':''}</div>
+        <div class="task-body" data-action="edit" data-id="${t.id}">
+          <div class="task-title">${t.title}${fire}${rec}</div>
+          <div class="badges">
+            <span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>
+            ${sb}
+          </div>
+          <div class="task-meta">
+            ${t.mins&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}
+            ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 ${fmtMins(t.worked_mins)}</span>`:''}
+            ${fDate?`<span class="tmeta">${fDate}</span>`:''}
+          </div>
+          ${t.notes?`<div class="notes-text">📝 ${t.notes}</div>`:''}
+          ${ab?`<div class="task-actions">${ab}</div>`:''}
         </div>
-        <div class="tl-track-wrap">
-            <div class="tl-dot ${dotCls}"></div>
-            <div class="tl-line"></div>
-        </div>
-        <div class="tl-content">
-            <div class="task ${cls}">
-              <div class="check${t.done?' on':''}" data-action="toggle" data-id="${t.id}">${t.done?'✔':''}</div>
-              <div class="task-body" data-action="edit" data-id="${t.id}">
-                <div class="task-title">${t.title}${fire}${rec}</div>
-                <div class="badges"><span class="badge ${t.cat==='business'?'b-business':'b-personal'}">${t.cat==='business'?'Бизнес':'Личное'}</span>${sb}</div>
-                <div class="task-meta">
-                  ${t.mins&&!t.done?`<span class="tmeta">⏱ ${fmtMins(t.mins)}</span>`:''}
-                  ${t.worked_mins?`<span class="tmeta" style="color:var(--success)">📊 ${fmtMins(t.worked_mins)}</span>`:''}
-                  ${fDate?`<span class="tmeta">${fDate}</span>`:''}
-                </div>
-                ${t.notes?`<div class="notes-text">📝 ${t.notes}</div>`:''}
-                ${ab?`<div class="task-actions">${ab}</div>`:''}
-              </div>
-              <button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>
-            </div>
-        </div>
-    </div>`;
+        <button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function buildBufferHTML(startMin, durationMin) {
+  return `
+  <div class="buffer-row">
+    <div style="width:50px;flex-shrink:0"></div>
+    <div class="tl-track-wrap" style="opacity:0.3">
+      <div class="tl-dot" style="background:var(--border);margin-top:8px"></div>
+      <div class="tl-line"></div>
+    </div>
+    <div class="tl-content" style="padding-bottom:6px">
+      <div class="buffer-card">
+        <span class="buffer-label">☕ перерыв</span>
+        <span class="buffer-time-label">${durationMin}м</span>
+      </div>
+    </div>
+  </div>`;
 }
 
 function renderTasks(){
   const { currentTasks, doneTasks } = getFiltered();
   const el = document.getElementById('task-list');
-  
-  if(!currentTasks.length && !doneTasks.length){
-      el.innerHTML='<div class="empty">Задач нет ✨</div>';
-      renderProgress([]);
-      return;
+
+  if (!currentTasks.length && !doneTasks.length) {
+    el.innerHTML = '<div class="empty">Задач нет ✨</div>';
+    renderProgress([]);
+    return;
   }
-  
+
   renderProgress([...currentTasks, ...doneTasks]);
+
+  const BUFFER = Number(appSettings.buffer) || 10;
+  const workToMin = timeToMin(appSettings.workTo || '18:00');
+  const isToday = filter.targetDate === todayStr();
+  const currentNow = isToday ? nowMin() : -1;
+
   let finalHtml = '';
+  let nowInserted = false;
+  let otDividerInserted = false;
 
   if (currentTasks.length > 0) {
-      let fixedTasks = [];
-      let flexTasks = [];
-      
-      currentTasks.forEach(t => {
-          if (t.time_from) fixedTasks.push(t);
-          else flexTasks.push(t);
-      });
+    const { scheduled } = buildSchedule(currentTasks);
 
-      fixedTasks.forEach(t => {
-          t._dsMin = timeToMin(t.time_from);
-          t._deMin = t.time_to ? timeToMin(t.time_to) : t._dsMin + (t.mins || 30);
-      });
+    scheduled.forEach((t, i) => {
+      const isOvertime = t._start >= workToMin;
+      const prevTask = i > 0 ? scheduled[i - 1] : null;
 
-      flexTasks.sort((a, b) => {
-          if (a.quadrant !== b.quadrant) return Number(a.quadrant) - Number(b.quadrant);
-          return (Number(b.mins) || 30) - (Number(a.mins) || 30);
-      });
-
-      let tNow = nowMin();
-      let cMin = timeToMin(appSettings.workFrom || '09:00');
-      
-      if (filter.targetDate === todayStr() && tNow > cMin) {
-          cMin = tNow;
+      // Овертайм разделитель — один раз перед первым овертайм-блоком
+      if (isOvertime && !otDividerInserted) {
+        otDividerInserted = true;
+        finalHtml += `<div class="ot-divider"><div class="ot-divider-line"></div><span class="ot-divider-label">18:00 — овертайм</span><div class="ot-divider-line"></div></div>`;
       }
 
-      flexTasks.forEach(t => {
-          let dur = Number(t.mins) || 30;
-          let overlap = true;
-          while(overlap) {
-              let hit = fixedTasks.find(f => (cMin < f._deMin && cMin + dur > f._dsMin));
-              if (hit) cMin = hit._deMin + 10;
-              else overlap = false;
-          }
-          t._dsMin = cMin;
-          t._deMin = cMin + dur;
-          cMin += dur + 10;
-      });
+      // Линия "сейчас" — вставляем перед задачей которая идёт после текущего момента
+      if (!nowInserted && isToday && currentNow >= 0 && t._start > currentNow) {
+        nowInserted = true;
+        finalHtml += `<div class="now-indicator"><div class="now-dot"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span></div>`;
+      }
 
-      let scheduledTasks = [...fixedTasks, ...flexTasks].sort((a,b) => a._dsMin - b._dsMin);
-      
-      // Считаем границу овертайма (Конец рабочего дня)
-      const workToMin = timeToMin(appSettings.workTo || '18:00');
+      // Буфер между задачами (если предыдущая закончилась раньше чем начинается эта)
+      if (prevTask && t._start > prevTask._end && (t._start - prevTask._end) <= BUFFER + 2) {
+        finalHtml += buildBufferHTML(prevTask._end, t._start - prevTask._end);
+      }
 
-      scheduledTasks.forEach(t => {
-          // Если задача заканчивается позже конца рабочего дня - помечаем как овертайм
-          const isOvertime = t._deMin > workToMin;
-          finalHtml += buildTaskHTML(t, !!t.time_from, minToTime(t._dsMin), minToTime(t._deMin), isOvertime);
-      });
+      finalHtml += buildTaskHTML(t, !!t._fixed, isOvertime, nowInserted);
+    });
+
+    // Если сейчас позже всех задач
+    if (!nowInserted && isToday && currentNow >= 0) {
+      finalHtml += `<div class="now-indicator"><div class="now-dot"></div><span class="now-label">Сейчас — ${minToTime(currentNow)}</span></div>`;
+    }
   }
 
+  // Выполненные
   if (doneTasks.length > 0) {
-      if (finalHtml) finalHtml += `<div class="divider"><div class="divider-label">Выполнено</div></div>`;
-      doneTasks.forEach(t => {
-          finalHtml += buildTaskHTML(t, false, '✔', 'Done', false);
-      });
+    if (finalHtml) finalHtml += `<div class="divider"><div class="divider-label">Выполнено</div></div>`;
+    doneTasks.forEach(t => {
+      t._start = 0; t._end = 0; t._fixed = false;
+      finalHtml += buildTaskHTML(t, false, false, true);
+    });
   }
 
   el.innerHTML = finalHtml;
-  const activeTask = tasks.find(x => x.status === 'inprogress' || x.status === 'paused');
-  updateFocusBadge(activeTask);
+  updateFocusBadge(tasks.find(x => x.status === 'inprogress' || x.status === 'paused'));
 }
 
-function updateFocusBadge(a){ document.getElementById('focus-badge')?.classList.toggle('show',!!a); }
+function updateFocusBadge(a){document.getElementById('focus-badge')?.classList.toggle('show',!!a);}
 
 function render(){
   renderCalendarTape();
@@ -647,7 +747,7 @@ function render(){
   else statBlock.classList.remove('future-mode');
 }
 
-setInterval(() => { if (currentPage === 'tasks' && filter.targetDate === todayStr()) renderTasks(); }, 60000);
+setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},60000);
 
 document.getElementById('task-list').addEventListener('click',function(e){
   const ae=e.target.closest('[data-action]');if(!ae)return;
@@ -674,8 +774,9 @@ function showCtxMenu(x,y,id){
   const aT=tasks.find(x=>x.status==='inprogress'||x.status==='paused');
   document.getElementById('ctx-start').style.display=(!t.done&&!aT&&t.status!=='inprogress'&&t.status!=='paused')?'flex':'none';
   document.getElementById('ctx-done').textContent=t.done?'↩ Вернуть':'✅ Выполнено';
-  menu.style.left=Math.min(x,window.innerWidth-210)+'px';menu.style.top=Math.min(y,window.innerHeight-170)+'px';menu.style.display='block';
-  
+  menu.style.left=Math.min(x,window.innerWidth-210)+'px';
+  menu.style.top=Math.min(y,window.innerHeight-170)+'px';
+  menu.style.display='block';
   document.getElementById('ctx-start').onclick=()=>{hideCtxMenu();kanbanStart(id);};
   document.getElementById('ctx-edit').onclick=()=>{hideCtxMenu();openEditModal(id);};
   document.getElementById('ctx-done').onclick=()=>{hideCtxMenu();toggleDone(id);};
@@ -688,30 +789,27 @@ async function toggleDone(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;
   haptic();
   if(t.status==='inprogress'||t.status==='paused'){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
-  
-  t.done=!t.done; t.status=t.done?'done':'new';
-  let newNextTask = null;
-
+  t.done=!t.done;t.status=t.done?'done':'new';
+  let newNextTask=null;
   if(t.done){
-      t.deadline = todayStr();
-      if(t.recurrence && t.recurrence !== 'none') {
-         const nextDate = getNextOccurrence(t, todayStr());
-         if (nextDate) {
-             newNextTask = { ...t, id: String(nextId++), parent_id: t.parent_id || t.id, deadline: nextDate, done: false, status: 'new', worked_mins: 0, started_at: '', paused_at: '', paused_remaining: 0, postpone_count: 0 };
-             tasks.push(newNextTask);
-         }
+    t.deadline=todayStr();
+    if(t.recurrence&&t.recurrence!=='none'){
+      const nextDate=getNextOccurrence(t,todayStr());
+      if(nextDate){
+        newNextTask={...t,id:String(nextId++),parent_id:t.parent_id||t.id,deadline:nextDate,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,postpone_count:0};
+        tasks.push(newNextTask);
       }
+    }
   } else {
-      t.started_at='';t.paused_remaining=0;t.paused_at='';
+    t.started_at='';t.paused_remaining=0;t.paused_at='';
   }
-  
   render();if(currentPage==='kanban')renderKanban();
-  if (t.done) {
-      await apiFetch('POST',{action:'updateTask', id: t.id, fields:{done: true, status: 'done', deadline: todayStr(), worked_mins: t.worked_mins}});
-      if (newNextTask) await apiFetch('POST', {action: 'addTask', task: newNextTask});
-      showToast('Выполнено ✅');
+  if(t.done){
+    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:true,status:'done',deadline:todayStr(),worked_mins:t.worked_mins}});
+    if(newNextTask)await apiFetch('POST',{action:'addTask',task:newNextTask});
+    showToast('Выполнено ✅');
   } else {
-      await apiFetch('POST',{action:'updateTask', id: t.id, fields:{done: false, status: 'new', started_at: '', paused_remaining: 0, paused_at: ''}});
+    await apiFetch('POST',{action:'updateTask',id:t.id,fields:{done:false,status:'new',started_at:'',paused_remaining:0,paused_at:''}});
   }
 }
 
@@ -725,22 +823,33 @@ async function delTask(id){
 }
 
 function selectQ(q){selectedQ=q;document.querySelectorAll('.q-option').forEach(el=>el.classList.toggle('selected',Number(el.dataset.q)===q));}
+
 function openModal(){
-  document.getElementById('modal-title').textContent='Новая задача';document.getElementById('f-id').value='';
+  document.getElementById('modal-title').textContent='Новая задача';
+  document.getElementById('f-id').value='';
   ['f-title','f-mins','f-time-from','f-time-to','f-day-from','f-day-to','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('f-deadline').value='';document.getElementById('f-recurrence').value='none';
+  document.getElementById('f-deadline').value='';
+  document.getElementById('f-recurrence').value='none';
   document.getElementById('f-cat').value=filter.cat!=='all'?filter.cat:'business';
-  selectQ(1); document.getElementById('modal').style.display='flex';setTimeout(()=>document.getElementById('f-title').focus(),100);
+  selectQ(1);document.getElementById('modal').style.display='flex';
+  setTimeout(()=>document.getElementById('f-title').focus(),100);
 }
 function openEditModal(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;
-  document.getElementById('modal-title').textContent='Редактировать';document.getElementById('f-id').value=t.id;
-  document.getElementById('f-title').value=t.title||'';document.getElementById('f-mins').value=t.original_mins||t.mins||'';
-  document.getElementById('f-recurrence').value=t.recurrence||'none';document.getElementById('f-day-from').value=t.day_from||'';
-  document.getElementById('f-day-to').value=t.day_to||'';document.getElementById('f-time-from').value=t.time_from||'';
-  document.getElementById('f-time-to').value=t.time_to||'';document.getElementById('f-deadline').value=t.deadline||'';
-  document.getElementById('f-cat').value=t.cat||'business';document.getElementById('f-notes').value=t.notes||'';
-  selectQ(Number(t.quadrant)||1);document.getElementById('modal').style.display='flex';
+  document.getElementById('modal-title').textContent='Редактировать';
+  document.getElementById('f-id').value=t.id;
+  document.getElementById('f-title').value=t.title||'';
+  document.getElementById('f-mins').value=t.original_mins||t.mins||'';
+  document.getElementById('f-recurrence').value=t.recurrence||'none';
+  document.getElementById('f-day-from').value=t.day_from||'';
+  document.getElementById('f-day-to').value=t.day_to||'';
+  document.getElementById('f-time-from').value=t.time_from||'';
+  document.getElementById('f-time-to').value=t.time_to||'';
+  document.getElementById('f-deadline').value=t.deadline||'';
+  document.getElementById('f-cat').value=t.cat||'business';
+  document.getElementById('f-notes').value=t.notes||'';
+  selectQ(Number(t.quadrant)||1);
+  document.getElementById('modal').style.display='flex';
 }
 function closeModal(){document.getElementById('modal').style.display='none';}
 document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
@@ -753,14 +862,15 @@ async function saveTask(){
   const taskData={title,cat:document.getElementById('f-cat').value,quadrant:selectedQ,mins:mv,original_mins:mv,
     deadline:document.getElementById('f-deadline').value||'',recurrence:document.getElementById('f-recurrence').value,
     day_from:document.getElementById('f-day-from').value||'',day_to:document.getElementById('f-day-to').value||'',
-    time_from:document.getElementById('f-time-from').value||'',time_to:document.getElementById('f-time-to').value||'',notes:document.getElementById('f-notes').value||''};
+    time_from:document.getElementById('f-time-from').value||'',time_to:document.getElementById('f-time-to').value||'',
+    notes:document.getElementById('f-notes').value||''};
   closeModal();btn.disabled=false;btn.textContent='Сохранить задачу';
   if(id){
     const t=tasks.find(x=>x.id===id);if(t)Object.assign(t,taskData);
     render();if(currentPage==='kanban')renderKanban();
     await apiFetch('POST',{action:'updateTask',id,fields:taskData});
     showToast('Сохранено 🔄');
-  }else{
+  } else {
     const nt={id:String(nextId++),parent_id:'',...taskData,done:false,status:'new',worked_mins:0,started_at:'',paused_at:'',paused_remaining:0,notified:false,postpone_count:0};
     tasks.push(nt);render();if(currentPage==='kanban')renderKanban();
     await apiFetch('POST',{action:'addTask',task:nt});
@@ -771,21 +881,24 @@ async function saveTask(){
 function getActive(){return tasks.find(t=>t.status==='inprogress'||t.status==='paused');}
 
 function renderKanban(){
-  const wrap=document.getElementById('kanban-wrap'),active=getActive();updateFocusBadge(active);
-  if(!active){wrap.innerHTML=`<div class="k-empty"><span class="k-empty-icon">⏱</span>Нет активной задачи<br><span style="font-size:13px">Выбери задачу из списка<br>и нажми «▶ В работу»</span></div>`;if(timerInterval){clearInterval(timerInterval);timerInterval=null;}return;}
+  const wrap=document.getElementById('kanban-wrap'),active=getActive();
+  updateFocusBadge(active);
+  if(!active){
+    wrap.innerHTML=`<div class="k-empty"><span class="k-empty-icon">⏱</span>Нет активной задачи<br><span style="font-size:13px">Выбери задачу из списка<br>и нажми «▶ В работу»</span></div>`;
+    if(timerInterval){clearInterval(timerInterval);timerInterval=null;}
+    return;
+  }
   const ip=active.status==='paused';
   const rS=ip?Number(active.paused_remaining)||0:Math.max(0,(Number(active.mins)||30)*60-Math.floor((new Date()-new Date(active.started_at))/1000));
   const tS=(Number(active.original_mins)||Number(active.mins)||30)*60;
   const pct=tS?Math.min(100,Math.round((tS-rS)/tS*100)):0;
   const mm=Math.floor(rS/60).toString().padStart(2,'0'),ss=(rS%60).toString().padStart(2,'0');
   const isW=!ip&&rS>0&&rS<=180;
-  
-  let daysOverdue = 0;
-  if (!active.done && active.deadline && active.deadline < todayStr()) daysOverdue = Math.floor((new Date(todayStr()) - new Date(active.deadline)) / 86400000);
-  const pc = (Number(active.postpone_count) || 0) + daysOverdue;
-  const fire = pc > 0 ? ` 🔥x${pc}` : '';
+  let daysOverdue=0;
+  if(!active.done&&active.deadline&&active.deadline<todayStr())daysOverdue=Math.floor((new Date(todayStr())-new Date(active.deadline))/86400000);
+  const pc=(Number(active.postpone_count)||0)+daysOverdue;
+  const fire=pc>0?` 🔥x${pc}`:'';
   const rec=active.recurrence&&active.recurrence!=='none'?' 🔁':'';
-  
   wrap.innerHTML=`<div class="k-card ${ip?'paused':'inprogress'}">
     <div class="k-card-head"><div class="k-status-dot ${ip?'paused':'inprogress'}"></div><div class="k-status-label ${ip?'paused':'inprogress'}">${ip?'На паузе':'В работе'}</div></div>
     <div class="k-title">${active.title}${fire}${rec}</div>
@@ -798,8 +911,10 @@ function renderKanban(){
       <div class="timer-sub">Исходно: ${fmtMins(active.original_mins||active.mins)}${active.worked_mins?' · Набрано: '+fmtMins(active.worked_mins):''}</div>
       <div class="timer-prog"><div class="timer-fill ${ip?'paused-fill':isW?'warning-fill':''}" id="timer-fill" style="width:${pct}%"></div></div>
     </div>
-    ${ip?`<div class="k-actions"><button class="kbtn kbtn-done" onclick="toggleDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-resume" onclick="kanbanResume('${active.id}')">▶ Продолжить</button></div><div class="k-actions2"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`
-    :`<div class="k-actions"><button class="kbtn kbtn-done" onclick="toggleDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-pause" onclick="kanbanPause('${active.id}')">⏸ Пауза</button></div><div class="k-actions2"><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',10)">+10 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',20)">+20 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',30)">+30 мин</button></div><div class="k-actions2" style="margin-top:4px"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`}
+    ${ip
+      ?`<div class="k-actions"><button class="kbtn kbtn-done" onclick="toggleDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-resume" onclick="kanbanResume('${active.id}')">▶ Продолжить</button></div><div class="k-actions2"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`
+      :`<div class="k-actions"><button class="kbtn kbtn-done" onclick="toggleDone('${active.id}')">✅ Готово</button><button class="kbtn kbtn-pause" onclick="kanbanPause('${active.id}')">⏸ Пауза</button></div><div class="k-actions2"><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',10)">+10 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',20)">+20 мин</button><button class="kbtn kbtn-extend" onclick="kanbanExtend('${active.id}',30)">+30 мин</button></div><div class="k-actions2" style="margin-top:4px"><button class="kbtn kbtn-cancel" onclick="kanbanCancel('${active.id}')">↩ Вернуть</button></div>`
+    }
     ${active.notes?`<div style="margin-top:12px;padding:10px;background:rgba(255,255,255,.03);border-radius:8px;font-size:13px;color:var(--text2)">📝 ${active.notes}</div>`:''}
   </div>`;
   startTimerTick(active,rS,tS,ip);
@@ -816,10 +931,15 @@ function startTimerTick(task,init,total,ip){
     const p=total?Math.min(100,Math.round((total-r)/total*100)):0;
     v.textContent=Math.floor(r/60).toString().padStart(2,'0')+':'+(r%60).toString().padStart(2,'0');
     if(f)f.style.width=p+'%';
-    const w=r>0&&r<=180;v.className='timer-val'+(w?' warning-val':'');if(f)f.className='timer-fill'+(w?' warning-fill':'');
+    const w=r>0&&r<=180;
+    v.className='timer-val'+(w?' warning-val':'');
+    if(f)f.className='timer-fill'+(w?' warning-fill':'');
     if(r===0&&!warned){warned=true;hapticNotif('warning');showToast('⏰ Время вышло! '+task.title,4000);}
+    // Живой пересчёт таймлайна каждую минуту
+    if(r%60===0&&currentPage==='tasks')renderTasks();
   },1000);
 }
+
 function getElapsedMins(t){return t?.started_at?Math.floor((new Date()-new Date(t.started_at))/60000):0;}
 
 async function kanbanStart(id){
@@ -864,30 +984,38 @@ async function kanbanCancel(id){
 
 async function kanbanExtend(id,add){
   const real=tasks.find(x=>x.id===id);if(!real)return;
-  real.mins=(Number(real.mins)||0)+add;haptic();renderKanban();render();
-  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{mins:real.mins}});showToast(`+${add} мин ⏱`);
+  real.mins=(Number(real.mins)||0)+add;
+  haptic();renderKanban();render();
+  await apiFetch('POST',{action:'updateTask',id:real.id,fields:{mins:real.mins}});
+  showToast(`+${add} мин ⏱`);
 }
 
 function buildDigest(){
   const active=tasks.filter(t=>!t.done);
   const q1=active.filter(t=>Number(t.quadrant)===1),q2=active.filter(t=>Number(t.quadrant)===2),q3=active.filter(t=>Number(t.quadrant)===3);
-  const { currentTasks, doneTasks } = getFiltered();
-  const total = currentTasks.length + doneTasks.length;
-  const doneC = doneTasks.length;
-  const tM = currentTasks.reduce((s,t)=>s+(Number(t.mins)||0),0);
-  
+  const {currentTasks,doneTasks}=getFiltered();
+  const total=currentTasks.length+doneTasks.length,doneC=doneTasks.length;
+  const tM=currentTasks.reduce((s,t)=>s+(Number(t.mins)||0),0);
   let lines=['📋 Утренний дайджест','─────────────────────',''];
   if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
   if(q3.length){lines.push(`🟡 Срочное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
   if(q2.length){lines.push(`🔵 Важное (${q2.length}):`);q2.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
-  lines.push('─────────────────────');lines.push(`Выполнено сегодня: ${doneC} / ${total}`);if(tM)lines.push(`Осталось: ${fmtMins(tM)}`);
+  lines.push('─────────────────────');
+  lines.push(`Выполнено сегодня: ${doneC} / ${total}`);
+  if(tM)lines.push(`Осталось: ${fmtMins(tM)}`);
   const el=document.getElementById('digest-text');if(el)el.textContent=lines.join('\n');
 }
 
 function showPage(p){
   currentPage=p;
-  ['tasks','kanban','digest','settings'].forEach(x=>{const pg=document.getElementById('page-'+x);if(pg)pg.style.display=x===p?'block':'none';const b=document.getElementById('nav-'+x);if(b)b.classList.toggle('on',x===p);});
-  if(p==='tasks')render();if(p==='kanban')renderKanban();if(p==='digest')buildDigest();if(p==='settings')applySettingsUI();
+  ['tasks','kanban','digest','settings'].forEach(x=>{
+    const pg=document.getElementById('page-'+x);if(pg)pg.style.display=x===p?'block':'none';
+    const b=document.getElementById('nav-'+x);if(b)b.classList.toggle('on',x===p);
+  });
+  if(p==='tasks')render();
+  if(p==='kanban')renderKanban();
+  if(p==='digest')buildDigest();
+  if(p==='settings')applySettingsUI();
   if(p!=='kanban'&&timerInterval){clearInterval(timerInterval);timerInterval=null;}
 }
 
