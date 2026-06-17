@@ -83,16 +83,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .buffer-line{width:2px;flex:1;background:repeating-linear-gradient(to bottom, var(--border) 0, var(--border) 4px, transparent 4px, transparent 8px);}
 .buffer-content{flex:1;font-size:11px;color:#666;display:flex;align-items:center;font-style:italic}
 
-/* Сейчас-линия */
-.now-indicator{display:flex;align-items:center;gap:8px;margin:8px 0 8px 64px;position:relative;z-index:5}
-.now-dot-wrap{position:absolute;left:-15px;display:flex;justify-content:center;align-items:center}
+/* Сейчас-линия (пиксель-в-пиксель) */
+.now-indicator{display:flex;align-items:center;margin:8px 0 8px 56px;position:relative;z-index:5}
+.now-dot-wrap{width:12px;display:flex;justify-content:center;align-items:center;flex-shrink:0;margin-right:8px}
 .now-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);animation:pulse-now 2s infinite}
 @keyframes pulse-now{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
-.now-line{flex:1;height:1.5px;background:var(--danger);border-radius:2px;opacity:0.5}
-.now-label{font-size:11px;color:var(--danger);font-weight:700;background:var(--bg);padding:2px 8px;border-radius:10px;border:1px solid rgba(255,69,58,0.4)}
+.now-line{flex:1;height:1.5px;background:var(--danger);opacity:0.5;border-radius:2px}
+.now-label{font-size:11px;color:var(--danger);font-weight:700;background:var(--bg);padding:2px 8px;border-radius:10px;border:1px solid rgba(255,69,58,0.4);margin:0 8px}
 
 /* Разделители */
-.ot-divider{display:flex;align-items:center;gap:8px;margin:8px 0 8px 64px}
+.ot-divider{display:flex;align-items:center;gap:8px;margin:8px 0 8px 68px}
 .ot-divider-line{flex:1;border-top:1px dashed var(--danger)}
 .ot-divider-label{font-size:10px;color:var(--danger);font-weight:700;white-space:nowrap}
 
@@ -237,7 +237,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     <h1>Задачи <span class="v-tag">v2.2.0</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
-      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
     </div>
   </div>
   
@@ -396,7 +396,7 @@ function shouldHideBiz(){
 function normalizeTask(t){
   function ct(v){if(!v)return '';const s=String(v),i=s.match(/T(\d{2}):(\d{2})/);if(i)return i[1]+':'+i[2];const h=s.match(/^(\d{2}):(\d{2})/);if(h)return h[0];return '';}
   return{...t,id:String(t.id),parent_id:t.parent_id?String(t.parent_id):'',
-    target_date: t.target_date || t.deadline || todayStr(), // deadline is legacy fallback
+    target_date: t.target_date || t.deadline || todayStr(),
     created_date: t.created_date || todayStr(),
     done_date: t.done_date || '',
     time_from:ct(t.time_from),time_to:ct(t.time_to),
@@ -479,7 +479,6 @@ async function loadTasks(){
 
 function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');}
 
-// ─── ЛОГИКА ОТОБРАЖЕНИЯ (БЕЗ ДЕДЛАЙНОВ, ТОЛЬКО DONE_DATE И TARGET_DATE) ───
 function getFiltered(){
   const target = filter.targetDate;
   const today = todayStr();
@@ -492,14 +491,13 @@ function getFiltered(){
   
   t.forEach(x => {
     if (x.done) { 
-      if (x.done_date === target) doneTasks.push(x); // Показываем выполненные только в день их выполнения
+      if (x.done_date === target) doneTasks.push(x);
     } else {
       if (target === today) {
         if (!x.target_date || x.target_date <= today) currentTasks.push(x);
       } else if (target > today) {
         if (x.target_date === target) currentTasks.push(x);
       }
-      // Если target < today (смотрим в прошлое), невыполненные задачи там не показываются, они ушли на сегодня.
     }
   });
   doneTasks.sort((a,b) => Number(a.quadrant)-Number(b.quadrant));
@@ -514,7 +512,6 @@ function renderCalendarTape() {
   const td = new Date();
   const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   let html = '';
-  // Разрешим смотреть 3 дня назад и 11 вперед
   for(let i=-3; i<11; i++) {
     const d = new Date(td.getTime() + i * 86400000);
     const dStr = localDate(d);
@@ -597,7 +594,6 @@ function buildSchedule(currentTasks) {
 function buildTaskHTML(t, isFixed, isOvertime) {
   const today = todayStr();
   
-  // 🔥 Расчет "Огня"
   let daysBurning = 0;
   if (!t.done && t.target_date && t.target_date < today) {
     daysBurning = Math.floor((new Date(today) - new Date(t.target_date)) / 86400000);
@@ -761,7 +757,6 @@ function render(){
   else statBlock.classList.remove('future-mode');
 }
 
-// РЕАЛ-ТАЙМ ОБНОВЛЕНИЯ БЕЗ ПЕРЕЗАГРУЗКИ СТРАНИЦЫ
 setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},30000); // Каждые 30 сек
 document.addEventListener('visibilitychange', () => {
   if (!document.hidden && currentPage==='tasks' && filter.targetDate===todayStr()) renderTasks(); // Мгновенно при разворачивании
@@ -804,7 +799,6 @@ function showCtxMenu(x,y,id){
 function hideCtxMenu(){document.getElementById('ctx-menu').style.display='none';}
 document.addEventListener('click',e=>{if(!e.target.closest('#ctx-menu'))hideCtxMenu();});
 
-// ПЕРЕНОС НА ЗАВТРА
 async function postponeToTomorrow(id){
   const t=tasks.find(x=>x.id===id);if(!t)return;
   haptic();
@@ -827,7 +821,7 @@ async function toggleDone(id){
   t.done=!t.done;t.status=t.done?'done':'new';
   let newNextTask=null;
   if(t.done){
-    t.done_date = todayStr(); // ФИКСИРУЕМ ДАТУ ВЫПОЛНЕНИЯ
+    t.done_date = filter.targetDate || todayStr(); // Логично закрепит задачу за тем днем, где мы её отметили
     if(t.recurrence&&t.recurrence!=='none'){
       const nextDate=getNextOccurrence(t,todayStr());
       if(nextDate){
@@ -1030,11 +1024,11 @@ async function kanbanExtend(id,add){
 }
 
 function buildDigest(){
-  const active=tasks.filter(t=>!t.done);
+  const {currentTasks, doneTasks} = getFiltered();
+  const active = currentTasks.filter(t=>!t.done);
   const q1=active.filter(t=>Number(t.quadrant)===1),q2=active.filter(t=>Number(t.quadrant)===2),q3=active.filter(t=>Number(t.quadrant)===3);
-  const {currentTasks,doneTasks}=getFiltered();
   const total=currentTasks.length+doneTasks.length,doneC=doneTasks.length;
-  const tM=currentTasks.reduce((s,t)=>s+(Number(t.mins)||0),0);
+  const tM=active.reduce((s,t)=>s+(Number(t.mins)||0),0);
   let lines=['📋 Утренний дайджест','─────────────────────',''];
   if(q1.length){lines.push(`🔴 Важное+Срочное (${q1.length}):`);q1.forEach(t=>lines.push(`  • ${t.title}${t.mins?' ('+fmtMins(t.mins)+')':''}`));lines.push('');}
   if(q3.length){lines.push(`🟡 Срочное (${q3.length}):`);q3.forEach(t=>lines.push(`  • ${t.title}`));lines.push('');}
