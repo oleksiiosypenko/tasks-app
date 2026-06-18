@@ -22,7 +22,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .topbar h1{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:8px}
 .topbar h1 .v-tag{font-size:11px;color:var(--text2);font-weight:400;background:var(--bg3);padding:2px 6px;border-radius:6px}
 .topbar-right{display:flex;gap:4px;align-items:center}
-.icon-btn{background:none;border:none;cursor:pointer;padding:6px;display:flex;align-items:center}
+.icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
 
 .calendar-tape{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none}
@@ -234,13 +234,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v2.2.2</span></h1>
+    <h1>Задачи <span class="v-tag">v2.2.3</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
       </button>
       <button class="icon-btn" onclick="showPage('settings')">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#fff"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
       </button>
     </div>
   </div>
@@ -270,7 +270,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-kanban" style="display:none">
-  <div class="topbar"><h1>Фокус</h1><button class="icon-btn" onclick="renderKanban()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button></div>
+  <div class="topbar"><h1>Фокус</h1><button class="icon-btn" onclick="renderKanban()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button></div>
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
@@ -280,7 +280,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-settings" style="display:none">
-  <div class="topbar"><h1>Настройки</h1><button class="icon-btn" onclick="showPage('tasks')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <div class="topbar"><h1>Настройки</h1><button class="icon-btn" onclick="showPage('tasks')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
   <div class="settings-wrap">
     <div class="settings-section">
       <div class="settings-section-title">🔔 Уведомления</div>
@@ -291,8 +291,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
     </div>
     <div class="settings-section">
       <div class="settings-section-title">⏰ Рабочие часы</div>
-      <div class="settings-row"><div><div class="settings-row-label">Начало рабочего дня</div><div class="settings-row-sub">С этого времени стартует таймлайн</div></div><input type="text" id="s-work-from" value="09:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
-      <div class="settings-row"><div><div class="settings-row-label">Конец рабочего дня</div><div class="settings-row-sub">После этого — овертайм зона</div></div><input type="text" id="s-work-to" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Начало рабочего дня</div><div class="settings-row-sub">С этого времени стартует таймлайн</div></div><input type="text" id="s-work-from" value="08:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
+      <div class="settings-row"><div><div class="settings-row-label">Конец рабочего дня</div><div class="settings-row-sub">После этого — овертайм зона</div></div><input type="text" id="s-work-to" value="16:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
       <div class="settings-row"><div><div class="settings-row-label">Буфер между задачами (мин)</div><div class="settings-row-sub">Перерыв после каждой задачи</div></div><input type="number" id="s-buffer" value="10" min="0" max="30" style="width:65px"/></div>
       <div class="settings-row"><div><div class="settings-row-label">Скрывать Бизнес вне рабочих часов</div></div><button class="toggle" id="s-hide-biz" onclick="this.classList.toggle('on')"></button></div>
       <div class="settings-row"><div><div class="settings-row-label">Планирование с воскресенья</div></div><input type="text" id="s-plan-from" value="18:00" maxlength="5" inputmode="numeric" style="width:75px"/></div>
@@ -358,14 +358,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 
 <script>
 const tg=window.Telegram?.WebApp; if(tg)tg.expand();
-const API='https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
+const API='https://script.google.com/macros/s/AKfycbx07U6LxV5SRa3_llFS2E5lUUP4fC2tA6eu4cotWXলেকHIVGnK0hJRYd5HHeHbfky9Tnnu/exec';
 let tasks=[], nextId=Date.now();
 let filter={cat:'all'};
 let selectedQ=1,timerInterval=null,currentPage='tasks',ctxTaskId=null,longPressTimer=null;
-let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'08:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant',buffer:10};
+let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'08:00',workTo:'16:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant',buffer:10};
 const Q_LABELS=['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
-// ✅ ИСПРАВЛЕНО: Убран "сова-режим". Дата — это всегда классическое Сегодня.
 function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
 function todayStr(){ return localDate(new Date()); }
 
@@ -378,7 +377,13 @@ function showToast(msg,dur=2500){const t=document.getElementById('toast');t.text
 function haptic(t='light'){try{tg?.HapticFeedback?.impactOccurred(t);}catch(e){}}
 function hapticNotif(t='warning'){try{tg?.HapticFeedback?.notificationOccurred(t);}catch(e){}}
 
-function timeToMin(s){if(!s)return 0;const[h,m]=(s+'').split(':').map(Number);return(h||0)*60+(m||0);}
+function timeToMin(s){
+  if(!s) return 0;
+  const m = String(s).match(/(\d{1,2}):(\d{2})/);
+  if(!m) return 480; // ЗАЩИТА: Если формат битый, всегда fallback на 08:00
+  return parseInt(m[1])*60 + parseInt(m[2]);
+}
+
 function minToTime(m){
   const h=Math.floor(m/60), mm=m%60;
   const realH=h%24;
@@ -386,7 +391,6 @@ function minToTime(m){
   return String(realH).padStart(2,'0')+':'+String(mm).padStart(2,'0')+nextDayText;
 }
 
-// ✅ ИСПРАВЛЕНО: Убран сдвиг на 4 часа ночи
 function nowMin(){
   const n = new Date();
   return n.getHours() * 60 + n.getMinutes();
@@ -467,7 +471,7 @@ async function saveSettings(){
     notifyText:document.getElementById('s-notify-text')?.value||'⏰ До конца «{task}» осталось 10 мин',
     notifyOn:!!document.getElementById('s-notify-on')?.classList.contains('on'),
     workFrom:document.getElementById('s-work-from')?.value||'08:00',
-    workTo:document.getElementById('s-work-to')?.value||'18:00',
+    workTo:document.getElementById('s-work-to')?.value||'16:00',
     hideBiz:!!document.getElementById('s-hide-biz')?.classList.contains('on'),
     planFrom:document.getElementById('s-plan-from')?.value||'18:00',
     buffer:parseInt(document.getElementById('s-buffer')?.value)||10,
@@ -481,7 +485,7 @@ async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
   const data=await apiFetch('GET');
   if(data&&Array.isArray(data)){tasks=data.map(normalizeTask);nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;}
-  filter.targetDate = todayStr(); // При загрузке всегда устанавливаем фокус на сегодня
+  filter.targetDate = todayStr(); 
   render();
   if(currentPage==='kanban')renderKanban();
   if(currentPage==='digest')buildDigest();
@@ -489,6 +493,7 @@ async function loadTasks(){
 
 function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');}
 
+// ПРОЕКЦИЯ БУДУЩЕГО: Показываем как будут переноситься и множиться задачи
 function getFiltered(){
   const target = filter.targetDate;
   const today = todayStr();
@@ -506,7 +511,45 @@ function getFiltered(){
       if (target === today) {
         if (!x.target_date || x.target_date <= today) currentTasks.push(x);
       } else if (target > today) {
-        if (x.target_date === target) currentTasks.push(x);
+        
+        // 1. Задача явно запланирована на этот будущий день
+        if (x.target_date === target) {
+          currentTasks.push(x);
+        } 
+        // 2. Задача из прошлого/сегодня не выполнена, значит она перекатится на этот день (сгоревшая 🔥)
+        else if (!x.target_date || x.target_date <= today) {
+          const ghost = {...x};
+          if (x.target_date) {
+             const diff = Math.floor((new Date(target) - new Date(today))/86400000);
+             ghost.postpone_count = (Number(ghost.postpone_count)||0) + diff;
+          }
+          currentTasks.push(ghost);
+        }
+        
+        // 3. Симуляция: Задача повторяемая, появится ли завтра ее новая копия?
+        if (x.recurrence && x.recurrence !== 'none') {
+           let occurs = false;
+           const d = new Date(target + 'T12:00:00');
+           const tDow = d.getDay(), tDom = d.getDate();
+           const rec = x.recurrence;
+           
+           if(rec==='daily') occurs=true;
+           else if(rec==='weekdays') occurs=tDow>=1&&tDow<=5;
+           else if(rec==='weekends') occurs=tDow===0||tDow===6;
+           else if(rec==='weekly') occurs=tDow===new Date((x.target_date||today)+'T12:00:00').getDay();
+           else if(rec==='monthly') occurs=tDom===new Date((x.target_date||today)+'T12:00:00').getDate();
+           
+           if(occurs && x.day_from && x.day_to){
+             const df=parseInt(x.day_from),dt=parseInt(x.day_to);
+             if(tDom<df||tDom>dt) occurs=false;
+           }
+           
+           if(occurs && x.target_date < target) {
+              const ghostRec = {...x, id: x.id+'_ghost', target_date: target, postpone_count: 0, worked_mins: 0, status: 'new', started_at: '', paused_remaining: 0, paused_at: ''};
+              ghostRec.mins = ghostRec.original_mins || ghostRec.mins;
+              currentTasks.push(ghostRec);
+           }
+        }
       }
     }
   });
@@ -516,13 +559,13 @@ function getFiltered(){
 
 function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
 
-// ✅ ИСПРАВЛЕНО: Календарь теперь стартует строго с сегодняшнего дня
 function renderCalendarTape() {
   const tape = document.getElementById('calendar-tape');
   if(!tape) return;
   const td = new Date();
   const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   let html = '';
+  // Лента всегда с сегодняшнего дня
   for(let i=0; i<14; i++) {
     const d = new Date(td.getTime() + i * 86400000);
     const dStr = localDate(d);
@@ -552,7 +595,7 @@ function renderProgress(actList){
 function buildSchedule(currentTasks) {
   const BUFFER = Number(appSettings.buffer) || 10;
   const workFromMin = timeToMin(appSettings.workFrom || '08:00');
-  const workToMin = timeToMin(appSettings.workTo || '18:00');
+  const workToMin = timeToMin(appSettings.workTo || '16:00');
 
   const fixed = [];
   const flex = [];
@@ -573,7 +616,7 @@ function buildSchedule(currentTasks) {
     return (Number(b.mins) || 30) - (Number(a.mins) || 30);
   });
 
-  // ✅ ИСПРАВЛЕНО: Таймлайн всегда жестко стартует с начала рабочего дня
+  // Жесткий старт таймлайна
   let cursor = workFromMin;
 
   flex.forEach(t => {
@@ -602,12 +645,13 @@ function buildSchedule(currentTasks) {
 
 function buildTaskHTML(t, isFixed, isOvertime) {
   const today = todayStr();
+  const isFutureProj = filter.targetDate > today; // Если мы смотрим в будущее
   
   let daysBurning = 0;
-  if (!t.done && t.target_date && t.target_date < today) {
-    daysBurning = Math.floor((new Date(today) - new Date(t.target_date)) / 86400000);
+  if (!t.done && t.target_date && t.target_date < (isFutureProj ? filter.targetDate : today)) {
+    daysBurning = Math.floor((new Date(isFutureProj ? filter.targetDate : today) - new Date(t.target_date)) / 86400000);
   }
-  const pc = (Number(t.postpone_count) || 0) + daysBurning;
+  const pc = (Number(t.postpone_count) || 0); // Счетчик уже спроецирован в getFiltered
   const fire = pc > 0 ? ` <span style="color:#ff827a">🔥x${pc}</span>` : '';
   const rec = t.recurrence && t.recurrence !== 'none' ? ' 🔁' : '';
 
@@ -615,7 +659,7 @@ function buildTaskHTML(t, isFixed, isOvertime) {
   if (t.status === 'inprogress') cls = 'inprogress-task';
   else if (t.status === 'paused') cls = 'paused-task';
   else if (isOvertime) cls = 'overtime-task';
-  else if (daysBurning > 0) cls = 'overdue-task';
+  else if (pc > 0) cls = 'overdue-task';
   else if (isFixed) cls = 'fixed-task';
   if (t.done) cls += ' done-task';
 
@@ -623,12 +667,13 @@ function buildTaskHTML(t, isFixed, isOvertime) {
   if (t.status === 'inprogress') sb = '<span class="badge b-inprogress">▶ В работе</span>';
   else if (t.status === 'paused') sb = '<span class="badge b-paused">⏸ Пауза</span>';
   else if (isOvertime && !t.done) sb += '<span class="badge b-overtime">⚠️ Овертайм</span>';
-  else if (daysBurning > 0 && !t.done) sb = '<span class="badge b-overdue">⚠️ Горит</span>' + sb;
+  else if (pc > 0 && !t.done) sb = '<span class="badge b-overdue">⚠️ Горит</span>' + sb;
   if (t.done) sb = '';
 
   const activeTask = tasks.find(x => x.status === 'inprogress' || x.status === 'paused');
   let ab = '';
-  if (!t.done) {
+  // Кнопки в работу не показываем для проекций будущего
+  if (!t.done && !isFutureProj) {
     if (t.status === 'inprogress' || t.status === 'paused')
       ab = `<button class="tab tab-resume" data-action="goto-kanban">⏱ Таймер</button>`;
     else if (!activeTask)
@@ -649,6 +694,9 @@ function buildTaskHTML(t, isFixed, isOvertime) {
     timeColHTML = `<div class="tl-start">${t.time_from}</div><div class="tl-end">${t.time_to || endStr}</div>`;
   }
 
+  // Блокируем галочку и клики на редактирование, если это проекция
+  const pointerStyle = isFutureProj ? "pointer-events: none;" : "";
+
   return `
   <div class="tl-row" data-id="${t.id}">
     <div class="tl-time${timeCls}">${timeColHTML}</div>
@@ -657,7 +705,7 @@ function buildTaskHTML(t, isFixed, isOvertime) {
       <div class="tl-line"></div>
     </div>
     <div class="tl-content">
-      <div class="task ${cls}">
+      <div class="task ${cls}" style="${pointerStyle}">
         <div class="check${t.done?' on':''}" data-action="toggle" data-id="${t.id}">${t.done?'✔':''}</div>
         <div class="task-body" data-action="edit" data-id="${t.id}">
           <div class="task-title">${t.title}${fire}${rec}</div>
@@ -672,7 +720,7 @@ function buildTaskHTML(t, isFixed, isOvertime) {
           ${t.notes?`<div class="notes-text">📝 ${t.notes}</div>`:''}
           ${ab?`<div class="task-actions">${ab}</div>`:''}
         </div>
-        <button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>
+        ${!isFutureProj ? `<button class="tab-del" data-action="delete" data-id="${t.id}">❌</button>`:''}
       </div>
     </div>
   </div>`;
@@ -700,7 +748,7 @@ function renderTasks(){
   renderProgress([...currentTasks, ...doneTasks]);
 
   const BUFFER = Number(appSettings.buffer) || 10;
-  const workToMin = timeToMin(appSettings.workTo || '18:00');
+  const workToMin = timeToMin(appSettings.workTo || '16:00');
   const midnightMin = 24 * 60; // 1440
   const isToday = filter.targetDate === todayStr();
   const currentNow = isToday ? nowMin() : -1;
@@ -720,7 +768,7 @@ function renderTasks(){
 
       if (isOvertime && !otDividerInserted && !isNextDay) {
         otDividerInserted = true;
-        finalHtml += `<div class="ot-divider"><div class="ot-divider-line"></div><span class="ot-divider-label">18:00 — Овертайм</span><div class="ot-divider-line"></div></div>`;
+        finalHtml += `<div class="ot-divider"><div class="ot-divider-line"></div><span class="ot-divider-label">${appSettings.workTo || '16:00'} — Овертайм</span><div class="ot-divider-line"></div></div>`;
       }
       
       if (isNextDay && !midnightDividerInserted) {
@@ -778,6 +826,9 @@ document.addEventListener('visibilitychange', () => {
 document.getElementById('task-list').addEventListener('click',function(e){
   const ae=e.target.closest('[data-action]');if(!ae)return;
   const a=ae.dataset.action,id=ae.dataset.id;
+  // Если мы смотрим в будущее, блокируем клики
+  if (filter.targetDate > todayStr()) return;
+  
   if(a==='toggle')toggleDone(id);
   if(a==='edit')openEditModal(id);
   if(a==='delete')delTask(id);
@@ -786,6 +837,7 @@ document.getElementById('task-list').addEventListener('click',function(e){
 });
 
 document.getElementById('task-list').addEventListener('pointerdown',function(e){
+  if (filter.targetDate > todayStr()) return;
   const te=e.target.closest('.task');if(!te)return;
   if(e.target.closest('[data-action="toggle"]')||e.target.closest('[data-action="delete"]')||e.target.closest('.task-actions'))return;
   ctxTaskId=te.dataset.id;
