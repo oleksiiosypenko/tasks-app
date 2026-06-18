@@ -234,7 +234,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v2.2.3</span></h1>
+    <h1>Задачи <span class="v-tag">v2.2.4</span></h1>
     <div class="topbar-right">
       <button class="icon-btn" onclick="loadTasks()">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
@@ -380,7 +380,7 @@ function hapticNotif(t='warning'){try{tg?.HapticFeedback?.notificationOccurred(t
 function timeToMin(s){
   if(!s) return 0;
   const m = String(s).match(/(\d{1,2}):(\d{2})/);
-  if(!m) return 480; // ЗАЩИТА: Если формат битый, всегда fallback на 08:00
+  if(!m) return 480;
   return parseInt(m[1])*60 + parseInt(m[2]);
 }
 
@@ -493,7 +493,7 @@ async function loadTasks(){
 
 function fmtMins(m){m=Number(m);if(!m)return '0м';if(m<60)return m+'м';return Math.floor(m/60)+'ч'+(m%60?' '+m%60+'м':'');}
 
-// ПРОЕКЦИЯ БУДУЩЕГО: Показываем как будут переноситься и множиться задачи
+// ПРОЕКЦИЯ БУДУЩЕГО
 function getFiltered(){
   const target = filter.targetDate;
   const today = todayStr();
@@ -522,12 +522,17 @@ function getFiltered(){
           if (x.target_date) {
              const diff = Math.floor((new Date(target) - new Date(today))/86400000);
              ghost.postpone_count = (Number(ghost.postpone_count)||0) + diff;
+             // Симулируем умножение времени (как это сделает реальный бэкенд ночью)
+             ghost.mins = (ghost.original_mins || ghost.mins || 30) * (ghost.postpone_count + 1);
           }
           currentTasks.push(ghost);
         }
         
-        // 3. Симуляция: Задача повторяемая, появится ли завтра ее новая копия?
-        if (x.recurrence && x.recurrence !== 'none') {
+        // 3. Симуляция: Задача повторяемая. Появится ли её новая копия?
+        // ✅ ИСПРАВЛЕНО: добавлено 'else if'. 
+        // Если задача УЖЕ перекатилась сюда с огоньком в пункте 2, 
+        // мы НЕ создаем её чистый дубликат. Оставляем только горящую сущность.
+        else if (x.recurrence && x.recurrence !== 'none') {
            let occurs = false;
            const d = new Date(target + 'T12:00:00');
            const tDow = d.getDay(), tDom = d.getDate();
