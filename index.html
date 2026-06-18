@@ -22,7 +22,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 .topbar h1{font-size:22px;font-weight:700;display:flex;align-items:baseline;gap:8px}
 .topbar h1 .v-tag{font-size:11px;color:var(--text2);font-weight:400;background:var(--bg3);padding:2px 6px;border-radius:6px}
 .topbar-right{display:flex;gap:4px;align-items:center}
-.icon-btn{background:none;border:none;cursor:pointer;color:#fff;padding:6px;display:flex;align-items:center}
+.icon-btn{background:none;border:none;cursor:pointer;padding:6px;display:flex;align-items:center}
 .icon-btn:active{transform:scale(0.9)}
 
 .calendar-tape{display:flex;gap:8px;overflow-x:auto;padding:4px 16px 12px;scrollbar-width:none}
@@ -234,10 +234,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 <body>
 <div id="page-tasks">
   <div class="topbar">
-    <h1>Задачи <span class="v-tag">v2.2.1</span></h1>
+    <h1>Задачи <span class="v-tag">v2.2.2</span></h1>
     <div class="topbar-right">
-      <button class="icon-btn" onclick="loadTasks()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button>
-      <button class="icon-btn" onclick="showPage('settings')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+      <button class="icon-btn" onclick="loadTasks()">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg>
+      </button>
+      <button class="icon-btn" onclick="showPage('settings')">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#ffffff"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
     </div>
   </div>
   
@@ -266,7 +270,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-kanban" style="display:none">
-  <div class="topbar"><h1>Фокус</h1><button class="icon-btn" onclick="renderKanban()"><svg width="20" height="20" viewBox="0 0 24 24"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button></div>
+  <div class="topbar"><h1>Фокус</h1><button class="icon-btn" onclick="renderKanban()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l.73-.72"/></svg></button></div>
   <div class="kanban-wrap" id="kanban-wrap"></div>
 </div>
 
@@ -276,7 +280,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-siz
 </div>
 
 <div id="page-settings" style="display:none">
-  <div class="topbar"><h1>Настройки</h1><button class="icon-btn" onclick="showPage('tasks')"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+  <div class="topbar"><h1>Настройки</h1><button class="icon-btn" onclick="showPage('tasks')"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
   <div class="settings-wrap">
     <div class="settings-section">
       <div class="settings-section-title">🔔 Уведомления</div>
@@ -361,13 +365,9 @@ let selectedQ=1,timerInterval=null,currentPage='tasks',ctxTaskId=null,longPressT
 let appSettings={digestTime:'08:00',notifyBefore:10,notifyText:'⏰ До конца «{task}» осталось 10 мин',notifyOn:true,workFrom:'08:00',workTo:'18:00',hideBiz:false,planFrom:'18:00',sortBy:'quadrant',buffer:10};
 const Q_LABELS=['','Важное+Срочное','Важное','Срочное','Низкий приоритет'];
 
-// ✅ РЕЖИМ СОВЫ: День длится до 04:00 утра. 
+// ✅ ИСПРАВЛЕНО: Убран "сова-режим". Дата — это всегда классическое Сегодня.
 function localDate(d){return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().split('T')[0];}
-function todayStr(){
-  const d = new Date();
-  if (d.getHours() < 4) d.setDate(d.getDate() - 1); // До 4 утра это всё ещё "вчера"
-  return localDate(d);
-}
+function todayStr(){ return localDate(new Date()); }
 
 function initTimeMask(id){
   const el=document.getElementById(id);if(!el)return;
@@ -386,17 +386,15 @@ function minToTime(m){
   return String(realH).padStart(2,'0')+':'+String(mm).padStart(2,'0')+nextDayText;
 }
 
-// ✅ Сдвигаем время на "овертайм" (1 ночи это 25:00)
+// ✅ ИСПРАВЛЕНО: Убран сдвиг на 4 часа ночи
 function nowMin(){
   const n = new Date();
-  let h = n.getHours();
-  if (h < 4) h += 24; 
-  return h * 60 + n.getMinutes();
+  return n.getHours() * 60 + n.getMinutes();
 }
 
 function shouldHideBiz(){
   if(!appSettings.hideBiz)return false;
-  const d=new Date(); if(d.getHours()<4) d.setDate(d.getDate()-1);
+  const d=new Date();
   const dow=d.getDay(), nm=nowMin();
   const wf=timeToMin(appSettings.workFrom), wt=timeToMin(appSettings.workTo), pf=timeToMin(appSettings.planFrom);
   if(dow===6)return true;
@@ -483,6 +481,7 @@ async function loadTasks(){
   document.getElementById('task-list').innerHTML='<div class="loading-wrap">Загрузка...</div>';
   const data=await apiFetch('GET');
   if(data&&Array.isArray(data)){tasks=data.map(normalizeTask);nextId=Math.max(...tasks.map(t=>Number(t.id)||0),Date.now())+1;}
+  filter.targetDate = todayStr(); // При загрузке всегда устанавливаем фокус на сегодня
   render();
   if(currentPage==='kanban')renderKanban();
   if(currentPage==='digest')buildDigest();
@@ -517,14 +516,14 @@ function getFiltered(){
 
 function setCatFilter(v){filter.cat=v;const vals=['all','business','personal'];document.querySelectorAll('#seg-cat button').forEach((b,i)=>b.classList.toggle('on',vals[i]===v));render();}
 
+// ✅ ИСПРАВЛЕНО: Календарь теперь стартует строго с сегодняшнего дня
 function renderCalendarTape() {
   const tape = document.getElementById('calendar-tape');
   if(!tape) return;
   const td = new Date();
-  if(td.getHours() < 4) td.setDate(td.getDate() - 1); // Учитываем режим совы для ленты дней
   const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   let html = '';
-  for(let i=-3; i<11; i++) {
+  for(let i=0; i<14; i++) {
     const d = new Date(td.getTime() + i * 86400000);
     const dStr = localDate(d);
     const isSelected = filter.targetDate === dStr;
@@ -574,7 +573,7 @@ function buildSchedule(currentTasks) {
     return (Number(b.mins) || 30) - (Number(a.mins) || 30);
   });
 
-  // ✅ Убрано "умное" сдвигание графика. Задачи всегда стартуют жестко от workFromMin
+  // ✅ ИСПРАВЛЕНО: Таймлайн всегда жестко стартует с начала рабочего дня
   let cursor = workFromMin;
 
   flex.forEach(t => {
@@ -753,7 +752,6 @@ function renderTasks(){
     });
   }
 
-  // ✅ ПОДСКАЗКА: Если включено "скрывать бизнес", пишем об этом юзеру
   if (shouldHideBiz() && filter.cat !== 'personal') {
      finalHtml += `<div style="text-align:center; padding: 10px; font-size: 12px; color: var(--text2); background: rgba(255,255,255,0.03); border: 1px dashed var(--border); border-radius: var(--radius); margin-top: 16px;">💼 Рабочие задачи сейчас скрыты<br><span style="font-size:10px">(Выключи настройку "Скрывать Бизнес вне рабочих часов", чтобы увидеть их)</span></div>`;
   }
@@ -772,9 +770,9 @@ function render(){
   else statBlock.classList.remove('future-mode');
 }
 
-setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},30000); // Каждые 30 сек
+setInterval(()=>{if(currentPage==='tasks'&&filter.targetDate===todayStr())renderTasks();},30000); 
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden && currentPage==='tasks' && filter.targetDate===todayStr()) renderTasks(); // Мгновенно при разворачивании
+  if (!document.hidden && currentPage==='tasks' && filter.targetDate===todayStr()) renderTasks();
 });
 
 document.getElementById('task-list').addEventListener('click',function(e){
